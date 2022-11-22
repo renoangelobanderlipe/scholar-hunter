@@ -1,10 +1,17 @@
-import React from 'react';
-import Typography from '@mui/material/Typography'
+import React from "react";
+import { DrawerComponent } from "./DrawerComponent";
 
+const drawerWidth = 200;
 export const SidebarComponent = () => {
   return (
     <React.Fragment>
-      <Typography variant="body1" color="secondary">Sidebar Compoentn</Typography>
+      <DrawerComponent
+        drawerWidth={drawerWidth}
+        variant={{
+          variant: "permanent",
+          anchor: "left",
+        }}
+      />
     </React.Fragment>
   );
 };
