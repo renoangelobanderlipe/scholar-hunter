@@ -7,7 +7,6 @@ export const GenericTextField = ({
   fieldOptions,
   handleOnChangeValue,
 }) => {
-
   const handleOnChangeData = (newValue) => {
     handleOnChangeValue(fieldName, newValue);
   };

@@ -1,8 +1,8 @@
 import React from "react";
 import TextField from "@mui/material/TextField";
 import { useFormik } from "formik";
-import { GenericTextField } from "../GenericComponents/GenericTextField";
-import { GenericButton } from "../GenericComponents/GenericButton";
+import { GenericTextField } from "./../../components/GenericComponents/GenericTextField";
+import { GenericButton } from "./../../components/GenericComponents/GenericButton";
 
 export const SignInPage = () => {
   const signInFormik = useFormik({
@@ -14,7 +14,7 @@ export const SignInPage = () => {
   });
 
   const handleOnSubmit = async (values) => {
-    const result = await axios.post({ user_data: values });
+    const result = await axios.post({ puser_data: values });
 
     if (result.data.code != 200) {
       // EXCEPTION
@@ -29,7 +29,7 @@ export const SignInPage = () => {
 
   return (
     <React.Fragment>
-      <form>
+      {/* <form>
         <GenericTextField
           fieldName="email"
           fieldLabel="Last Name"
@@ -79,7 +79,14 @@ export const SignInPage = () => {
           }}
           onClick={() => signInFormik.handleSubmit(signInFormik.values)}
         />
-      </form>
+      </form> */}
+
+
+
+      <Box>
+
+        
+      </Box>
     </React.Fragment>
   );
 };

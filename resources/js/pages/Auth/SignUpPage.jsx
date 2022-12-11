@@ -2,9 +2,9 @@ import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Button from "@mui/material/Button";
-import { GenericTextField } from "../GenericComponents/GenericTextField";
 import axios from "axios";
-import { GenericButton } from "../GenericComponents/GenericButton";
+import { GenericTextField } from './../../components/GenericComponents/GenericTextField';
+import { GenericButton } from './../../components/GenericComponents/GenericButton';
 
 const validationSchema = Yup.object().shape({
   // firstName: Yup.string()

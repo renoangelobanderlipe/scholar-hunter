@@ -1,29 +1,56 @@
 import React from "react";
-import { Grid } from "@mui/material";
-import { BrowserRouter } from "react-router-dom";
-import { LeftSection } from "../components/LeftSection";
-import { RightSection } from "../components/RightSection";
-import { AppbarComponent } from "../components/wrapper/AppbarComponent";
-import { SidebarComponent } from "../components/wrapper/SidebarComponent";
-import { WrapperContainer } from "../components/wrapper/WrapperContainer";
-import { SignUpPage } from "../components/Auth/SignUpPage";
-import { SignInPage } from "../components/Auth/SignInPage";
 
-// const drawerWidth = 200;
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Box from "@mui/material/Box";
+import { WrapperComponent } from "./../components/GenericComponents/WrapperComponent";
+import { DrawerComponent } from "./../components/DrawerComponent";
+import { RightSection } from "./../components/RightSection";
+import { AppbarComponent } from "./../components/AppbarComponent";
+import { DashboardPage } from "./../components/DashboardPage";
+import { SignInPage } from "./../pages/Auth/SignInPage";
+import { SignUpPage } from "./../pages/Auth/SignUpPage";
+import { AdminAccountPage } from "./../pages/AdminPages/AdminAccountPage";
+
+const navLinks = ["Dashboard", "Scholar List", "User Management", "My Account"];
+
 export const PrimaryLayout = () => {
+  const isLoggedIn = true;
   return (
-    <BrowserRouter>
-      <Grid container spacing={2}>
-        {/* <AppbarComponent drawerWidth={drawerWidth} /> */}
-        <Grid item xs={2}>
-          <RightSection />
-        </Grid>
-        <Grid item>
-          <LeftSection />
-        </Grid>
+    <>
+      <Routes>
+        {isLoggedIn == true ? (
+          <Route path="/" element={<DashboardPage />}>
+            <Route path="/login" element={<AdminAccountPage />} />
+          </Route>
+        ) : (
+          <Route path="/" element={<SignInPage />} />
+        )}
+      </Routes>
+    </>
 
-        {/* <SignInPage/> */}
-      </Grid>
-    </BrowserRouter>
+    // <Routes>
+
+    // </Routes>
+
+    // <Box
+    //   sx={{
+    //     display: "flex",
+    //     width: "100%",
+    //   }}
+    // >
+    //   <AppbarComponent>
+    //     <Typography variant="body1" color="initial">
+    //       profile page here
+    //     </Typography>
+    //   </AppbarComponent>
+
+    //   <DrawerComponent navLinks={navLinks}>
+    //     <Typography>Scholar Hunter</Typography>
+    //   </DrawerComponent>
+
+    //   <WrapperComponent>
+    //     <RightSection />
+    //   </WrapperComponent>
+    // </Box>
   );
 };
