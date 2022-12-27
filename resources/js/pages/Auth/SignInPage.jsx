@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import { GenericTextField } from "./../../components/GenericComponents/GenericTextField";
 import { GenericButton } from "./../../components/GenericComponents/GenericButton";
 import Typography from '@mui/material/Typography';
-import { result } from "lodash";
+import { login } from './../../config/apisauce';
 
 
 export const SignInPage = () => {
@@ -17,7 +17,8 @@ export const SignInPage = () => {
   });
 
   const handleOnSubmit = async (values) => {
-    console.log('values', values);
+    // console.log('values', values);
+    const res = login({email: values.email, password : values.password});
 
     // const res = await axios.post({ puser_data: values });
 
@@ -28,7 +29,7 @@ export const SignInPage = () => {
     //   signInFormik.values('');
     // }
     // console.log('result', result);
- 
+
     console.log('DONHE');
   };
 
