@@ -16,17 +16,14 @@ const navLinks = ["Dashboard", "Scholar List", "User Management", "My Account"];
 export const PrimaryLayout = () => {
   const isLoggedIn = true;
   return (
-    <>
+    <React.Fragment>
       <Routes>
-        {isLoggedIn == true ? (
-          <Route path="/" element={<DashboardPage />}>
-            <Route path="/login" element={<AdminAccountPage />} />
-          </Route>
-        ) : (
-          <Route path="/" element={<SignInPage />} />
-        )}
+        <Route path="/" element={<DashboardPage />}>
+        </Route>
+        <Route path="/login" element={<SignInPage />} />
+
       </Routes>
-    </>
+    </React.Fragment>
 
     // <Routes>
 

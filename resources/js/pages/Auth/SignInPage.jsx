@@ -3,6 +3,9 @@ import TextField from "@mui/material/TextField";
 import { useFormik } from "formik";
 import { GenericTextField } from "./../../components/GenericComponents/GenericTextField";
 import { GenericButton } from "./../../components/GenericComponents/GenericButton";
+import Typography from '@mui/material/Typography';
+import { result } from "lodash";
+
 
 export const SignInPage = () => {
   const signInFormik = useFormik({
@@ -10,17 +13,23 @@ export const SignInPage = () => {
       email: "",
       password: "",
     },
-    onSubmit: (values) => handleOnSubmit(values),
+    // onSubmit: (values) => handleOnSubmit(values),
   });
 
   const handleOnSubmit = async (values) => {
-    const result = await axios.post({ puser_data: values });
+    console.log('values', values);
 
-    if (result.data.code != 200) {
-      // EXCEPTION
-    }
+    // const res = await axios.post({ puser_data: values });
 
-    // CONTINUE
+    // if (res.data.code == 200) {
+
+
+
+    //   signInFormik.values('');
+    // }
+    // console.log('result', result);
+ 
+    console.log('DONHE');
   };
 
   const handleOnChange = (field, newValue) => {
@@ -29,7 +38,7 @@ export const SignInPage = () => {
 
   return (
     <React.Fragment>
-      {/* <form>
+      <form>
         <GenericTextField
           fieldName="email"
           fieldLabel="Last Name"
@@ -45,10 +54,10 @@ export const SignInPage = () => {
             placeholder: "Email",
             type: "email",
           }}
-          // formikErrors={{
-          //   error: signUpFormik.errors?.purpose ? true : false,
-          //   helperText: signUpFormik.errors?.purpose,
-          // }}
+        // formikErrors={{
+        //   error: signUpFormik.errors?.purpose ? true : false,
+        //   helperText: signUpFormik.errors?.purpose,
+        // }}
         />
         <GenericTextField
           fieldName="password"
@@ -65,10 +74,10 @@ export const SignInPage = () => {
             placeholder: "Password",
             type: "password",
           }}
-          // formikErrors={{
-          //   error: signUpFormik.errors?.purpose ? true : false,
-          //   helperText: signUpFormik.errors?.purpose,
-          // }}
+        // formikErrors={{
+        //   error: signUpFormik.errors?.purpose ? true : false,
+        //   helperText: signUpFormik.errors?.purpose,
+        // }}
         />
 
         <GenericButton
@@ -77,16 +86,10 @@ export const SignInPage = () => {
             variant: "text",
             color: "primary",
           }}
-          onClick={() => signInFormik.handleSubmit(signInFormik.values)}
+          onClick={() => handleOnSubmit(signInFormik.values)}
         />
-      </form> */}
+      </form>
 
-
-
-      <Box>
-
-        
-      </Box>
     </React.Fragment>
   );
 };
