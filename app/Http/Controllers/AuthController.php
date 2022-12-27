@@ -24,11 +24,12 @@ class AuthController extends Controller
         $request->validated($request->all());
 
         if (!Auth::attempt($request->only(['email', 'password']))) {
-            return $this->error('', 'Credentials do not match!', 401);
+            return $this->error('', 'Invalid credentials', 401);
         }
 
         $user = User::where('email', $request->email)->first();
 
+        // This will be fix later with to add abilities to the token
         return $this->success([
             'user' => $user,
             'token' => $user->createToken('Api Token of ' . $user->name)->plainTextToken
@@ -49,13 +50,18 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
-
+        // This will be fix later with to add abilities to the token
         return $this->success([
             'user' => $user,
             'token' => $user->createToken('API Token of' . $user->name)->plainTextToken,
         ]);
     }
 
+
+    /**
+     * This method used to revoke the current access token of a user
+     * 
+     */
     public function logout()
     {
         Auth::user()->currentAccessToken()->delete();
