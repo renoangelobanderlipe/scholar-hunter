@@ -10,6 +10,7 @@ const apiSauce = create({
 
 
 // Authentication
+export const register = (params) => apiSauce.post('/api/register', params);
 export const login = (params) => apiSauce.post('/api/login', params);
 export const logout= (params) => apiSauce.post('/api/logout');
 
