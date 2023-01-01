@@ -43,17 +43,21 @@ class AuthController extends Controller
      */
     public function register(StoreUserRequest $request)
     {
-        $request->validated($request->only(['name', 'email', 'password']));
+        $request->validated($request->only(['firstname', 'middlename', 'lastname', 'address', 'username', 'email', 'password']));
 
         $user = User::create([
-            'name' => $request->name,
+            'firstname' => $request->firstname,
+            'middlename' => $request->middlename,
+            'lastname' => $request->lastname,
+            'address' => $request->address,
+            'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
         // This will be fix later with to add abilities to the token
         return $this->success([
-            'user' => $user,
-            'token' => $user->createToken('API Token of' . $user->name)->plainTextToken,
+            // 'user' => $user,
+            'token' => $user->createToken('auth-token')->plainTextToken,
         ]);
     }
 
