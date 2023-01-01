@@ -1,53 +1,76 @@
 import React from "react";
 
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Box from "@mui/material/Box";
-import { WrapperComponent } from "./../components/GenericComponents/WrapperComponent";
-import { DrawerComponent } from "./../components/DrawerComponent";
-import { RightSection } from "./../components/RightSection";
-import { AppbarComponent } from "./../components/AppbarComponent";
-import { DashboardPage } from "./../components/DashboardPage";
-import { SignInPage } from "./../pages/Auth/SignInPage";
-import { SignUpPage } from "./../pages/Auth/SignUpPage";
-import { AdminAccountPage } from "./../pages/AdminPages/AdminAccountPage";
+import { Route, Routes } from "react-router-dom";
+import { Box, Grid } from "@mui/material";
+import { NotFoundPage } from './../components/NotFoundPage';
 
-const navLinks = ["Dashboard", "Scholar List", "User Management", "My Account"];
+import { LeftSection } from './../components/LeftSection';
+import useAuthStore from "../config/store";
+
+const SignInPage = React.lazy(() => import('./../pages/Auth/SignInPage'));
+const SignUpPage = React.lazy(() => import("../pages/Auth/SignUpPage"));
+
+const wrapper = {
+  height: '100vh',
+}
+
+const first = {
+  width: '50%',
+  height: '100vh',
+  backgroundColor: 'green'
+}
+const second = {
+  width: '50%',
+  height: '100vh',
+}
+
+const signInDesign = {
+  height: '100%',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center'
+}
 
 export const PrimaryLayout = () => {
-  const isLoggedIn = true;
+  const { loggedIn } = useAuthStore();
+
+  console.log('test', loggedIn);
+  
   return (
     <React.Fragment>
-      <Routes>
-        <Route path="/" element={<DashboardPage />}>
-        </Route>
-        <Route path="/login" element={<SignInPage />} />
+      {
+        !loggedIn ? (<Box sx={wrapper}>
+          <Grid container justifyContent='space-between'>
+            <Grid item sx={first}>
+              <Box>
+                LOTTIE FALLBACK HERE!
+              </Box>
+            </Grid>
 
-      </Routes>
+            <Grid item sx={second}>
+              <Box sx={signInDesign} >
+                <React.Suspense fallback='Loading...'>
+                  <Routes>
+                    <Route path="/" element={<SignInPage />} />
+                    <Route path="/register" element={<SignUpPage />} />
+                    <Route path="*" element={<NotFoundPage />} />
+                  </Routes>
+                </React.Suspense>
+              </Box>
+            </Grid>
+          </Grid>
+        </Box>)
+          :
+          (
+            <React.Fragment>
+              <Grid container>
+                <Grid item>
+                  <LeftSection />
+                </Grid>
+              </Grid>
+            </React.Fragment>
+          )
+      }
     </React.Fragment>
-
-    // <Routes>
-
-    // </Routes>
-
-    // <Box
-    //   sx={{
-    //     display: "flex",
-    //     width: "100%",
-    //   }}
-    // >
-    //   <AppbarComponent>
-    //     <Typography variant="body1" color="initial">
-    //       profile page here
-    //     </Typography>
-    //   </AppbarComponent>
-
-    //   <DrawerComponent navLinks={navLinks}>
-    //     <Typography>Scholar Hunter</Typography>
-    //   </DrawerComponent>
-
-    //   <WrapperComponent>
-    //     <RightSection />
-    //   </WrapperComponent>
-    // </Box>
   );
 };
