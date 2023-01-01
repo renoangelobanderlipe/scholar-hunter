@@ -7,6 +7,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { PrimaryLayout } from "./layouts/PrimaryLayout.jsx";
 import { BrowserRouter } from "react-router-dom";
+import { SnackbarProvider } from "notistack";
 
 const darkTheme = createTheme({
   palette: {
@@ -19,8 +20,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <BrowserRouter>
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />
-        <PrimaryLayout />
+        <SnackbarProvider   autoHideDuration={3000} >
+          <PrimaryLayout />
+        </SnackbarProvider>
       </ThemeProvider>
     </BrowserRouter>
-  </React.StrictMode>
+  </React.StrictMode >
 );
