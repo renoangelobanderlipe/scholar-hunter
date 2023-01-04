@@ -32,7 +32,7 @@ class AuthController extends Controller
         // This will be fix later with to add abilities to the token
         return $this->success([
             'user' => $user,
-            'token' => $user->createToken('Api Token of ' . $user->name)->plainTextToken
+            'token' => $user->createToken('auth-token ' . $user->name)->plainTextToken
         ]);
     }
 
@@ -43,7 +43,9 @@ class AuthController extends Controller
      */
     public function register(StoreUserRequest $request)
     {
-        $request->validated($request->only(['firstname', 'middlename', 'lastname', 'address', 'username', 'email', 'password']));
+        $request->validated($request->only([
+            'firstname', 'middlename', 'lastname', 'address', 'username', 'email', 'password', 'status',
+        ]));
 
         $user = User::create([
             'firstname' => $request->firstname,
@@ -53,8 +55,11 @@ class AuthController extends Controller
             'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'status' => 0,
         ]);
         // This will be fix later with to add abilities to the token
+
+
         return $this->success([
             // 'user' => $user,
             'token' => $user->createToken('auth-token')->plainTextToken,
