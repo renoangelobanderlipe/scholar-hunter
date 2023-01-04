@@ -6,6 +6,7 @@ export const GenericTextField = ({
   variant,
   fieldOptions,
   handleOnChangeValue,
+  formikErrors
 }) => {
   const handleOnChangeData = (newValue) => {
     handleOnChangeValue(fieldName, newValue);
@@ -17,8 +18,7 @@ export const GenericTextField = ({
         {...variant}
         {...fieldOptions}
         onChange={(event) => handleOnChangeData(event.currentTarget.value)}
-        // error={formikErrors?.error}
-        // helperText={formikErrors?.helperText}
+        {...formikErrors}
       ></TextField>
     </React.Fragment>
   );
