@@ -9,10 +9,10 @@ const defaultAuthState = {
 const useAuthStore = create(persist((set, get) => ({
   ...defaultAuthState,
   setLoggedIn: (data) => {
-    return set((state) => {
+    return set((state) =>  {
       const tempState = {
-        loggedIn: true
-      };
+        loggedIn : data.loggedIn,
+      }
       return tempState;
     })
   },
@@ -21,7 +21,8 @@ const useAuthStore = create(persist((set, get) => ({
     return set((state) => {
       return defaultAuthState;
     })
-  }
+  },
+
 
 }), {
   name: 'authStorage',

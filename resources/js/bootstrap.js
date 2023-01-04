@@ -8,11 +8,12 @@ window._ = _;
  */
 
 import axios from 'axios';
-window.axios = axios;
+const apiClient = axios.create({
+  baseURL: app.url,
+  withCredentials: true
+});
 
-axios.defaults.withCredentials = true;
-
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+apiClient.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
@@ -21,7 +22,7 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
  */
 
 // import Echo from 'laravel-echo';
-
+window.axios = apiClient;
 // import Pusher from 'pusher-js';
 // window.Pusher = Pusher;
 
