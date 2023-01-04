@@ -33,32 +33,19 @@ const signInDesign = {
 
 export const PrimaryLayout = () => {
   const { loggedIn } = useAuthStore();
-
-  console.log('test', loggedIn);
-  
   return (
     <React.Fragment>
       {
         !loggedIn ? (<Box sx={wrapper}>
-          <Grid container justifyContent='space-between'>
-            <Grid item sx={first}>
-              <Box>
-                LOTTIE FALLBACK HERE!
-              </Box>
-            </Grid>
-
-            <Grid item sx={second}>
-              <Box sx={signInDesign} >
-                <React.Suspense fallback='Loading...'>
-                  <Routes>
-                    <Route path="/" element={<SignInPage />} />
-                    <Route path="/register" element={<SignUpPage />} />
-                    <Route path="*" element={<NotFoundPage />} />
-                  </Routes>
-                </React.Suspense>
-              </Box>
-            </Grid>
-          </Grid>
+          <Box sx={signInDesign} >
+            <React.Suspense fallback='Loading...'>
+              <Routes>
+                <Route path="/login" element={<SignInPage />} />
+                <Route path="/register" element={<SignUpPage />} />
+                <Route path="*" element={<NotFoundPage />} />
+              </Routes>
+            </React.Suspense>
+          </Box>
         </Box>)
           :
           (

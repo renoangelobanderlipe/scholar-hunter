@@ -10,6 +10,9 @@ import { Dashboard, School, ManageAccounts, Menu, ChevronLeft, ChevronRight, Inb
 
 import { RightSection } from './RightSection';
 import useAuthStore from '../config/store';
+import { useSnackbar } from 'notistack';
+import { logout } from '../config/apisauce';
+import axios from 'axios';
 
 
 const drawerWidth = 240;
@@ -84,8 +87,8 @@ export const LeftSection = () => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const { setLoggedOut } = useAuthStore();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
-  console.log('LOGOUT', setLoggedOut);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -93,6 +96,24 @@ export const LeftSection = () => {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  const handleLogOut = async () => {
+    const test = JSON.parse(localStorage.getItem('authStorage'));
+
+    return;
+    const res = await logout();
+    console.log(res);
+    if (res.data.code != 200) {
+      enqueueSnackbar(res.data.message, { variant: 'info' })
+      return;
+    }
+
+    setLoggedOut(true);
+    enqueueSnackbar('Success', { variant: 'success' });
+
+    navigate('/login', { replace: true });
+  }
+
 
   return (
     <React.Fragment>
@@ -157,7 +178,7 @@ export const LeftSection = () => {
           </List>
 
           <Divider />
-          <Button onClick={() => setLoggedOut(true)}>LOGOUT</Button>
+          <Button onClick={() => handleLogOut()}>LOGOUT</Button>
         </Drawer>
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <DrawerHeader />

@@ -5,8 +5,10 @@ const HomePage = React.lazy(() => import('./../pages/HomePage'));
 const AccountPage = React.lazy(() => import('./../pages/AccountPage'));
 const ScholarshipListPage = React.lazy(() => import('./../pages/ScholarshipListPage'));
 const ScholarListPage = React.lazy(() => import('./../pages/ScholarListPage'));
+const UserManagementPage = React.lazy(() => import('./../pages/UserManagementPage'));
+
 import { NotFoundPage } from './NotFoundPage';
-import { LeftSection } from './LeftSection';
+
 
 
 const pagesComponent = [
@@ -30,12 +32,17 @@ const pagesComponent = [
     path: '/profile',
     component: <AccountPage />
   },
+  {
+    name: 'User Management',
+    path: '/user-management',
+    component: <UserManagementPage />
+  },
 ];
 
 
 export const RightSection = () => {
-  
-  
+
+
   return (
     <React.Suspense fallback="Loading...">
       <Routes>
