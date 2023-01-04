@@ -3,10 +3,12 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { GenericTextField } from '../../components/GenericComponents/TextField/GenericTextField';
 import { GenericButton } from '../../components/GenericComponents/Button/GenericButton';
-import { Grid, Box } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Grid, Box, Typography } from '@mui/material';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { GenericTypography } from './../../components/GenericComponents/Typography/GenericTypography';
 import { register } from './../../config/apisauce';
+import useAuthStore from "../../config/store";
+import { useSnackbar } from 'notistack';
 
 const validationSchema = Yup.object().shape({
   // firstName: Yup.string()
@@ -20,37 +22,27 @@ const validationSchema = Yup.object().shape({
   // email: Yup.string().email('Invalid email').required('Required'),
 });
 
+const container = {
+  display: 'flex'
+}
 
 const style = {
+  mr: '1rem',
   padding: '0.5rem 0',
   textAlign: 'center',
 };
 
-
-const headingVariant = {
-  variant: 'h4',
-  color: 'orange',
-  mb: '1rem'
-
-}
-const subHeadingVariant = {
-  size: 'small',
-  color: 'orange',
-  mb: '2rem'
-
+const linkTypography = {
+  fontWeight: 'bold',
+  color: 'gray',
+  fontSize: '12px'
 }
 
-const test = {
-  // backgroundColor : 'orange',
-  justifyContent: 'center',
-  alignItems: 'center'
-}
-
-const boxDesign = {
-  display: 'flex'
-}
 
 const SignUpPage = () => {
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { setLoggedIn } = useAuthStore();
+  const navigate = useNavigate();
   const registerFormik = useFormik({
     initialValues: {
       email: "",
@@ -74,32 +66,29 @@ const SignUpPage = () => {
   });
 
   const handleOnSubmit = async (values) => {
-    console.log('test', values
-    );
 
-    // const res = await register({});
+    const res = await register({
+      firstname: values.firstname,
+      middlename: values.middlename,
+      lastname: values.lastname,
+      address: values.address,
+      username: values.username,
+      email: values.email,
+      password: values.password,
+      password_confirmation: values.password,
+    });
 
-    /**
-     *
-     * Sample response from backend 
-    data = [
-      data : [
-        '...' : '...'
-      ],
-      message : 'Success SHIT',
-      code : 200
-    ]
-     */
+    if (res.data.code == 200) {
+      enqueueSnackbar('Success', { variant: 'success' })
 
-    if (result.data.code != 200) {
-      // THROW EXCEPTION SHIT
+      navigate('/home', { replace: true });
+
     }
-    // REDIRECT WITH SUCCESS MESSAGE
 
-  };
+  }
 
   const handleOnChange = (field, newValue) => {
-    signUpFormik.setFieldValue(field, newValue);
+    registerFormik.setFieldValue(field, newValue);
   };
 
   return (
@@ -107,68 +96,26 @@ const SignUpPage = () => {
       <Grid item margin={'20%'}  >
         <Box>
           <Grid item sx={style}>
+            <Box sx={{
+              mb: '1.5rem'
+            }}>
+              <Typography>Logo Here</Typography>
+            </Box>
             <GenericTypography
-              title={'Hello Again!'}
-              variant={headingVariant}
+              title={'Create an account'}
+              variant={{
+                variant: 'h5',
+                color: 'black',
+                fontWeight: 'bold',
+                mb: '1rem'
+              }}
             />
           </Grid>
-          <Grid item sx={style}>
-            <GenericTypography
-              variant={subHeadingVariant}
-            />
-          </Grid>
+
         </Box>
 
         <form>
-          <Box sx={boxDesign}>
-            <Grid item sx={style}>
-              <GenericTextField
-                fieldName="email"
-                fieldLabel="Email"
-                handleOnChangeValue={(field, newValue) =>
-                  handleOnChange(field, newValue)
-                }
-                variant={{
-                  rows: 8,
-                  variant: "outlined",
-                  fullWidth: true,
-                  size: "small",
-                }}
-                fieldOptions={{
-                  placeholder: "Email",
-                }}
-                formikErrors={{
-                  error: registerFormik.errors?.purpose ? true : false,
-                  helperText: registerFormik.errors?.purpose,
-                }}
-              />
-            </Grid >
-
-            <Grid item sx={style}>
-              <GenericTextField
-                fieldName="username"
-                fieldLabel="Username"
-                handleOnChangeValue={(field, newValue) =>
-                  handleOnChange(field, newValue)
-                }
-                variant={{
-                  rows: 8,
-                  variant: "outlined",
-                  fullWidth: true,
-                  size: "small",
-                }}
-                fieldOptions={{
-                  placeholder: "Username",
-                }}
-                formikErrors={{
-                  error: registerFormik.errors?.purpose ? true : false,
-                  helperText: registerFormik.errors?.purpose,
-                }}
-              />
-            </Grid >
-          </Box>
-
-          <Box sx={boxDesign}>
+          <Box sx={container}>
             <Grid item sx={style}>
               <GenericTextField
                 fieldName="firstname"
@@ -215,29 +162,53 @@ const SignUpPage = () => {
               />
             </Grid >
           </Box>
+          <Box sx={container}>
+            <Grid item sx={style}>
+              <GenericTextField
+                fieldName="lastname"
+                fieldLabel="Last Name"
+                handleOnChangeValue={(field, newValue) =>
+                  handleOnChange(field, newValue)
+                }
+                variant={{
+                  rows: 8,
+                  variant: "outlined",
+                  fullWidth: true,
+                  size: "small",
+                }}
+                fieldOptions={{
+                  placeholder: "Last Name",
+                }}
+                formikErrors={{
+                  error: registerFormik.errors?.purpose ? true : false,
+                  helperText: registerFormik.errors?.purpose,
+                }}
+              />
+            </Grid >
+            <Grid item sx={style}>
+              <GenericTextField
+                fieldName="username"
+                fieldLabel="Username"
+                handleOnChangeValue={(field, newValue) =>
+                  handleOnChange(field, newValue)
+                }
+                variant={{
+                  rows: 8,
+                  variant: "outlined",
+                  fullWidth: true,
+                  size: "small",
+                }}
+                fieldOptions={{
+                  placeholder: "Username",
+                }}
+                formikErrors={{
+                  error: registerFormik.errors?.purpose ? true : false,
+                  helperText: registerFormik.errors?.purpose,
+                }}
+              />
+            </Grid >
+          </Box>
 
-          <Grid item sx={style}>
-            <GenericTextField
-              fieldName="lastname"
-              fieldLabel="Last Name"
-              handleOnChangeValue={(field, newValue) =>
-                handleOnChange(field, newValue)
-              }
-              variant={{
-                rows: 8,
-                variant: "outlined",
-                fullWidth: true,
-                size: "small",
-              }}
-              fieldOptions={{
-                placeholder: "Last Name",
-              }}
-              formikErrors={{
-                error: registerFormik.errors?.purpose ? true : false,
-                helperText: registerFormik.errors?.purpose,
-              }}
-            />
-          </Grid >
 
           <Grid item sx={style}>
             <GenericTextField
@@ -262,7 +233,28 @@ const SignUpPage = () => {
             />
           </Grid >
 
-
+          <Grid item sx={style}>
+            <GenericTextField
+              fieldName="email"
+              fieldLabel="Email"
+              handleOnChangeValue={(field, newValue) =>
+                handleOnChange(field, newValue)
+              }
+              variant={{
+                rows: 8,
+                variant: "outlined",
+                fullWidth: true,
+                size: "small",
+              }}
+              fieldOptions={{
+                placeholder: "Email",
+              }}
+              formikErrors={{
+                error: registerFormik.errors?.purpose ? true : false,
+                helperText: registerFormik.errors?.purpose,
+              }}
+            />
+          </Grid >
           <Box display='flex'>
             <Grid item sx={style}>
               <GenericTextField
@@ -324,13 +316,14 @@ const SignUpPage = () => {
             />
           </Grid>
 
-          <Grid container sx={test}>
+          <Grid container sx={{
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}>
             <Link to='/login'>
-              <GenericTypography
-                variant={{
-                }}
-                title={'Already have an account?'}
-              />
+              <Typography sx={linkTypography}>
+                ALREADY HAVE AN ACCOUNT?
+              </Typography>
             </Link>
           </Grid>
         </form>

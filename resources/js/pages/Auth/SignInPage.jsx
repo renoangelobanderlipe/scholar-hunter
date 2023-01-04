@@ -3,39 +3,33 @@ import { useFormik } from "formik";
 import { GenericTextField } from "../../components/GenericComponents/TextField/GenericTextField";
 import { GenericButton } from "../../components/GenericComponents/Button/GenericButton";
 import { login } from './../../config/apisauce';
-import * as Yup from "yup";
 import { Grid, Box, Typography } from '@mui/material';
 import { GenericTypography } from './../../components/GenericComponents/Typography/GenericTypography';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import useAuthStore from './../../config/store';
+import * as yup from 'yup';
 
-const validationSchema = Yup.object().shape({
-  email: Yup.string().email('Invalid email').required('Required'),
-  password: Yup.string().min(6, 'Password must be at min of 6 characters').required('Required'),
+const validationSchema = yup.object({
+  email: yup
+    .string('Enter your email')
+    .email('Enter a valid email')
+    .required('Email is required'),
+  password: yup
+    .string('Enter your password')
+    .min(8, 'Password should be of minimum 8 characters length')
+    .required('Password is required'),
 });
 
-const style = {
+const container = {
   padding: '0.5rem 0',
   textAlign: 'center',
 };
 
-
-const headingVariant = {
-  variant: 'h4',
-  color: 'orange',
-  mb: '1rem'
-
-}
-const subHeadingVariant = {
-  size: 'small',
-  color: 'orange',
-  mb: '2rem'
-}
-
-const test = {
-  justifyContent: 'center',
-  alignItems: 'center'
+const linkTypography = {
+  fontWeight: 'bold',
+  color: 'gray',
+  fontSize: '12px'
 }
 
 const SignInPage = () => {
@@ -43,26 +37,32 @@ const SignInPage = () => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const { setLoggedIn } = useAuthStore();
 
+
   const signInFormik = useFormik({
     initialValues: {
       email: "",
       password: "",
     },
+    validationSchema: validationSchema,
+
     // onSubmit: (values) => handleOnSubmit(values),
   });
 
   const handleOnSubmit = async (values) => {
-    await axios.get('sanctum/csrf-cookie');
+    axios.get('sanctum/csrf-cookie');
 
-    const res = await login({ email: values.email, password: values.password });
-
+    const res = await login({
+      email: values.email,
+      password: values.password
+    })
     if (res.status == 200) {
       enqueueSnackbar('Success', { variant: 'success' })
 
       // SET LOGGED IN STATUS TO TRUE USING ZUSTAND! 
       setLoggedIn(true);
-
+      console.log('login status : ', true);
       navigate('/home', { replace: true });
+
 
     } else {
       enqueueSnackbar(res.data.message, { variant: 'error' })
@@ -76,24 +76,26 @@ const SignInPage = () => {
 
   return (
     <React.Fragment>
-      <Grid item margin={'20%'} padding={'2rem'} >
-        <Box>
-          <Grid item sx={style}>
-            <GenericTypography
-              title={'Hello Again!'}
-              variant={headingVariant}
-            />
-          </Grid>
-          <Grid item sx={style}>
-            <GenericTypography
-              title={'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'}
-              variant={subHeadingVariant}
-            />
-          </Grid>
-        </Box>
+      <Grid item margin={'40%'} padding={'2rem'} >
+        <Grid item sx={container}>
+          <Box sx={{
+            mb: '1.5rem'
+          }}>
+            <Typography>Logo Here</Typography>
+          </Box>
+          <GenericTypography
+            title={'Sign in'}
+            variant={{
+              variant: 'h5',
+              color: 'black',
+              fontWeight: 'bold',
+              mb: '1rem'
+            }}
+          />
+        </Grid>
 
         <form>
-          <Grid item sx={style}>
+          <Grid item sx={container}>
             <GenericTextField
               fieldName="email"
               fieldLabel="Last Name"
@@ -111,13 +113,13 @@ const SignInPage = () => {
                 type: "email",
               }}
               formikErrors={{
-                error: signInFormik.errors?.purpose ? true : false,
-                helperText: signInFormik.errors?.purpose,
+                error: signInFormik.touched.email && Boolean(signInFormik.errors.email),
+                helperText: signInFormik.touched.email && signInFormik.errors.email,
               }}
             />
           </Grid >
 
-          <Grid item sx={style}>
+          <Grid item sx={container}>
             <GenericTextField
               fieldName="password"
               fieldLabel="Password"
@@ -135,15 +137,15 @@ const SignInPage = () => {
                 type: "password",
               }}
               formikErrors={{
-                error: signInFormik.errors?.purpose ? true : false,
-                helperText: signInFormik.errors?.purpose,
+                error: signInFormik.touched.email && Boolean(signInFormik.errors.email),
+                helperText: signInFormik.touched.email && signInFormik.errors.email,
               }}
             />
           </Grid>
 
-          <Grid item sx={style} mt={'2rem'} mb={'2rem'}>
+          <Grid item sx={container} mt={'1rem'} mb={'2rem'}>
             <GenericButton
-              title={"Sign In"}
+              title={"Login"}
               variant={{
                 fullWidth: true,
                 variant: "contained",
@@ -153,15 +155,12 @@ const SignInPage = () => {
             />
           </Grid>
 
-          <Grid container sx={test}>
-            <GenericTypography
-              variant={{
-              }}
-              title={'Don\'t have account yet?'}
-            />
-            <Grid>
-              <Link to='/register'>Sign Up</Link>
-            </Grid>
+          <Grid container>
+            <Link to='/register'>
+              <Typography sx={linkTypography}>
+                DONT HAVE A SCHOLAR ACCOUNT YET?
+              </Typography>
+            </Link>
           </Grid>
         </form>
       </Grid>
