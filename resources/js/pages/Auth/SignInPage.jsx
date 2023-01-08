@@ -60,8 +60,8 @@ const SignInPage = () => {
 
       // SET LOGGED IN STATUS TO TRUE USING ZUSTAND! 
       setLoggedIn(true);
-      console.log('login status : ', true);
-      navigate('/home', { replace: true });
+      // console.log('login status : ', true);
+      // navigate('/home', { replace: true });
 
 
     } else {
@@ -76,7 +76,7 @@ const SignInPage = () => {
 
   return (
     <React.Fragment>
-      <Grid item margin={'40%'} padding={'2rem'} >
+      <Grid item margin={'10%'} padding={'2rem'} >
         <Grid item sx={container}>
           <Box sx={{
             mb: '1.5rem'
@@ -136,10 +136,7 @@ const SignInPage = () => {
                 placeholder: "Password",
                 type: "password",
               }}
-              formikErrors={{
-                error: signInFormik.touched.email && Boolean(signInFormik.errors.email),
-                helperText: signInFormik.touched.email && signInFormik.errors.email,
-              }}
+               
             />
           </Grid>
 

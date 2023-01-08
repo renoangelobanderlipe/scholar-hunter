@@ -1,26 +1,17 @@
 import React from "react";
+
+import { Link, useNavigate } from 'react-router-dom';
 import { useFormik } from "formik";
-import * as Yup from "yup";
-import { GenericTextField } from '../../components/GenericComponents/TextField/GenericTextField';
-import { GenericButton } from '../../components/GenericComponents/Button/GenericButton';
-import { Grid, Box, Typography } from '@mui/material';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
-import { GenericTypography } from './../../components/GenericComponents/Typography/GenericTypography';
-import { register } from './../../config/apisauce';
-import useAuthStore from "../../config/store";
 import { useSnackbar } from 'notistack';
 
-const validationSchema = Yup.object().shape({
-  // firstName: Yup.string()
-  //   .min(2, 'Too Short!')
-  //   .max(50, 'Too Long!')
-  //   .required('Required'),
-  // lastName: Yup.string()
-  //   .min(2, 'Too Short!')
-  //   .max(50, 'Too Long!')
-  //   .required('Required'),
-  // email: Yup.string().email('Invalid email').required('Required'),
-});
+import { Grid, Box, Typography, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
+
+import { GenericTextField } from '../../components/GenericComponents/TextField/GenericTextField';
+import { GenericButton } from '../../components/GenericComponents/Button/GenericButton';
+import { GenericTypography } from './../../components/GenericComponents/Typography/GenericTypography';
+
+import { register } from './../../config/apisauce';
+import useAuthStore from "../../config/store";
 
 const container = {
   display: 'flex'
@@ -38,11 +29,15 @@ const linkTypography = {
   fontSize: '12px'
 }
 
+const courseArray = ['Information Technology', 'Arts and Science'];
+const degreeArray = ['test1', 'test2'];
+const accounTypeArr = ['Student', 'Foundation']
 
 const SignUpPage = () => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const { setLoggedIn } = useAuthStore();
   const navigate = useNavigate();
+
   const registerFormik = useFormik({
     initialValues: {
       email: "",
@@ -51,22 +46,15 @@ const SignUpPage = () => {
       middlename: "",
       lastname: "",
       address: "",
+      course: "",
+      degree: "",
+      account_type: "",
       password: "",
       confirm_password: "",
     },
-
-    validationSchema: validationSchema,
-
-    validateOnBlur: true,
-    validateOnChange: true,
-    validateOnMount: true,
-    enableReinitialize: true,
-
-    onSubmit: (values) => handleOnSubmit(values),
   });
 
   const handleOnSubmit = async (values) => {
-
     const res = await register({
       firstname: values.firstname,
       middlename: values.middlename,
@@ -74,6 +62,9 @@ const SignUpPage = () => {
       address: values.address,
       username: values.username,
       email: values.email,
+      course: values.course,
+      degree: values.degree,
+      type: values.type,
       password: values.password,
       password_confirmation: values.password,
     });
@@ -82,18 +73,17 @@ const SignUpPage = () => {
       enqueueSnackbar('Success', { variant: 'success' })
 
       navigate('/home', { replace: true });
-
     }
-
   }
 
   const handleOnChange = (field, newValue) => {
+    console.log('field', field, 'value', newValue);
     registerFormik.setFieldValue(field, newValue);
   };
 
   return (
     <React.Fragment>
-      <Grid item margin={'20%'}  >
+      <Grid item margin={'10%'}  >
         <Box>
           <Grid item sx={style}>
             <Box sx={{
@@ -132,10 +122,6 @@ const SignUpPage = () => {
                 fieldOptions={{
                   placeholder: "First Name",
                 }}
-                formikErrors={{
-                  error: registerFormik.errors?.purpose ? true : false,
-                  helperText: registerFormik.errors?.purpose,
-                }}
               />
             </Grid >
 
@@ -154,10 +140,6 @@ const SignUpPage = () => {
                 }}
                 fieldOptions={{
                   placeholder: "Middle Name",
-                }}
-                formikErrors={{
-                  error: registerFormik.errors?.purpose ? true : false,
-                  helperText: registerFormik.errors?.purpose,
                 }}
               />
             </Grid >
@@ -179,10 +161,6 @@ const SignUpPage = () => {
                 fieldOptions={{
                   placeholder: "Last Name",
                 }}
-                formikErrors={{
-                  error: registerFormik.errors?.purpose ? true : false,
-                  helperText: registerFormik.errors?.purpose,
-                }}
               />
             </Grid >
             <Grid item sx={style}>
@@ -200,10 +178,6 @@ const SignUpPage = () => {
                 }}
                 fieldOptions={{
                   placeholder: "Username",
-                }}
-                formikErrors={{
-                  error: registerFormik.errors?.purpose ? true : false,
-                  helperText: registerFormik.errors?.purpose,
                 }}
               />
             </Grid >
@@ -226,10 +200,7 @@ const SignUpPage = () => {
               fieldOptions={{
                 placeholder: "Address",
               }}
-              formikErrors={{
-                error: registerFormik.errors?.purpose ? true : false,
-                helperText: registerFormik.errors?.purpose,
-              }}
+
             />
           </Grid >
 
@@ -249,11 +220,48 @@ const SignUpPage = () => {
               fieldOptions={{
                 placeholder: "Email",
               }}
-              formikErrors={{
-                error: registerFormik.errors?.purpose ? true : false,
-                helperText: registerFormik.errors?.purpose,
-              }}
             />
+          </Grid >
+          <Grid item sx={style}>
+            <FormControl fullWidth mr='0.5rem'>
+              <InputLabel>Account Type</InputLabel>
+              <Select
+                rows={'8'}
+                size='small'
+                fullWidth
+                // sx={{ fullWidth }}
+                labelId="demo-select-small"
+                id="demo-select-small"
+                value={registerFormik.values.course}
+                label="Course"
+                onChange={(event) => handleOnChange('course', event.target.value)}
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                {courseArray.map((element, index) => <MenuItem key={index} value={element}>{element}</MenuItem>)}
+              </Select>
+            </FormControl>
+          </Grid >
+
+          <Grid item sx={style}>
+            <FormControl fullWidth>
+              <InputLabel>Account Type</InputLabel>
+              <Select
+                size='small'
+                labelId="demo-select-small"
+                id="demo-select-small"
+                value={registerFormik.values.degree}
+                label="Course"
+                onChange={(event) => handleOnChange('degree', event.target.value)}
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                {degreeArray.map((element, index) => <MenuItem key={index} value={element}>{element}</MenuItem>)}
+
+              </Select>
+            </FormControl>
           </Grid >
           <Box display='flex'>
             <Grid item sx={style}>
@@ -272,10 +280,6 @@ const SignUpPage = () => {
                 fieldOptions={{
                   placeholder: "Password",
                 }}
-              // formikErrors={{
-              //   error: registerFormik.errors?.purpose ? true : false,
-              //   helperText: registerFormik.errors?.purpose,
-              // }}
               />
             </Grid>
 
@@ -295,22 +299,41 @@ const SignUpPage = () => {
                 fieldOptions={{
                   placeholder: "Confirm Password",
                 }}
-              // formikErrors={{
-              //   error: registerFormik.errors?.purpose ? true : false,
-              //   helperText: registerFormik.errors?.purpose,
-              // }}
               />
             </Grid>
           </Box>
 
+          <Grid item sx={style}>
+            <FormControl fullWidth>
+              <InputLabel>Account Type</InputLabel>
+              <Select
+                size='small'
+                labelId="demo-select-small"
+                id="demo-select-small"
+                value={registerFormik.values.account_type}
+                label="Course"
+                onChange={(event) => handleOnChange('account_type', event.target.value)}
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                {accounTypeArr.map((element, index) => <MenuItem key={index} value={element}>{element}</MenuItem>)}
+              </Select>
+            </FormControl>
+          </Grid>
 
-          <Grid item sx={style} mt={'2rem'} mb={'2rem'}>
+          <Grid item sx={style} mt={'1.5rem'} mb={'1rem'}>
             <GenericButton
+              disable={true}
               title={"Sign In"}
               variant={{
                 fullWidth: true,
                 variant: "contained",
                 color: "primary",
+              }}
+              others={{
+                disabled: passwordFormik.values.password != passwordFormik.values.confirm_password ? true : false || passwordFormik.values.password &&
+                  passwordFormik.values.confirm_password != '' ? false : true
               }}
               onClick={() => handleOnSubmit(registerFormik.values)}
             />
@@ -328,7 +351,7 @@ const SignUpPage = () => {
           </Grid>
         </form>
       </Grid>
-    </React.Fragment>
+    </React.Fragment >
   );
 };
 

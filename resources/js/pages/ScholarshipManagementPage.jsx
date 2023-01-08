@@ -1,18 +1,23 @@
 import React, { useState } from 'react';
-import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
-import { Button, Grid, Box, Dialog, DialogTitle, DialogContentText, DialogContent, DialogActions } from '@mui/material';
-import { GenericButton } from './../components/GenericComponents/Button/GenericButton';
-import { styled } from '@mui/material/styles';
-import TextField from '@mui/material/TextField';
-import { createUser } from '../config/apisauce';
 import { useFormik } from 'formik';
-import { GenericTextField } from './../components/GenericComponents/TextField/GenericTextField';
 import { useSnackbar } from 'notistack';
+import { createScholarship } from './../config/apisauce';
+import { styled } from '@mui/material/styles';
+
+import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
+
+import { Button, Grid, Box, DialogTitle, DialogContent, DialogActions, FormControl, InputLabel, Select,MenuItem } from '@mui/material';
+
+import { GenericTextField } from './../components/GenericComponents/TextField/GenericTextField';
 import { DialogWrapper } from './../components/GenericComponents/DialogBox/DialogWrapper';
+
+
+const scholarshipType = ['1', '2'];
 
 const boxPadding = {
   p: '0.5rem 2rem',
 };
+
 const StyledGridOverlay = styled('div')(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
@@ -89,10 +94,13 @@ const CustomButton = () => {
   const [open, setOpen] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
-  const createUserFormik = useFormik({
+
+  const scholarshipFormik = useFormik({
     initialValues: {
-      email: '',
-      password: '',
+      title: '',
+      grantor: '',
+      description: '',
+      type: '',
     }
   })
 
@@ -104,11 +112,13 @@ const CustomButton = () => {
   };
 
   const handleOnChange = (field, newValue) => {
-    createUserFormik.setFieldValue(field, newValue);
+    console.log('field', field, 'value', newValue);
+
+    scholarshipFormik.setFieldValue(field, newValue);
   }
 
-  const handleCreateUser = async (values) => {
-    const res = await createUser({ email: values.email, password: values.password });
+  const handleCreateScholarship = async (values) => {
+    const res = await createScholarship({ title: values.title, grantor: values.grantor, description: values.description, type: values.type })
 
     enqueueSnackbar('Success', { variant: 'success' })
     handleClose();
@@ -117,21 +127,21 @@ const CustomButton = () => {
   return (
     <GridToolbarContainer>
       <Button variant="outlined" onClick={handleClickOpen}>
-        Add User
+        Add Scholarship
       </Button>
-      <form >
+      <form>
         <DialogWrapper
           open={open}
           close={handleClose}>
-          <DialogTitle>Add User</DialogTitle>
+          <DialogTitle>Add Scholarship</DialogTitle>
           <DialogContent>
             {/* <DialogContentText>
             By 
           </DialogContentText> */}
             <Box sx={boxPadding}>
               <GenericTextField
-                fieldName="email"
-                fieldLabel="Email"
+                fieldName="title"
+                fieldLabel="Title"
                 handleOnChangeValue={(field, newValue) =>
                   handleOnChange(field, newValue)
                 }
@@ -142,15 +152,15 @@ const CustomButton = () => {
                   size: "small",
                 }}
                 fieldOptions={{
-                  placeholder: "Email",
-                  type: "email",
+                  placeholder: "Title",
+                  type: "text",
                 }}
               />
             </Box>
             <Box sx={boxPadding}>
               <GenericTextField
-                fieldName="password"
-                fieldLabel="Password"
+                fieldName="grantor"
+                fieldLabel="Grantor"
                 handleOnChangeValue={(field, newValue) =>
                   handleOnChange(field, newValue)
                 }
@@ -161,11 +171,47 @@ const CustomButton = () => {
                   size: "small",
                 }}
                 fieldOptions={{
-                  placeholder: "Password",
-                  type: "password",
+                  placeholder: "Grantor",
+                  type: "text",
                 }}
 
               />
+            </Box>
+            <Box sx={boxPadding}>
+              <GenericTextField
+                fieldName="description"
+                fieldLabel="Description"
+                handleOnChangeValue={(field, newValue) =>
+                  handleOnChange(field, newValue)
+                }
+                variant={{
+                  rows: 8,
+                  fullWidth: true,
+                  variant: "outlined",
+                  size: "small",
+                }}
+                fieldOptions={{
+                  placeholder: "Description",
+                  type: "text",
+                }}
+
+              />
+            </Box>
+            <Box sx={boxPadding}>
+              <FormControl fullWidth>
+                <InputLabel>Scholarship Type</InputLabel>
+                <Select
+                  size='small'
+                  value={scholarshipFormik.values.type}
+                  label="Scholarship Type"
+                  onChange={(event) => handleOnChange('type', event.target.value)}
+                >
+                  <MenuItem value="">
+                    <em>None</em>
+                  </MenuItem>
+                  {scholarshipType.map((element, index) => <MenuItem key={index} value={element}>{element}</MenuItem>)}
+                </Select>
+              </FormControl>
             </Box>
           </DialogContent>
           <DialogActions>
@@ -200,7 +246,7 @@ const CustomToolbar = () => {
   );
 }
 
-const UserManagementPage = () => {
+const ScholarshipManagementPage = () => {
 
   const rows = [
     // {
@@ -271,4 +317,4 @@ const UserManagementPage = () => {
   );
 }
 
-export default UserManagementPage;
+export default ScholarshipManagementPage;

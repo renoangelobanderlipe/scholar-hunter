@@ -3,19 +3,6 @@ import { Box, Tab, Tabs, Typography } from '@mui/material';
 import { ProfileInformation } from '../components/ProfileComponent/ProfileInformation';
 import { Password } from './../components/ProfileComponent/Password';
 
-
-const wrapper = {
-  display: 'flex',
-  // justifyContent: 'center',
-  height: '80vh',
-  width: '80vw'
-}
-
-const wrapper1 = {
-  display: 'flex',
-  justifyContent: 'center'
-}
-
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -45,31 +32,28 @@ const AccountPage = () => {
   };
   return (
     <React.Fragment>
-      <Box sx={wrapper1}>
-        <Box sx={wrapper}>
-
-          <Tabs
-            orientation="vertical"
-            variant="scrollable"
-            value={value}
-            onChange={handleChange}
-            aria-label="Vertical tabs example"
-            sx={{ borderRight: 1, borderColor: 'divider' }}
-          >
-            <Tab label="Profile" />
-            <Tab label="Password" />
+      <Box sx={{ display: 'flex', }}>
+        <Tabs
+          orientation="vertical"
+          variant="scrollable"
+          value={value}
+          onChange={handleChange}
+          aria-label="Vertical tabs example"
+          sx={{ borderRight: 1, borderColor: 'divider' }}
+        >
+          <Tab label="Profile" />
+          <Tab label="Password" />
 
 
 
-          </Tabs>
-          <TabPanel value={value} index={0}>
-            <ProfileInformation />
-          </TabPanel>
-          <TabPanel value={value} index={1}>
-          <Password/>
-          </TabPanel>
+        </Tabs>
+        <TabPanel value={value} index={0}>
+          <ProfileInformation />
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <Password />
+        </TabPanel>
 
-        </Box>
       </Box>
     </React.Fragment>
   )
