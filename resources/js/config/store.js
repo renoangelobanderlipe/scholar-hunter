@@ -11,7 +11,7 @@ const useAuthStore = create(persist((set, get) => ({
   setLoggedIn: (data) => {
     return set((state) =>  {
       const tempState = {
-        loggedIn : data.loggedIn,
+        loggedIn : true
       }
       return tempState;
     })
