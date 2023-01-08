@@ -6,11 +6,9 @@ const AccountPage = React.lazy(() => import('./../pages/AccountPage'));
 const ScholarshipListPage = React.lazy(() => import('./../pages/ScholarshipListPage'));
 const ScholarListPage = React.lazy(() => import('./../pages/ScholarListPage'));
 const UserManagementPage = React.lazy(() => import('./../pages/UserManagementPage'));
+const ScholarshipManagementPage = React.lazy(() => import('./../pages/ScholarshipManagementPage'));
 
 import { NotFoundPage } from './NotFoundPage';
-
-
-
 const pagesComponent = [
   {
     name: 'Home',
@@ -36,6 +34,11 @@ const pagesComponent = [
     name: 'User Management',
     path: '/user-management',
     component: <UserManagementPage />
+  },
+  {
+    name: 'Scholarship Management',
+    path: '/scholarship-management',
+    component: <ScholarshipManagementPage />
   },
 ];
 
