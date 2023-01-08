@@ -21,6 +21,9 @@ return new class extends Migration
             $table->string('address');
             $table->string('username');
             $table->string('email')->unique();
+            $table->string('course');
+            $table->string('degree');
+            $table->string('type');
             $table->string('password');
             $table->string('role')->default('user');
             $table->boolean('status')->default('0');
