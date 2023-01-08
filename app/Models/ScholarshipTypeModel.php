@@ -10,7 +10,7 @@ class ScholarshipTypeModel extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
-    protected $table = 'scholarship_type';
+    protected $table = 'config';
 
 
     public static function index()
