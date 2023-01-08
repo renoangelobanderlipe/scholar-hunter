@@ -10,10 +10,12 @@ const style = {
   padding: '0.5rem 0',
   textAlign: 'center',
 };
+
 export const Password = () => {
 
   const passwordFormik = useFormik({
     initialValues: {
+      current_password: '',
       password: '',
       confirm_password: "",
     }
@@ -36,6 +38,25 @@ export const Password = () => {
       <Box width="550px">
         <Grid item sx={style}>
           <GenericTextField
+            fieldName="current_password"
+            fieldLabel="Current Password"
+            handleOnChangeValue={(field, newValue) =>
+              handleOnChange(field, newValue)
+            }
+            variant={{
+              rows: 8,
+              fullWidth: true,
+              variant: "outlined",
+              size: "small",
+            }}
+            fieldOptions={{
+              placeholder: "Current Password",
+              type: 'password'
+            }}
+          />
+        </Grid>
+        <Grid item sx={style}>
+          <GenericTextField
             fieldName="password"
             fieldLabel="Password"
             handleOnChangeValue={(field, newValue) =>
@@ -49,6 +70,7 @@ export const Password = () => {
             }}
             fieldOptions={{
               placeholder: "Password",
+              type: 'password'
             }}
           />
         </Grid>
@@ -68,6 +90,7 @@ export const Password = () => {
             }}
             fieldOptions={{
               placeholder: "Confirm Password",
+              type: 'password'
             }}
           />
         </Grid>

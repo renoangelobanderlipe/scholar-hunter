@@ -6,7 +6,7 @@ import { styled } from '@mui/material/styles';
 
 import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
 
-import { Button, Grid, Box, DialogTitle, DialogContent, DialogActions, FormControl, InputLabel, Select,MenuItem } from '@mui/material';
+import { Button, Grid, Box, DialogTitle, DialogContent, DialogActions, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 
 import { GenericTextField } from './../components/GenericComponents/TextField/GenericTextField';
 import { DialogWrapper } from './../components/GenericComponents/DialogBox/DialogWrapper';
@@ -298,7 +298,7 @@ const ScholarshipManagementPage = () => {
 
 
   return (
-    <div style={{ height: 600, width: '90vw' }}>
+    <Box height='100%'>
       <DataGrid
         pageSize={10}
         rowsPerPageOptions={[5, 15, 50, 100]}
@@ -313,7 +313,7 @@ const ScholarshipManagementPage = () => {
           toolbar: CustomButton
         }}
       />
-    </div>
+    </Box>
   );
 }
 

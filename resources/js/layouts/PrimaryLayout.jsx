@@ -14,22 +14,30 @@ const wrapper = {
   height: '100vh',
 }
 
-const first = {
-  width: '50%',
-  height: '100vh',
-  backgroundColor: 'green'
-}
-const second = {
-  width: '50%',
-  height: '100vh',
-}
-
 const signInDesign = {
   height: '100%',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center'
 }
+
+const pageRoute = [
+  {
+    name: 'Login',
+    component: <SignInPage />,
+    path: '/login'
+  },
+  {
+    name: 'Register',
+    component: <SignUpPage />,
+    path: '/register'
+  },
+  {
+    name: 'Not Found',
+    component: <NotFoundPage />,
+    path: '*'
+  }
+]
 
 export const PrimaryLayout = () => {
   const { loggedIn } = useAuthStore();
@@ -39,11 +47,13 @@ export const PrimaryLayout = () => {
         !loggedIn ? (<Box sx={wrapper}>
           <Box sx={signInDesign} >
             <React.Suspense fallback='Loading...'>
-              <Routes>
-                <Route path="/login" element={<SignInPage />} />
-                <Route path="/register" element={<SignUpPage />} />
-                <Route path="*" element={<NotFoundPage />} />
-              </Routes>
+              {pageRoute.map((element, index) => (
+                <Routes>
+                  <Route key={index} path={element.path} element={element.component} />
+                  {/* <Route path="/register" element={<SignUpPage />} />
+                  <Route path="*" element={<NotFoundPage />} /> */}
+                </Routes>
+              ))}
             </React.Suspense>
           </Box>
         </Box>)

@@ -43,9 +43,6 @@ const AccountPage = () => {
         >
           <Tab label="Profile" />
           <Tab label="Password" />
-
-
-
         </Tabs>
         <TabPanel value={value} index={0}>
           <ProfileInformation />

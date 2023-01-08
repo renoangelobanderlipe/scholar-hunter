@@ -252,7 +252,7 @@ const UserManagementPage = () => {
 
 
   return (
-    <div style={{ height: 600, width: '90vw' }}>
+    <Box height='100%'>
       <DataGrid
         pageSize={10}
         rowsPerPageOptions={[5, 15, 50, 100]}
@@ -267,7 +267,7 @@ const UserManagementPage = () => {
           toolbar: CustomButton
         }}
       />
-    </div>
+    </Box>
   );
 }
 
