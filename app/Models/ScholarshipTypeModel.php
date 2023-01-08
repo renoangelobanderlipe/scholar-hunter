@@ -5,13 +5,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ScholarshipType extends Model
+class ScholarshipTypeModel extends Model
 {
     use HasFactory;
+
     protected $guarded = ['id'];
+    protected $table = 'scholarship_type';
+
+
+    public static function index()
+    {
+        dd('index');
+        return self::select('id', 'type')->get()->toArray();
+    }
 
     public static function store($data)
     {
-        dd('model data');
+        dd($data);
     }
 }

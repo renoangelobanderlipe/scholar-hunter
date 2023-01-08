@@ -16,6 +16,10 @@ export const logout = () => apiSauce.post('/api/logout');
 // User Management
 export const createUser = (params) => apiSauce.post('api/user-mamangement/create', params);
 
+// Scholarship Type
+export const showScholarshipType = () => apiSauce.post('api/scholarship-management/index');
+export const storeScholarshipType = (params) => apiSauce.post('api/scholarship-management/store');
+
 // Scholarship Management 
 export const createScholarship = (params) => apiSauce.post('api/scholarship-management/create', params);
 

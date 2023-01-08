@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Profile\ProfileController;
 use App\Http\Controllers\ScholarshipManagement\ScholarshipManagementController;
+use App\Http\Controllers\ScholarshipType\ScholarshipTypeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,7 +21,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 });
 
 // Scholarship Type 
-Route::post('scholarship-type/show', App\Http\Controllers\ScholarshipType\ScholarshipTypeController::class);
+Route::prefix('scholarship-type')->group(function () {
+    Route::post('/index', [ScholarshipTypeController::class, 'index']);
+    Route::post('/store', [ScholarshipTypeController::class, 'store']);
+});
 
 // User Management
 Route::prefix('user-management')->group(function () {
