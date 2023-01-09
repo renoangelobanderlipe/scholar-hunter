@@ -12,7 +12,7 @@ import useAuthStore from '../config/store';
 import { useSnackbar } from 'notistack';
 import { logout } from '../config/apisauce';
 import { RightSection } from './RightSection';
-import { Link } from 'react-router-dom';
+import { Link, Router, useLocation } from 'react-router-dom';
 import Menu from '@mui/material/Menu';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 
@@ -20,21 +20,25 @@ const drawerWidth = 240;
 
 const linkPages = [
   {
+    value: 0,
     name: 'Home',
     path: '/home',
     icon: <DashboardRoundedIcon />
   },
   {
+    value: 1,
     name: 'Scholars',
     path: '/scholars-list',
     icon: <SchoolRoundedIcon />
   },
   {
+    value: 2,
     name: 'Scholarship',
     path: '/scholarship-management',
     icon: <SchoolRoundedIcon />
   },
   {
+    value: 3,
     name: 'Profile',
     path: '/profile',
     icon: <ManageAccountsRoundedIcon />
@@ -43,25 +47,13 @@ const linkPages = [
 
 
 export const LeftSection = () => {
-  const theme = useTheme();
   const [open, setOpen] = useState(false);
   const { setLoggedOut } = useAuthStore();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const { drawerName, setDrawerName } = useState('');
 
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
-
   const handleLogOut = async () => {
-    const test = JSON.parse(localStorage.getItem('authStorage'));
 
-    return;
     const res = await logout();
     console.log(res);
     if (res.data.code != 200) {
@@ -78,7 +70,7 @@ export const LeftSection = () => {
   const handleLogout = async () => {
     console.log('logout');
   }
-
+  const location = useLocation();
   return (
     <React.Fragment>
       <Box sx={{ display: 'flex' }}>
@@ -107,12 +99,12 @@ export const LeftSection = () => {
         >
           <Toolbar />
           <Divider />
-          <List >
+          <List>
             {
               linkPages.map((element, index) => (
-                <Link key={index} to={element.path} >
-                  <ListItem disablePadding>
-                    <ListItemButton  >
+                <Link key={index} to={element.path} style={{ textDecoration: 'none', color: '#1f2937'}} >
+                  <ListItem disablePadding >
+                    <ListItemButton selected={location.pathname === element.path ? true : false} >
                       <ListItemIcon>
                         {element.icon}
                       </ListItemIcon>
