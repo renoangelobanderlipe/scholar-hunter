@@ -14,12 +14,11 @@ trait HttpResponseTraits
     ], $code);
   }
 
-  protected function error($data, $message = null, $code)
+  protected function error($message, $code = 401)
   {
     return response()->json([
       'code' => $code,
       'message' => $message,
-      'data' => $data
     ], $code);
   }
 }
