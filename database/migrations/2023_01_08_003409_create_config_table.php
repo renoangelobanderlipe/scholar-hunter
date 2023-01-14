@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('config', function (Blueprint $table) {
             $table->id();
-            $table->string('option_name')->unique();
+            $table->string('option_name')->index()->unique();
             $table->text('option_value');
             $table->timestamps();
         });

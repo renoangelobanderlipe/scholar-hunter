@@ -15,18 +15,18 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('firstname');
-            $table->string('middlename');
-            $table->string('lastname');
-            $table->string('address');
-            $table->string('username');
-            $table->string('email')->unique();
-            $table->string('course');
-            $table->string('degree');
-            $table->string('type');
-            $table->string('password');
-            $table->string('role')->default('user');
-            $table->boolean('status')->default('0');
+            $table->string('firstname')->index();
+            $table->string('middlename')->index();
+            $table->string('lastname')->index();
+            $table->string('address')->index();
+            $table->string('username')->index();
+            $table->string('email')->index()->unique();
+            $table->string('course')->index();
+            $table->string('degree')->index();
+            $table->string('type')->index();
+            $table->string('password')->index();
+            $table->string('role')->index()->default('user');
+            $table->boolean('status')->index()->default('0');
             $table->rememberToken();
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();
