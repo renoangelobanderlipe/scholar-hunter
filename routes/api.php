@@ -1,9 +1,13 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Config\AccountTypeController;
+use App\Http\Controllers\Config\CourseConfigController;
+use App\Http\Controllers\Config\DegreeController;
 use App\Http\Controllers\Profile\ProfileController;
 use App\Http\Controllers\ScholarshipManagement\ScholarshipManagementController;
 use App\Http\Controllers\ScholarshipType\ScholarshipTypeController;
+use App\Http\Controllers\UserManagement\UserManagementController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -12,8 +16,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 // Public Routes
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/register', [AuthController::class, 'register']);
+Route::controller(AuthController::class)->group(function () {
+    Route::post('/login', 'login');
+    Route::post('/register', 'register');
+});
 
 // Protected Routes
 Route::group(['middleware' => ['auth:sanctum']], function () {
@@ -21,24 +27,40 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 });
 
 // Scholarship Type 
-Route::prefix('scholarship-type')->group(function () {
-    Route::post('/index', [ScholarshipTypeController::class, 'index']);
-    Route::post('/store', [ScholarshipTypeController::class, 'store']);
+Route::controller(ScholarshipTypeController::class)->prefix('scholarship-type')->group(function () {
+    Route::post('/index', 'index');
+    Route::post('/store', 'store');
 });
 
 // User Management
-Route::prefix('user-management')->group(function () {
-    Route::post('/create', [UserManagementController::class, 'create']);
+Route::controller(UserManagementController::class)->prefix('user-management')->group(function () {
+    Route::post('/create', 'create');
 });
 
 // Scholarship Management
-Route::prefix('scholarship-management')->group(function () {
-    Route::post('create', [ScholarshipManagementController::class, 'create']);
+Route::controller(ScholarshipManagementController::class)->prefix('scholarship-management')->group(function () {
+    Route::post('create', 'create');
 });
 
-// Profile Information
-Route::prefix('profile')->group(function () {
-    Route::post('/show', [ProfileController::class, 'show']);
-    Route::post('/update', [ProfileController::class, 'update']);
-    Route::post('/password-update', [ProfileController::class, 'password']);
+// Profile Information\
+Route::controller(ProfileController::class)->prefix('profile')->group(function () {
+    Route::post('/show', 'show');
+    Route::post('/update', 'update');
+    Route::post('/password-update', 'password');
+});
+
+// Config
+Route::controller(CourseConfigController::class)->prefix('course')->group(function () {
+    Route::get('/show', 'show');
+    Route::post('/store', 'store');
+});
+
+Route::controller(AccountTypeController::class)->prefix('account-type')->group(function () {
+    Route::get('show', 'show');
+    Route::get('store', 'store');
+});
+
+Route::controller(DegreeController::class)->prefix('degree')->group(function () {
+    Route::get('show', 'show');
+    Route::get('store', 'store');
 });
