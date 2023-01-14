@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useFormik } from "formik";
 import { useSnackbar } from 'notistack';
 
-import { Grid, Box, Typography, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
+import { Grid, Box, Typography, Select, MenuItem, InputLabel, FormControl, Autocomplete } from '@mui/material';
 
 import { GenericTextField } from '../../components/GenericComponents/TextField/GenericTextField';
 import { GenericButton } from '../../components/GenericComponents/Button/GenericButton';
@@ -224,14 +224,12 @@ const SignUpPage = () => {
           </Grid >
           <Grid item sx={style}>
             <FormControl fullWidth mr='0.5rem'>
-              <InputLabel>Account Type</InputLabel>
+              <InputLabel>Course</InputLabel>
               <Select
                 rows={'8'}
                 size='small'
                 fullWidth
                 // sx={{ fullWidth }}
-                labelId="demo-select-small"
-                id="demo-select-small"
                 value={registerFormik.values.course}
                 label="Course"
                 onChange={(event) => handleOnChange('course', event.target.value)}
@@ -245,23 +243,12 @@ const SignUpPage = () => {
           </Grid >
 
           <Grid item sx={style}>
-            <FormControl fullWidth>
-              <InputLabel>Account Type</InputLabel>
-              <Select
-                size='small'
-                labelId="demo-select-small"
-                id="demo-select-small"
-                value={registerFormik.values.degree}
-                label="Course"
-                onChange={(event) => handleOnChange('degree', event.target.value)}
-              >
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
-                {degreeArray.map((element, index) => <MenuItem key={index} value={element}>{element}</MenuItem>)}
-
-              </Select>
-            </FormControl>
+            <Autocomplete
+              disablePortal
+              options={top100Films}
+              sx={{ width: 300 }}
+              renderInput={(params) => <TextField {...params} label="Movie" />}
+            />
           </Grid >
           <Box display='flex'>
             <Grid item sx={style}>
@@ -308,8 +295,6 @@ const SignUpPage = () => {
               <InputLabel>Account Type</InputLabel>
               <Select
                 size='small'
-                labelId="demo-select-small"
-                id="demo-select-small"
                 value={registerFormik.values.account_type}
                 label="Course"
                 onChange={(event) => handleOnChange('account_type', event.target.value)}
@@ -332,8 +317,8 @@ const SignUpPage = () => {
                 color: "primary",
               }}
               others={{
-                disabled: passwordFormik.values.password != passwordFormik.values.confirm_password ? true : false || passwordFormik.values.password &&
-                  passwordFormik.values.confirm_password != '' ? false : true
+                disabled: registerFormik.values.password != registerFormik.values.confirm_password ? true : false || registerFormik.values.password &&
+                  registerFormik.values.confirm_password != '' ? false : true
               }}
               onClick={() => handleOnSubmit(registerFormik.values)}
             />
