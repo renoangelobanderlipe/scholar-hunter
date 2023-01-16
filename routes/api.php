@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Config\AccountTypeController;
+use App\Http\Controllers\Config\ConfigController;
 use App\Http\Controllers\Config\CourseConfigController;
 use App\Http\Controllers\Config\DegreeController;
 use App\Http\Controllers\Profile\ProfileController;
@@ -50,17 +51,7 @@ Route::controller(ProfileController::class)->prefix('profile')->group(function (
 });
 
 // Config
-Route::controller(CourseConfigController::class)->prefix('course')->group(function () {
+Route::controller(ConfigController::class)->prefix('config')->group(function () {
     Route::get('/show', 'show');
     Route::post('/store', 'store');
-});
-
-Route::controller(AccountTypeController::class)->prefix('account-type')->group(function () {
-    Route::get('show', 'show');
-    Route::get('store', 'store');
-});
-
-Route::controller(DegreeController::class)->prefix('degree')->group(function () {
-    Route::get('show', 'show');
-    Route::get('store', 'store');
 });

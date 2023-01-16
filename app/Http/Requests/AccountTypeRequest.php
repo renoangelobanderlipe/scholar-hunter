@@ -28,4 +28,4 @@ class AccountTypeRequest extends FormRequest
             'value' => ['required', 'string'],
         ];
     }
-}
+    }

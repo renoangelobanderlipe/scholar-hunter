@@ -3,14 +3,16 @@
 namespace App\Scopes;
 
 use App\Models\User;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Scope;
 
-class UserScope implements Scope
+class UserScope
 {
-  public function apply(Builder $builder, Model $model)
+  public function all(): Object
   {
-    User::all();
+    return User::all()->limit(5);
+  }
+
+  public function create(array $data): Object
+  {
+    return User::create($data);
   }
 }
