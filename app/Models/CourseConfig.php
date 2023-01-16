@@ -10,12 +10,12 @@ class CourseConfig extends Model
     use HasFactory;
     protected $table = 'config';
     protected $guarded = ['id'];
-    protected $hidden = ['id', 'created_at', 'updated_at'];
+    protected $hidden = ['id', 'option_name', 'created_at', 'updated_at'];
 
     public static function show()
     {
         try {
-            return self::where('option_name', 'degree')->first();
+            return self::where('option_name', 'course')->first();
         } catch (\Throwable $throwable) {
             return $throwable->getMessage();
         }

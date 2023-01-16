@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->string('id_number')->index()->nullable()->unique();
             $table->string('firstname')->index();
             $table->string('middlename')->index();
             $table->string('lastname')->index();
@@ -23,10 +24,10 @@ return new class extends Migration
             $table->string('email')->index()->unique();
             $table->string('course')->index();
             $table->string('degree')->index();
-            $table->string('type')->index();
+            $table->string('account_type')->index();
             $table->string('password')->index();
-            $table->string('role')->index()->default('user');
-            $table->boolean('status')->index()->default('0');
+            $table->string('role')->index()->default('user')->nullable();
+            $table->boolean('status')->index()->default('0')->nullable();
             $table->rememberToken();
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();

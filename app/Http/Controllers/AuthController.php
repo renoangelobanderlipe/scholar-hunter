@@ -44,7 +44,7 @@ class AuthController extends Controller
     public function register(StoreUserRequest $request)
     {
         $request->validated($request->only([
-            'firstname', 'middlename', 'lastname', 'address', 'username', 'email', 'password', 'status',
+            'firstname', 'middlename', 'lastname', 'address', 'username', 'email', 'course', 'degree', 'account_type', 'password',
         ]));
 
         $user = User::create([
@@ -56,8 +56,7 @@ class AuthController extends Controller
             'email' => $request->email,
             'course' => $request->course,
             'degree' => $request->degree,
-            'account_type' => $request->account_type,
-            'school' => $request->school,
+            'account_type' => $request->account_type,  
             'password' => Hash::make($request->password),
             'status' => 0,
         ]);

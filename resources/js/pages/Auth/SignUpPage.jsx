@@ -10,8 +10,9 @@ import { GenericTextField } from '../../components/GenericComponents/TextField/G
 import { GenericButton } from '../../components/GenericComponents/Button/GenericButton';
 import { GenericTypography } from './../../components/GenericComponents/Typography/GenericTypography';
 
-import { register } from './../../config/apisauce';
+import { register, courseShow, degreeShow, accountTypeShow } from './../../config/apisauce';
 import useAuthStore from "../../config/store";
+import TextField from '@mui/material/TextField';
 
 const container = {
   display: 'flex'
@@ -46,15 +47,19 @@ const SignUpPage = () => {
       middlename: "",
       lastname: "",
       address: "",
-      course: "",
-      degree: "",
-      account_type: "",
+      course: [],
+      degree: [],
+      account_type: [],
       password: "",
       confirm_password: "",
     },
   });
 
   const handleOnSubmit = async (values) => {
+    const [course] = values.course
+    const [degree] = values.degree
+    const [account_type] = values.account_type
+
     const res = await register({
       firstname: values.firstname,
       middlename: values.middlename,
@@ -62,28 +67,63 @@ const SignUpPage = () => {
       address: values.address,
       username: values.username,
       email: values.email,
-      course: values.course,
-      degree: values.degree,
-      type: values.type,
+      course: course,
+      degree: degree,
+      account_type: account_type,
       password: values.password,
       password_confirmation: values.password,
     });
 
-    if (res.data.code == 200) {
-      enqueueSnackbar('Success', { variant: 'success' })
+    // if (res.data.code == 200) {
+    //   enqueueSnackbar('Success', { variant: 'success' })
 
-      navigate('/home', { replace: true });
-    }
-  }
+    //   navigate('/home', { replace: true });
+    // }
+  };
 
-  const handleOnChange = (field, newValue) => {
-    console.log('field', field, 'value', newValue);
+  function handleOnChange(field, newValue) {
     registerFormik.setFieldValue(field, newValue);
   };
 
+
+  const handleFetchCourse = async () => {
+    const res = await courseShow();
+    const { option_value } = res.data?.data;
+
+    if (res.data.code == 200) {
+      registerFormik.setFieldValue('course', [option_value]);
+    }
+  }
+
+  const handleFetchAccounType = async () => {
+    const res = await accountTypeShow();
+
+    const { option_value } = res.data?.data;
+
+    if (res.data.code == 200) {
+      registerFormik.setFieldValue('account_type', [option_value]);
+    }
+  }
+
+  const handleFetchDegree = async () => {
+    const res = await degreeShow();
+
+    const { option_value } = res.data?.data;
+
+    if (res.data.code == 200) {
+      registerFormik.setFieldValue('degree', [option_value]);
+    }
+  }
+
+  React.useEffect(() => {
+    handleFetchCourse();
+    handleFetchAccounType();
+    handleFetchDegree();
+  }, []);
+
   return (
     <React.Fragment>
-      <Grid item margin={'10%'}  >
+      <Grid item   >
         <Box>
           <Grid item sx={style}>
             <Box sx={{
@@ -222,89 +262,72 @@ const SignUpPage = () => {
               }}
             />
           </Grid >
-          <Grid item sx={style}>
-            <FormControl fullWidth mr='0.5rem'>
-              <InputLabel>Course</InputLabel>
-              <Select
-                rows={'8'}
+          <Box sx={container}>
+            <Grid item sx={style} width='50%'>
+              <Autocomplete
+                disablePortal
+                options={registerFormik.values.course ?? []}
                 size='small'
-                fullWidth
-                // sx={{ fullWidth }}
-                value={registerFormik.values.course}
-                label="Course"
-                onChange={(event) => handleOnChange('course', event.target.value)}
-              >
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
-                {courseArray.map((element, index) => <MenuItem key={index} value={element}>{element}</MenuItem>)}
-              </Select>
-            </FormControl>
-          </Grid >
+                renderInput={(params) => <TextField {...params} label="Course" />}
+              />
+            </Grid >
+
+            <Grid item sx={style} width='50%'>
+              <Autocomplete
+                disablePortal
+                options={registerFormik.values.degree ?? []}
+                size='small'
+                renderInput={(params) => <TextField {...params} label="Degree" />}
+              />
+            </Grid >
+          </Box>
+          <Grid item sx={style}>
+            <GenericTextField
+              fieldName="password"
+              fieldLabel="Password"
+              handleOnChangeValue={(field, newValue) =>
+                handleOnChange(field, newValue)
+              }
+              variant={{
+                rows: 8,
+                fullWidth: true,
+                variant: "outlined",
+                size: "small",
+              }}
+              fieldOptions={{
+                placeholder: "Password",
+                type: "password",
+              }}
+            />
+          </Grid>
+
+          <Grid item sx={style}>
+            <GenericTextField
+              fieldName="confirm_password"
+              fieldLabel="Confirm Password"
+              handleOnChangeValue={(field, newValue) =>
+                handleOnChange(field, newValue)
+              }
+              variant={{
+                rows: 8,
+                fullWidth: true,
+                variant: "outlined",
+                size: "small",
+              }}
+              fieldOptions={{
+                placeholder: "Confirm Password",
+                type: "password",
+              }}
+            />
+          </Grid>
 
           <Grid item sx={style}>
             <Autocomplete
               disablePortal
-              options={top100Films}
-              sx={{ width: 300 }}
-              renderInput={(params) => <TextField {...params} label="Movie" />}
+              options={registerFormik.values.account_type ?? []}
+              size='small'
+              renderInput={(params) => <TextField {...params} label="Account Type" />}
             />
-          </Grid >
-          <Box display='flex'>
-            <Grid item sx={style}>
-              <GenericTextField
-                fieldName="password"
-                fieldLabel="Password"
-                handleOnChangeValue={(field, newValue) =>
-                  handleOnChange(field, newValue)
-                }
-                variant={{
-                  rows: 8,
-                  fullWidth: true,
-                  variant: "outlined",
-                  size: "small",
-                }}
-                fieldOptions={{
-                  placeholder: "Password",
-                }}
-              />
-            </Grid>
-
-            <Grid item sx={style}>
-              <GenericTextField
-                fieldName="confirm_password"
-                fieldLabel="Confirm Password"
-                handleOnChangeValue={(field, newValue) =>
-                  handleOnChange(field, newValue)
-                }
-                variant={{
-                  rows: 8,
-                  fullWidth: true,
-                  variant: "outlined",
-                  size: "small",
-                }}
-                fieldOptions={{
-                  placeholder: "Confirm Password",
-                }}
-              />
-            </Grid>
-          </Box>
-
-          <Grid item sx={style}>
-            <FormControl fullWidth>
-              <InputLabel>Account Type</InputLabel>
-              <Select
-                size='small'
-                value={registerFormik.values.account_type}
-                label="Course"
-                onChange={(event) => handleOnChange('account_type', event.target.value)}
-              >
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
-                {accounTypeArr.map((element, index) => <MenuItem key={index} value={element}>{element}</MenuItem>)}
-              </Select>
-            </FormControl>
           </Grid>
 
           <Grid item sx={style} mt={'1.5rem'} mb={'1rem'}>
@@ -328,7 +351,7 @@ const SignUpPage = () => {
             justifyContent: 'center',
             alignItems: 'center'
           }}>
-            <Link to='/login'>
+            <Link to='/'>
               <Typography sx={linkTypography}>
                 ALREADY HAVE AN ACCOUNT?
               </Typography>

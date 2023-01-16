@@ -33,7 +33,6 @@ class StoreUserRequest extends FormRequest
             'course' => ['required', 'string'],
             'degree' => ['required', 'string'],
             'account_type' => ['required', 'string'],
-            'school' => ['required', 'string'],
             'password' => ['required', 'confirmed']
         ];
     }

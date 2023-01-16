@@ -1,12 +1,14 @@
 import React from 'react';
 import { useFormik } from 'formik';
-import { Box, Grid, FormControl, InputLabel, Select, Typography } from '@mui/material';
+import { Box, Grid, FormControl, InputLabel, Select, Typography, Autocomplete } from '@mui/material';
 import { GenericTextField } from '../GenericComponents/TextField/GenericTextField';
 import { GenericButton } from '../GenericComponents/Button/GenericButton';
 import { GenericTypography } from '../GenericComponents/Typography/GenericTypography';
 import MenuItem from '@mui/material/MenuItem';
 import { Link } from 'react-router-dom';
 import { profileUpdate, showProfile } from '../../config/apisauce';
+import TextField from '@mui/material/TextField';
+import { degreeShow, courseShow } from './../../config/apisauce';
 
 const container = {
   display: 'flex',
@@ -37,9 +39,8 @@ export const ProfileInformation = () => {
       middlename: "",
       lastname: "",
       address: "",
-      course: "",
-      degree: "",
-      account_type: "",
+      course: [],
+      degree: [],
     },
   });
 
@@ -58,22 +59,39 @@ export const ProfileInformation = () => {
       email: values.email,
       course: values.course,
       degree: values.degree,
-      type: values.type,
     });
   }
 
-  const fetchUserInfo = async() => {
+  const fetchUserInfo = async () => {
     const res = await showProfile();
 
     console.log(res);
   }
 
+  const handleFetchCourse = async () => {
+    const res = await courseShow();
+    const { option_value } = res.data?.data;
+
+    if (res.data.code == 200) {
+      profileFormik.setFieldValue('course', [option_value]);
+    }
+  }
+  const handleFetchDegree = async () => {
+    const res = await degreeShow();
+
+    const { option_value } = res.data?.data;
+
+    if (res.data.code == 200) {
+      profileFormik.setFieldValue('degree', [option_value]);
+    }
+  }
+
   React.useEffect(() => {
     fetchUserInfo();
+    handleFetchCourse();
+    handleFetchDegree();
+  }, []);
 
-  }, [])
-  
-    
   return (
     <React.Fragment>
       <form>
@@ -194,66 +212,23 @@ export const ProfileInformation = () => {
             }}
           />
         </Grid >
-        <Grid item sx={style}>
-          <FormControl fullWidth mr='0.5rem'>
-            <InputLabel>Course</InputLabel>
-            <Select
-              rows={'8'}
-              size='small'
-              fullWidth
-              // sx={{ fullWidth }}
-              labelId="demo-select-small"
-              id="demo-select-small"
-              value={profileFormik.values.course}
-              label="Course"
-              onChange={(event) => handleOnChange('course', event.target.value)}
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              {courseArray.map((element, index) => <MenuItem key={index} value={element}>{element}</MenuItem>)}
-            </Select>
-          </FormControl>
+        <Grid item sx={style} fullWidth>
+          <Autocomplete
+            disablePortal
+            options={profileFormik.values.course ?? []}
+            size='small'
+            renderInput={(params) => <TextField {...params} label="Course" />}
+          />
         </Grid >
 
-        <Grid item sx={style}>
-          <FormControl fullWidth>
-            <InputLabel>Degree</InputLabel>
-            <Select
-              size='small'
-              labelId="demo-select-small"
-              id="demo-select-small"
-              value={profileFormik.values.degree}
-              label="Course"
-              onChange={(event) => handleOnChange('degree', event.target.value)}
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              {degreeArray.map((element, index) => <MenuItem key={index} value={element}>{element}</MenuItem>)}
-
-            </Select>
-          </FormControl>
+        <Grid item sx={style} fullWidth>
+          <Autocomplete
+            disablePortal
+            options={profileFormik.values.degree ?? []}
+            size='small'
+            renderInput={(params) => <TextField {...params} label="Degree" />}
+          />
         </Grid >
-
-        <Grid item sx={style}>
-          <FormControl fullWidth>
-            <InputLabel>Account Type</InputLabel>
-            <Select
-              size='small'
-              labelId="demo-select-small"
-              id="demo-select-small"
-              value={profileFormik.values.account_type}
-              label="Course"
-              onChange={(event) => handleOnChange('account_type', event.target.value)}
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              {accounTypeArr.map((element, index) => <MenuItem key={index} value={element}>{element}</MenuItem>)}
-            </Select>
-          </FormControl>
-        </Grid>
 
         <Grid item sx={style} mt={'1.5rem'} mb={'1rem'}>
           <GenericButton

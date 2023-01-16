@@ -44,7 +44,7 @@ Route::controller(ScholarshipManagementController::class)->prefix('scholarship-m
 
 // Profile Information\
 Route::controller(ProfileController::class)->prefix('profile')->group(function () {
-    Route::post('/show', 'show');
+    Route::post('/show', 'index');
     Route::post('/update', 'update');
     Route::post('/password-update', 'password');
 });
