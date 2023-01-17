@@ -13,9 +13,6 @@ class ConfigHelper implements ConfigContract
   protected $type;
   protected $value;
 
-  protected $scope;
-
-
   public function setType(string $type)
   {
     $this->type = $type;
@@ -33,9 +30,11 @@ class ConfigHelper implements ConfigContract
 
   public function updateOrCreate()
   {
-    $configModel = new ConfigModel;
+  $configModel = new ConfigModel;
+
     $configModel->setType($this->type);
     $configModel->setValue($this->value);
+
     $configModel->configUpdateOrCreate();
 
     return $this;

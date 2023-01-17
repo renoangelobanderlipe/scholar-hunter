@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Helpers\Config\ConfigHelper;
+use App\Http\Resources\ConfigTypeResource;
 use App\Traits\HttpResponseTraits;
 use Illuminate\Foundation\Http\FormRequest;
 

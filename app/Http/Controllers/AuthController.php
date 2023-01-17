@@ -6,7 +6,6 @@ use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
 use App\Traits\HttpResponseTraits;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -56,7 +55,7 @@ class AuthController extends Controller
             'email' => $request->email,
             'course' => $request->course,
             'degree' => $request->degree,
-            'account_type' => $request->account_type,  
+            'account_type' => $request->account_type,
             'password' => Hash::make($request->password),
             'status' => 0,
         ]);

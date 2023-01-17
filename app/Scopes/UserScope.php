@@ -8,7 +8,7 @@ class UserScope
 {
   public function all(): Object
   {
-    return User::all()->limit(5);
+    return User::all();
   }
 
   public function create(array $data): Object

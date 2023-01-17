@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Contracts\ConfigContract;
+use App\Http\Resources\ConfigResource;
 use App\Scopes\ConfigScope;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,12 +12,6 @@ class ConfigModel extends Model implements ConfigContract
     protected $table = 'config';
     protected $guarded = ['id'];
     protected $hidden = ['id', 'created_at', 'updated_at'];
-
-    /* Dependency Injection for using ConfigScope*/
-    // public function __construct(ConfigScope $scope)
-    // {
-    //     $this->scope = $scope;
-    // }
 
     public function setType(string $type)
     {
@@ -27,6 +22,11 @@ class ConfigModel extends Model implements ConfigContract
     {
         $this->value = $value;
     }
+
+    public function create(ConfigResource $configResource)
+    {
+    }
+
 
     public function configUpdateOrCreate()
     {

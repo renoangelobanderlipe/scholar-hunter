@@ -33,11 +33,6 @@ Route::controller(ScholarshipTypeController::class)->prefix('scholarship-type')-
     Route::post('/store', 'store');
 });
 
-// User Management
-Route::controller(UserManagementController::class)->prefix('user-management')->group(function () {
-    Route::post('/create', 'create');
-});
-
 // Scholarship Management
 Route::controller(ScholarshipManagementController::class)->prefix('scholarship-management')->group(function () {
     Route::post('create', 'create');
@@ -54,4 +49,8 @@ Route::controller(ProfileController::class)->prefix('profile')->group(function (
 Route::controller(ConfigController::class)->prefix('config')->group(function () {
     Route::get('/show', 'show');
     Route::post('/store', 'store');
+});
+
+Route::controller(UserManagementController::class)->prefix('user-management')->group(function () {
+    Route::post('/update', 'store');
 });

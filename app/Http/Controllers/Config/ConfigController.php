@@ -22,7 +22,7 @@ class ConfigController extends Controller
             $configHelper = new ConfigHelper;
 
             $configHelper->setType($request->option_name);
-            $configHelper->setValue(array($request->option_value));
+            $configHelper->setValue($request->option_value);
 
             return $this->success($configHelper->create());
         } catch (\Throwable $throwable) {
