@@ -6,7 +6,9 @@ use App\Http\Controllers\Config\ConfigController;
 use App\Http\Controllers\Config\CourseConfigController;
 use App\Http\Controllers\Config\DegreeController;
 use App\Http\Controllers\Foundation\FoundationController;
+use App\Http\Controllers\Posting\PostingController;
 use App\Http\Controllers\Profile\ProfileController;
+use App\Http\Controllers\Scholarship\ScholarshipController;
 use App\Http\Controllers\ScholarshipManagement\ScholarshipManagementController;
 use App\Http\Controllers\ScholarshipType\ScholarshipTypeController;
 use App\Http\Controllers\User\ChangeUserStatusController;
@@ -87,4 +89,30 @@ Route::controller(FoundationController::class)->group(function () {
 
     Route::get('/foundations/{foundation}', 'show')
         ->name('api.foundations.show');
+});
+
+// scholarships
+Route::controller(ScholarshipController::class)->group(function () {
+
+    Route::get('/scholarships', 'index')
+        ->name('api.scholarships.index');
+
+    Route::post('/scholarships', 'store')
+        ->name('api.scholarships.store');
+
+    Route::get('/scholarships/{scholarship}', 'show')
+        ->name('api.scholarships.show');
+});
+
+// postings
+Route::controller(PostingController::class)->group(function () {
+
+    Route::get('/postings', 'index')
+        ->name('api.postings.index');
+
+    Route::post('/postings', 'store')
+        ->name('api.postings.store');
+
+    Route::get('/postings/{posting}', 'show')
+        ->name('apo.postings.show');
 });
