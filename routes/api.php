@@ -5,9 +5,11 @@ use App\Http\Controllers\Config\AccountTypeController;
 use App\Http\Controllers\Config\ConfigController;
 use App\Http\Controllers\Config\CourseConfigController;
 use App\Http\Controllers\Config\DegreeController;
+use App\Http\Controllers\Foundation\FoundationController;
 use App\Http\Controllers\Profile\ProfileController;
 use App\Http\Controllers\ScholarshipManagement\ScholarshipManagementController;
 use App\Http\Controllers\ScholarshipType\ScholarshipTypeController;
+use App\Http\Controllers\User\ChangeUserStatusController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\UserManagement\UserManagementController;
 use Illuminate\Http\Request;
@@ -67,4 +69,22 @@ Route::controller(UserController::class)->group(function () {
 
     Route::get('/users/{user}', 'show')
         ->name('api.users.show');
+});
+
+// changing status endpoint for users
+Route::post('/users/{user}/status', ChangeUserStatusController::class)
+    ->name('api.users.status');
+
+
+// foundations
+Route::controller(FoundationController::class)->group(function () {
+
+    Route::get('/foundations', 'index')
+        ->name('api.foundations.index');
+
+    Route::post('/foundations', 'store')
+        ->name('api.foundations.store');
+
+    Route::get('/foundations/{foundation}', 'show')
+        ->name('api.foundations.show');
 });
