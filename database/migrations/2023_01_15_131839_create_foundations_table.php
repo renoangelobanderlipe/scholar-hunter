@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('foundations', function (Blueprint $table) {
             $table->id();
             $table->string('name')->index();
-            $table->text('description')->index();
+            $table->text('description');
             $table->string('address')->index();
             $table->string('contact_no')->index()->unique();
             $table->string('email')->index()->unique();

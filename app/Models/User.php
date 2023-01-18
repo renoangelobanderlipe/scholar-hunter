@@ -26,13 +26,13 @@ class User extends Authenticatable
         'lastname',
         'address',
         'username',
+        'contact_no',
         'email',
         'course',
         'course_type',
-        'account_type',
         'password',
-        'status',
         'role',
+        'status',
     ];
 
     /**

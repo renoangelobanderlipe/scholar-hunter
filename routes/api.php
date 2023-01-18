@@ -7,6 +7,7 @@ use App\Http\Controllers\Config\DegreeController;
 use App\Http\Controllers\Profile\ProfileController;
 use App\Http\Controllers\ScholarshipManagement\ScholarshipManagementController;
 use App\Http\Controllers\ScholarshipType\ScholarshipTypeController;
+use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\UserManagement\UserManagementController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -63,4 +64,17 @@ Route::controller(AccountTypeController::class)->prefix('account-type')->group(f
 Route::controller(DegreeController::class)->prefix('degree')->group(function () {
     Route::get('show', 'show');
     Route::get('store', 'store');
+});
+
+// users
+Route::controller(UserController::class)->group(function () {
+
+    Route::get('/users', 'index')
+        ->name('api.users.index');
+
+    Route::post('/users', 'store')
+        ->name('api.users.store');
+
+    Route::get('/users/{user}', 'show')
+        ->name('api.users.show');
 });
