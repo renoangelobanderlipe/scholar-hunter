@@ -1,12 +1,10 @@
 import React from "react";
 import { Routes, Route } from 'react-router-dom';
 
-
-
-import { NotFoundPage } from './NotFoundPage';
+import NotFoundPage from './NotFoundPage';
 import { pageRoutes } from './../layouts/PrimaryLayout';
 
-export const RightSection = () => {
+const RightSection = () => {
 
 
   return (
@@ -23,3 +21,6 @@ export const RightSection = () => {
     </React.Suspense>
   );
 };
+
+
+export default RightSection;

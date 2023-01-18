@@ -5,12 +5,17 @@ import { Box, Grid } from "@mui/material";
 
 import useAuthStore from "../config/store";
 
+import { Inbox, Mail } from '@mui/icons-material';
+import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
+import SchoolRoundedIcon from '@mui/icons-material/SchoolRounded';
+import ManageAccountsRoundedIcon from '@mui/icons-material/ManageAccountsRounded';
+
 const HomePage = React.lazy(() => import('./../pages/HomePage'));
-const ScholarshipListPage = React.lazy(() => import('./../pages/HomePage'));
-const ScholarListPage = React.lazy(() => import('./../pages/HomePage'));
-const AccountPage = React.lazy(() => import('./../pages/HomePage'));
-const UserManagementPage = React.lazy(() => import('./../pages/HomePage'));
-const ScholarshipManagementPage = React.lazy(() => import('./../pages/HomePage'));
+const ScholarshipListPage = React.lazy(() => import('./../pages/ScholarshipListPage'));
+const ScholarListPage = React.lazy(() => import('./../pages/ScholarListPage'));
+const AccountPage = React.lazy(() => import('./../pages/AccountPage'));
+const UserManagementPage = React.lazy(() => import('./../pages/UserManagementPage'));
+const ScholarshipManagementPage = React.lazy(() => import('./../pages/ScholarshipManagementPage'));
 const SignInPage = React.lazy(() => import('./../pages/Auth/SignInPage'));
 const SignUpPage = React.lazy(() => import('./../pages/Auth/SignUpPage'));
 const LeftSection = React.lazy(() => import('./../components/LeftSection'))
@@ -31,32 +36,39 @@ export const pageRoutes = [
   {
     name: 'Home',
     path: '/home',
-    component: <HomePage />
+    component: <HomePage />,
+    icon: ''
   },
   {
     name: 'Scholarship List',
     path: '/scholarship-list',
-    component: <ScholarshipListPage />
+    component: <ScholarshipListPage />,
+    icon: ''
   },
   {
     name: 'Scholars',
     path: '/scholars-list',
-    component: <ScholarListPage />
-  },
-  {
-    name: 'Profile',
-    path: '/profile',
-    component: <AccountPage />
-  },
-  {
-    name: 'User Management',
-    path: '/user-management',
-    component: <UserManagementPage />
+    component: <ScholarListPage />,
+    icon: ''
   },
   {
     name: 'Scholarship Management',
     path: '/scholarship-management',
-    component: <ScholarshipManagementPage />
+    component: <ScholarshipManagementPage />,
+    icon: ''
+  },
+  {
+    name: 'Users',
+    path: '/user-management',
+    component: <UserManagementPage />,
+    icon: ''
+  },
+
+  {
+    name: 'Profile',
+    path: '/profile',
+    component: <AccountPage />,
+    icon: ''
   },
 ];
 

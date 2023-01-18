@@ -6,7 +6,6 @@ use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
 use App\Traits\HttpResponseTraits;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -44,7 +43,7 @@ class AuthController extends Controller
     public function register(StoreUserRequest $request)
     {
         $request->validated($request->only([
-            'firstname', 'middlename', 'lastname', 'address', 'username', 'email', 'password', 'status',
+            'firstname', 'middlename', 'lastname', 'address', 'username', 'email', 'course', 'degree', 'account_type', 'password',
         ]));
 
         $user = User::create([
@@ -57,7 +56,6 @@ class AuthController extends Controller
             'course' => $request->course,
             'degree' => $request->degree,
             'account_type' => $request->account_type,
-            'school' => $request->school,
             'password' => Hash::make($request->password),
             'status' => 0,
         ]);

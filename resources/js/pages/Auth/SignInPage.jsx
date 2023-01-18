@@ -61,7 +61,7 @@ const SignInPage = () => {
       // SET LOGGED IN STATUS TO TRUE USING ZUSTAND! 
       setLoggedIn(true);
       // console.log('login status : ', true);
-      // navigate('/home', { replace: true });
+      navigate('/home', { replace: true });
 
 
     } else {
@@ -134,7 +134,7 @@ const SignInPage = () => {
               }}
               fieldOptions={{
                 placeholder: "Password",
-                type: "password",
+              type: "password",
               }}
                
             />

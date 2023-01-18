@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Grid } from '@mui/material';
 
 
-export const NotFoundPage = () => {
+const NotFoundPage = () => {
   const navigate = useNavigate();
 
   return (
@@ -22,3 +22,5 @@ export const NotFoundPage = () => {
     </React.Fragment>
   )
 }
+
+export default NotFoundPage;

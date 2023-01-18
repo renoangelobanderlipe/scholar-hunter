@@ -1,59 +1,26 @@
 import React, { useState } from 'react';
-import { useTheme } from '@mui/material/styles';
 
-import { AppBar, Box, Toolbar, List, Typography, Divider, ListItem, ListItemButton, ListItemIcon, ListItemText, Drawer, MenuItem } from '@mui/material';
-
-import { Inbox, Mail } from '@mui/icons-material';
-import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
-import SchoolRoundedIcon from '@mui/icons-material/SchoolRounded';
-import ManageAccountsRoundedIcon from '@mui/icons-material/ManageAccountsRounded';
+import { AppBar, Box, Toolbar, List, Typography, Divider, ListItem, ListItemButton, ListItemIcon, ListItemText, Drawer } from '@mui/material';
 
 import useAuthStore from '../config/store';
 import { useSnackbar } from 'notistack';
 import { logout } from '../config/apisauce';
-import { RightSection } from './RightSection';
+import RightSection from './RightSection';
 import { Link, Router, useLocation } from 'react-router-dom';
 import Menu from '@mui/material/Menu';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+import { pageRoutes } from './../layouts/PrimaryLayout';
 
 const drawerWidth = 240;
 
-const linkPages = [
-  {
-    value: 0,
-    name: 'Home',
-    path: '/home',
-    icon: <DashboardRoundedIcon />
-  },
-  {
-    value: 1,
-    name: 'Scholars',
-    path: '/scholars-list',
-    icon: <SchoolRoundedIcon />
-  },
-  {
-    value: 2,
-    name: 'Scholarship',
-    path: '/scholarship-management',
-    icon: <SchoolRoundedIcon />
-  },
-  {
-    value: 3,
-    name: 'Profile',
-    path: '/profile',
-    icon: <ManageAccountsRoundedIcon />
-  },
-];
 
-
-export const LeftSection = () => {
+const LeftSection = () => {
   const [open, setOpen] = useState(false);
   const { setLoggedOut } = useAuthStore();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const { drawerName, setDrawerName } = useState('');
 
   const handleLogOut = async () => {
-
     const res = await logout();
     console.log(res);
     if (res.data.code != 200) {
@@ -64,7 +31,7 @@ export const LeftSection = () => {
     setLoggedOut(true);
     enqueueSnackbar('Success', { variant: 'success' });
 
-    navigate('/login', { replace: true });
+    navigate('/', { replace: true });
   }
 
   const handleLogout = async () => {
@@ -81,7 +48,10 @@ export const LeftSection = () => {
         >
           <Toolbar>
             <Typography variant="h6" noWrap component="div">
-              {drawerName}
+              {/* {
+
+
+              } */}
             </Typography>
           </Toolbar>
         </AppBar>
@@ -101,8 +71,8 @@ export const LeftSection = () => {
           <Divider />
           <List>
             {
-              linkPages.map((element, index) => (
-                <Link key={index} to={element.path} style={{ textDecoration: 'none', color: '#1f2937'}} >
+              pageRoutes.map((element, index) => (
+                <Link key={index} to={element.path} style={{ textDecoration: 'none', color: '#1f2937' }} >
                   <ListItem disablePadding >
                     <ListItemButton selected={location.pathname === element.path ? true : false} >
                       <ListItemIcon>
@@ -138,3 +108,5 @@ export const LeftSection = () => {
     </React.Fragment >
   )
 }
+
+export default LeftSection;

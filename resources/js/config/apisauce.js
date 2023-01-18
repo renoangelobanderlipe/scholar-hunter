@@ -27,3 +27,19 @@ export const createScholarship = (params) => apiSauce.post('api/scholarship-mana
 export const showProfile = () => apiSauce.post('api/profile/show')
 export const profileUpdate = (params) => apiSauce.post('api/profile/update');
 export const updatePassword = (params) => apiSauce.post('api/profile/password-update');
+
+
+/* Config */
+
+  //Course 
+export const courseShow = () => apiSauce.get('api/course/show');
+export const courseStore = () => apiSauce.get('api/course/store');
+
+  //Degree 
+export const degreeShow = () => apiSauce.get('api/degree/show');
+export const degreeStore = () => apiSauce.get('api/degree/store');
+
+  //AccountType 
+export const accountTypeShow = () => apiSauce.get('api/account-type/show');
+export const accountTypeStore = () => apiSauce.get('api/account-type/store');
+

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Config\AccountTypeController;
+use App\Http\Controllers\Config\ConfigController;
 use App\Http\Controllers\Config\CourseConfigController;
 use App\Http\Controllers\Config\DegreeController;
 use App\Http\Controllers\Profile\ProfileController;
@@ -33,11 +34,6 @@ Route::controller(ScholarshipTypeController::class)->prefix('scholarship-type')-
     Route::post('/store', 'store');
 });
 
-// User Management
-Route::controller(UserManagementController::class)->prefix('user-management')->group(function () {
-    Route::post('/create', 'create');
-});
-
 // Scholarship Management
 Route::controller(ScholarshipManagementController::class)->prefix('scholarship-management')->group(function () {
     Route::post('create', 'create');
@@ -45,25 +41,19 @@ Route::controller(ScholarshipManagementController::class)->prefix('scholarship-m
 
 // Profile Information\
 Route::controller(ProfileController::class)->prefix('profile')->group(function () {
-    Route::post('/show', 'show');
+    Route::post('/show', 'index');
     Route::post('/update', 'update');
     Route::post('/password-update', 'password');
 });
 
 // Config
-Route::controller(CourseConfigController::class)->prefix('course')->group(function () {
+Route::controller(ConfigController::class)->prefix('config')->group(function () {
     Route::get('/show', 'show');
     Route::post('/store', 'store');
 });
 
-Route::controller(AccountTypeController::class)->prefix('account-type')->group(function () {
-    Route::get('show', 'show');
-    Route::get('store', 'store');
-});
-
-Route::controller(DegreeController::class)->prefix('degree')->group(function () {
-    Route::get('show', 'show');
-    Route::get('store', 'store');
+Route::controller(UserManagementController::class)->prefix('user-management')->group(function () {
+    Route::post('/update', 'store');
 });
 
 // users
