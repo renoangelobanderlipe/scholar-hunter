@@ -21,8 +21,6 @@ class ChangeUserStatusController extends Controller
     {
         $user->update($request->validated());
 
-        return $this->success([
-            'user' => $user
-        ]);
+        return $this->success($user);
     }
 }

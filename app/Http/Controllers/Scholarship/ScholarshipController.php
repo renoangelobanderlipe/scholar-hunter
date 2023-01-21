@@ -41,9 +41,7 @@ class ScholarshipController extends Controller
     {
         $scholarship = Scholarship::create($request->validated());
 
-        return $this->success([
-            'scholarship' => $scholarship,
-        ]);
+        return $this->success($scholarship);
     }
 
     /**

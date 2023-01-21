@@ -41,9 +41,7 @@ class FoundationController extends Controller
     {
         $foundation = Foundation::create($request->validated());
 
-        return $this->success([
-            'foundation' => $foundation,
-        ]);
+        return $this->success($foundation);
     }
 
     /**

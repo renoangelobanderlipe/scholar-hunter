@@ -42,9 +42,7 @@ class PostingController extends Controller
     {
         $posting = Posting::create($request->validated());
 
-        return $this->success([
-            'posting' => $posting,
-        ]);
+        return $this->success($posting);
     }
 
     /**

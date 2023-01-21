@@ -9,6 +9,5 @@ class ScholarshipManagementController extends Controller
 {
     public function create()
     {
-        dd('test function');
     }
 }
