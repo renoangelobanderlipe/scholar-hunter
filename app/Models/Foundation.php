@@ -18,10 +18,6 @@ class Foundation extends Model
         'type',
     ];
 
-    protected $casts = [
-        'attachments' => 'array',
-    ];
-
     public function users()
     {
         return $this->belongsToMany(User::class);
