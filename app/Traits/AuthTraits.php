@@ -16,7 +16,7 @@ trait AuthTraits
     return User::query();
   }
 
-  protected function assignRole($id, $keyword)
+  protected function assignRole(int $id, string $keyword = 'student')
   {
     return $this->where('id_no', $id)
       ->update(['role' => $keyword]);
