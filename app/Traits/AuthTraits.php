@@ -19,7 +19,7 @@ trait AuthTraits
   protected function assignRole(int $id, string $keyword = 'student')
   {
     return $this->where('id_no', $id)
-      ->update(['role' => $keyword]);
+      ->update(['role' => (string)$keyword]);
   }
 
   protected function hasRole()
