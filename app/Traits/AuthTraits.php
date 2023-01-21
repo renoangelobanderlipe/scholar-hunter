@@ -6,25 +6,41 @@ use App\Models\User;
 
 trait AuthTraits
 {
-  // NOTE THIS IS A CUSTOM ROLE CHECKER 
-
   protected function role()
   {
     return \Auth::user();
   }
 
-  protected function assignAdminRole($id)
+  protected function scopeUser()
   {
-    return User::where('id_no', $id)->update(['role' => 'admin']);
+    return User::query();
   }
 
-  protected function assignUserRole($id)
+  protected function assignRole($id, $keyword)
   {
-    return User::where('id_no', $id)->update(['role' => 'student']);
+    return $this->where('id_no', $id)
+      ->update(['role' => $keyword]);
   }
 
-  protected function assignFoundationRole($id)
+  protected function hasRole()
   {
-    return User::where('id_no', $id)->update(['role' => 'foundation']);
+    return $this->user()
+      ->where('id_no', $this->role()->id_no)
+      ->first();
   }
+
+  // protected function assignAdminRole($id)
+  // {
+  //   return $this->where('id_no', $id)->update(['role' => 'admin']);
+  // }
+
+  // protected function assignUserRole($id)
+  // {
+  //   return $this->where('id_no', $id)->update(['role' => 'student']);
+  // }
+
+  // protected function assignFoundationRole($id)
+  // {
+  //   return $this->where('id_no', $id)->update(['role' => 'foundation']);
+  // }
 }
