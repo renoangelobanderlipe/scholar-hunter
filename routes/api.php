@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Application\ApplicationController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Config\AccountTypeController;
 use App\Http\Controllers\Config\ConfigController;
@@ -119,4 +120,16 @@ Route::controller(PostingController::class)->group(function () {
     Route::get('/postings/{posting}', 'show')
         ->name('apo.postings.show');
 });
-// });
+
+// application
+Route::controller(ApplicationController::class)->group(function () {
+
+    Route::get('/applications', 'index')
+        ->name('api.applications.index');
+
+    Route::post('/applications', 'store')
+        ->name('api.applications.store');
+
+    Route::get('/applications/{application}', 'show')
+        ->name('apo.applications.show');
+});

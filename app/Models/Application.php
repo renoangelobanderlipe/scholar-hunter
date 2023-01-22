@@ -16,6 +16,10 @@ class Application extends Model
         'attachments',
     ];
 
+    protected $casts = [
+        'attachments' => 'array',
+    ];
+
     public function scholarship()
     {
         return $this->belongsTo(Scholarship::class);
