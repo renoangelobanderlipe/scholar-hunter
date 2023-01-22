@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
-import { createScholarship } from './../config/apisauce';
+import { createScholarship, scholarshipList } from './../config/apisauce';
 import { styled } from '@mui/material/styles';
 
 import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
@@ -10,9 +10,8 @@ import { Button, Grid, Box, DialogTitle, DialogContent, DialogActions, FormContr
 
 import { GenericTextField } from './../components/GenericComponents/TextField/GenericTextField';
 import { DialogWrapper } from './../components/GenericComponents/DialogBox/DialogWrapper';
-
-
-const scholarshipType = ['1', '2'];
+import IconButton from '@mui/material/IconButton';
+import { DeleteIcon } from '@mui/icons-material/Delete';
 
 const boxPadding = {
   p: '0.5rem 2rem',
@@ -97,10 +96,8 @@ const CustomButton = () => {
 
   const scholarshipFormik = useFormik({
     initialValues: {
-      title: '',
-      grantor: '',
+      name: '',
       description: '',
-      type: '',
     }
   })
 
@@ -118,10 +115,13 @@ const CustomButton = () => {
   }
 
   const handleCreateScholarship = async (values) => {
-    const res = await createScholarship({ title: values.title, grantor: values.grantor, description: values.description, type: values.type })
+    const res = await createScholarship({ value: values })
 
-    enqueueSnackbar('Success', { variant: 'success' })
-    handleClose();
+    if (res.data.code == 200) {
+
+      enqueueSnackbar('Success', { variant: 'success' })
+      handleClose();
+    }
   }
 
   return (
@@ -140,8 +140,8 @@ const CustomButton = () => {
           </DialogContentText> */}
             <Box sx={boxPadding}>
               <GenericTextField
-                fieldName="title"
-                fieldLabel="Title"
+                fieldName="name"
+                fieldLabel="Name"
                 handleOnChangeValue={(field, newValue) =>
                   handleOnChange(field, newValue)
                 }
@@ -152,29 +152,9 @@ const CustomButton = () => {
                   size: "small",
                 }}
                 fieldOptions={{
-                  placeholder: "Title",
+                  placeholder: "Name",
                   type: "text",
                 }}
-              />
-            </Box>
-            <Box sx={boxPadding}>
-              <GenericTextField
-                fieldName="grantor"
-                fieldLabel="Grantor"
-                handleOnChangeValue={(field, newValue) =>
-                  handleOnChange(field, newValue)
-                }
-                variant={{
-                  rows: 8,
-                  fullWidth: true,
-                  variant: "outlined",
-                  size: "small",
-                }}
-                fieldOptions={{
-                  placeholder: "Grantor",
-                  type: "text",
-                }}
-
               />
             </Box>
             <Box sx={boxPadding}>
@@ -197,26 +177,10 @@ const CustomButton = () => {
 
               />
             </Box>
-            <Box sx={boxPadding}>
-              <FormControl fullWidth>
-                <InputLabel>Scholarship Type</InputLabel>
-                <Select
-                  size='small'
-                  value={scholarshipFormik.values.type}
-                  label="Scholarship Type"
-                  onChange={(event) => handleOnChange('type', event.target.value)}
-                >
-                  <MenuItem value="">
-                    <em>None</em>
-                  </MenuItem>
-                  {scholarshipType.map((element, index) => <MenuItem key={index} value={element}>{element}</MenuItem>)}
-                </Select>
-              </FormControl>
-            </Box>
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose}>Cancel</Button>
-            <Button onClick={() => handleCreateUser()}>Submit</Button>
+            <Button onClick={() => handleCreateScholarship()}>Submit</Button>
           </DialogActions>
         </DialogWrapper>
       </form>
@@ -238,8 +202,6 @@ const CustomToolbar = () => {
         <Grid item>
           <CustomButton />
         </Grid>
-
-
       </Grid>
 
     </GridToolbarContainer>
@@ -247,54 +209,64 @@ const CustomToolbar = () => {
 }
 
 const ScholarshipManagementPage = () => {
+  const [rows, setRows] = React.useState([]);
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
-  const rows = [
-    // {
-    //   id: 1,
-    //   name: 'Firstname',
-    //   stars: 28000,
-    // },
-    // {
-    //   id: 2,
-    //   name: 'Middlename',
-    //   stars: 15000,
-    // },
-    // {
-    //   id: 3,
-    //   name: 'Lastname',
-    //   stars: 28000,
-    // },
-    // {
-    //   id: 4,
-    //   name: 'Address',
-    //   stars: 15000,
-    // },
-    // {
-    //   id: 5,
-    //   name: 'Contact Number',
-    //   stars: 15000,
-    // },
-    // {
-    //   id: 6,
-    //   name: 'Email',
-    //   stars: 15000,
-    // },
-    // {
-    //   id: 7,
-    //   name: 'Action',
-    //   stars: 15000,
-    // },
-  ];
+  async function handleDelete(id) {
+    const res = await deleteUser({ id: id });
+
+    if (res.data.code == 200) {
+      setRows(prev => {
+        return prev.filter(rows => rows.id !== id);
+      });
+      enqueueSnackbar('Deleted', { variant: 'success' })
+    } else {
+      console.log(res.data.message);
+
+      enqueueSnackbar('Please Try Again!', { variant: 'info' });
+    }
+  }
 
   const columns = [
-    { field: 'Firstname', width: 200 },
-    { field: 'Middlename', width: 200 },
-    { field: 'Lastname', width: 200 },
-    { field: 'Address', width: 220 },
-    { field: 'Contact Number', width: 200 },
-    { field: 'Email', width: 220 },
-    { field: 'Action', width: 200 },
+    {
+      field: 'name',
+      headerName: 'Name',
+      flex: 1,
+    },
+    {
+      field: 'description',
+      headerName: 'Description',
+      flex: 1,
+    },
+    {
+      field: 'description',
+      headerName: 'Description',
+      flex: 1,
+      renderCell: ({ row }) => {
+        return (
+          <React.Fragment>
+            <IconButton onClick={() => handleDelete(row.id)}>
+              <DeleteIcon />
+            </IconButton>
+          </React.Fragment >
+        )
+      }
+
+    },
   ];
+
+
+  async function handleFetch() {
+    const res = await scholarshipList();
+
+    if (res.data.code == 200) {
+      setRows(res.data?.data);
+    }
+  }
+
+  React.useEffect(() => {
+    handleFetch();
+  }, [])
 
 
   return (

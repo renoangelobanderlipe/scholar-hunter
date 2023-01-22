@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { AppBar, Box, Toolbar, List, Typography, Divider, ListItem, ListItemButton, ListItemIcon, ListItemText, Drawer } from '@mui/material';
 
@@ -6,38 +6,30 @@ import useAuthStore from '../config/store';
 import { useSnackbar } from 'notistack';
 import { logout } from '../config/apisauce';
 import RightSection from './RightSection';
-import { Link, Router, useLocation } from 'react-router-dom';
-import Menu from '@mui/material/Menu';
+import { Link, useLocation } from 'react-router-dom';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import { pageRoutes } from './../layouts/PrimaryLayout';
 
 const drawerWidth = 240;
 
-
 const LeftSection = () => {
-  const [open, setOpen] = useState(false);
   const { setLoggedOut } = useAuthStore();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  const { drawerName, setDrawerName } = useState('');
 
-  const handleLogOut = async () => {
-    const res = await logout();
-    console.log(res);
-    if (res.data.code != 200) {
-      enqueueSnackbar(res.data.message, { variant: 'info' })
-      return;
-    }
-
-    setLoggedOut(true);
-    enqueueSnackbar('Success', { variant: 'success' });
-
-    navigate('/', { replace: true });
-  }
+  const location = useLocation();
+  const pathName = location.pathname.split('/')[1];
 
   const handleLogout = async () => {
-    console.log('logout');
+    const res = await logout();
+
+    if (res.data.code == 200) {
+      setLoggedOut(true);
+      enqueueSnackbar('Success', { variant: 'success' });
+      navigate('/', { replace: true });
+    }
+    console.log('logout error', res.data.message);
   }
-  const location = useLocation();
+
   return (
     <React.Fragment>
       <Box sx={{ display: 'flex' }}>
@@ -48,9 +40,7 @@ const LeftSection = () => {
         >
           <Toolbar>
             <Typography variant="h6" noWrap component="div">
-              {
-                location.pathname.split('/')
-              }
+              {location.pathname.split('/')[1].split('-').length > 1 ? `${pathName.split('-')[0].toUpperCase()} ${pathName.split('-')[1].toUpperCase()} ` : location.pathname.split('/')[1].split('-')[0].toUpperCase()}
             </Typography>
           </Toolbar>
         </AppBar>
@@ -86,7 +76,7 @@ const LeftSection = () => {
           </ List>
           <Divider />
           <List>
-            <ListItemButton onClick={() => handleLogout()}>
+            <ListItemButton onClick={handleLogout}>
               <ListItemIcon>
                 <LogoutOutlinedIcon />
               </ListItemIcon>

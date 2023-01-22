@@ -5,10 +5,7 @@ import { Box, Grid } from "@mui/material";
 
 import useAuthStore from "../config/store";
 
-import { Inbox, Mail } from '@mui/icons-material';
-import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
-import SchoolRoundedIcon from '@mui/icons-material/SchoolRounded';
-import ManageAccountsRoundedIcon from '@mui/icons-material/ManageAccountsRounded';
+import { Inbox, Mail, DashboardRounded, SchoolRounded, ManageAccountsRounded } from '@mui/icons-material';
 
 const HomePage = React.lazy(() => import('./../pages/HomePage'));
 const ScholarshipListPage = React.lazy(() => import('./../pages/ScholarshipListPage'));
@@ -38,44 +35,43 @@ export const pageRoutes = [
     name: 'Home',
     path: '/home',
     component: <HomePage />,
-    icon: ''
+    icon: <DashboardRounded />
   },
   {
     name: 'Scholarships',
     path: '/scholarship-list',
     component: <ScholarshipListPage />,
-    icon: ''
+    icon: <SchoolRounded />
   },
   {
     name: 'Scholars',
     path: '/scholars-list',
     component: <ScholarListPage />,
-    icon: ''
+    icon: <SchoolRounded />
   },
   {
     name: 'Scholarship',
     path: '/scholarship-management',
     component: <ScholarshipManagementPage />,
-    icon: ''
+    icon: <SchoolRounded />
   },
   {
     name: 'Users',
     path: '/user-management',
     component: <UserManagementPage />,
-    icon: ''
+    icon: <ManageAccountsRounded />
   },
 
   {
     name: 'Profile',
     path: '/profile',
     component: <AccountPage />,
-    icon: ''
+    icon: <ManageAccountsRounded />
   },
 ];
 
 export const PrimaryLayout = () => {
   const { loggedIn } = useAuthStore();
-  console.log('login status', loggedIn);
   return (
     <React.Fragment>
       {

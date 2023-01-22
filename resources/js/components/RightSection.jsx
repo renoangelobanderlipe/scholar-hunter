@@ -5,8 +5,6 @@ import NotFoundPage from './NotFoundPage';
 import { pageRoutes } from './../layouts/PrimaryLayout';
 
 const RightSection = () => {
-
-
   return (
     <React.Suspense fallback="Loading...">
       <Routes>

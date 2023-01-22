@@ -32,6 +32,8 @@
     },
     "dependencies": {
         "apisauce": "^2.1.6",
-        "notistack": "^2.0.8"
+        "filepond": "^4.30.4",
+        "notistack": "^2.0.8",
+        "react-filepond": "^7.1.2"
     }
 }

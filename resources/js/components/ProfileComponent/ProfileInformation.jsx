@@ -8,7 +8,6 @@ import MenuItem from '@mui/material/MenuItem';
 import { Link } from 'react-router-dom';
 import { profileUpdate, showProfile } from '../../config/apisauce';
 import TextField from '@mui/material/TextField';
-import { degreeShow, courseShow } from './../../config/apisauce';
 
 const container = {
   display: 'flex',

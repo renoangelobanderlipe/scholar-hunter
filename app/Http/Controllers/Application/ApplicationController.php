@@ -43,12 +43,12 @@ class ApplicationController extends Controller
     {
         $files = [];
 
-        if($request->hasFile('attachments')) {
-            foreach($request->file('attachments') as $attachment) {
+        if ($request->hasFile('attachments')) {
+            foreach ($request->file('attachments') as $attachment) {
                 array_push($files, Storage::putFile('public/files/attachments', $attachment));
             }
         }
-
+        
         $application = Application::create([
             'user_id' => $request->validated('user_id'),
             'scholarship_id' => $request->validated('scholarship_id'),

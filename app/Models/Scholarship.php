@@ -14,7 +14,8 @@ class Scholarship extends Model
         'name',
         'description',
     ];
-    
+    protected $hidden = ['created_at', 'updated_at'];
+
     public function foundation()
     {
         return $this->belongsTo(Foundation::class);
