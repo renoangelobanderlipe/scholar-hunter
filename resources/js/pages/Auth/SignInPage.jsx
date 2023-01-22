@@ -2,7 +2,7 @@ import React from "react";
 import { useFormik } from "formik";
 import { GenericTextField } from "../../components/GenericComponents/TextField/GenericTextField";
 import { GenericButton } from "../../components/GenericComponents/Button/GenericButton";
-import { login } from './../../config/apisauce';
+import { login, sanctum, showProfile, test } from './../../config/apisauce';
 import { Grid, Box, Typography } from '@mui/material';
 import { GenericTypography } from './../../components/GenericComponents/Typography/GenericTypography';
 import { Link, useNavigate } from 'react-router-dom';
@@ -44,13 +44,11 @@ const SignInPage = () => {
       password: "",
     },
     validationSchema: validationSchema,
-
-    // onSubmit: (values) => handleOnSubmit(values),
+    validateOnBlur: true
   });
 
   const handleOnSubmit = async (values) => {
-    axios.get('sanctum/csrf-cookie');
-
+    sanctum();
     const res = await login({
       email: values.email,
       password: values.password
@@ -62,7 +60,6 @@ const SignInPage = () => {
       setLoggedIn(true);
       // console.log('login status : ', true);
       navigate('/home', { replace: true });
-
 
     } else {
       enqueueSnackbar(res.data.message, { variant: 'error' })
@@ -77,14 +74,9 @@ const SignInPage = () => {
   return (
     <React.Fragment>
       <Grid item margin={'10%'} padding={'2rem'} >
-        <Grid item sx={container}>
-          <Box sx={{
-            mb: '1.5rem'
-          }}>
-            <Typography>Logo Here</Typography>
-          </Box>
+        <Grid item container justifyContent={'center'} sx={container}>
           <GenericTypography
-            title={'Sign in'}
+            title={'Sign In'}
             variant={{
               variant: 'h5',
               color: 'black',
@@ -113,8 +105,8 @@ const SignInPage = () => {
                 type: "email",
               }}
               formikErrors={{
-                error: signInFormik.touched.email && Boolean(signInFormik.errors.email),
-                helperText: signInFormik.touched.email && signInFormik.errors.email,
+                error: signInFormik.errors.email,
+                helperText: signInFormik.errors.email,
               }}
             />
           </Grid >
@@ -134,9 +126,12 @@ const SignInPage = () => {
               }}
               fieldOptions={{
                 placeholder: "Password",
-              type: "password",
+                type: "password",
               }}
-               
+              formikErrors={{
+                error: signInFormik.errors.password,
+                helperText: signInFormik.errors.password,
+              }}
             />
           </Grid>
 

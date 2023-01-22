@@ -20,27 +20,16 @@ const style = {
   textAlign: 'center',
 };
 
-const linkTypography = {
-  fontWeight: 'bold',
-  color: 'gray',
-  fontSize: '12px'
-}
-
-const courseArray = ['Information Technology', 'Arts and Science'];
-const degreeArray = ['test1', 'test2'];
-const accounTypeArr = ['Student', 'Foundation']
 
 export const ProfileInformation = () => {
   const profileFormik = useFormik({
     initialValues: {
-      email: "",
       username: "",
-      firstname: "",
-      middlename: "",
-      lastname: "",
       address: "",
-      course: [],
-      degree: [],
+      course_type: '',
+      course: '',
+      degree: '',
+      contact_no: '',
     },
   });
 
@@ -49,47 +38,25 @@ export const ProfileInformation = () => {
     profileFormik.setFieldValue(field, newValue);
   }
 
-  const handleOnSubmit = (values) => {
-    const res = profileUpdate({
-      firstname: values.firstname,
-      middlename: values.middlename,
-      lastname: values.lastname,
-      address: values.address,
+  const handleOnSubmit = async (values) => {
+    const res = await profileUpdate({
       username: values.username,
-      email: values.email,
+      address: values.address,
+      course_type: values.course_type,
       course: values.course,
       degree: values.degree,
+      contact_no: values.contact_no,
     });
+
   }
 
   const fetchUserInfo = async () => {
     const res = await showProfile();
 
-    console.log(res);
-  }
-
-  const handleFetchCourse = async () => {
-    const res = await courseShow();
-    const { option_value } = res.data?.data;
-
-    if (res.data.code == 200) {
-      profileFormik.setFieldValue('course', [option_value]);
-    }
-  }
-  const handleFetchDegree = async () => {
-    const res = await degreeShow();
-
-    const { option_value } = res.data?.data;
-
-    if (res.data.code == 200) {
-      profileFormik.setFieldValue('degree', [option_value]);
-    }
   }
 
   React.useEffect(() => {
     fetchUserInfo();
-    handleFetchCourse();
-    handleFetchDegree();
   }, []);
 
   return (
@@ -104,6 +71,7 @@ export const ProfileInformation = () => {
                 handleOnChange(field, newValue)
               }
               variant={{
+                disabled: true,
                 rows: 8,
                 variant: "outlined",
                 fullWidth: true,
@@ -123,6 +91,7 @@ export const ProfileInformation = () => {
                 handleOnChange(field, newValue)
               }
               variant={{
+                disabled: true,
                 rows: 8,
                 variant: "outlined",
                 fullWidth: true,
@@ -143,6 +112,7 @@ export const ProfileInformation = () => {
                 handleOnChange(field, newValue)
               }
               variant={{
+                disabled: true,
                 rows: 8,
                 variant: "outlined",
                 fullWidth: true,
@@ -202,6 +172,7 @@ export const ProfileInformation = () => {
               handleOnChange(field, newValue)
             }
             variant={{
+              disabled: true,
               rows: 8,
               variant: "outlined",
               fullWidth: true,
@@ -212,36 +183,117 @@ export const ProfileInformation = () => {
             }}
           />
         </Grid >
-        <Grid item sx={style} fullWidth>
-          <Autocomplete
-            disablePortal
-            options={profileFormik.values.course ?? []}
-            size='small'
-            renderInput={(params) => <TextField {...params} label="Course" />}
-          />
-        </Grid >
 
-        <Grid item sx={style} fullWidth>
-          <Autocomplete
-            disablePortal
-            options={profileFormik.values.degree ?? []}
-            size='small'
-            renderInput={(params) => <TextField {...params} label="Degree" />}
-          />
-        </Grid >
-
-        <Grid item sx={style} mt={'1.5rem'} mb={'1rem'}>
-          <GenericButton
-            disable={true}
-            title={"Update Profile"}
+        <Grid item sx={style}>
+          <GenericTextField
+            fieldName="course_type"
+            fieldLabel="Course Type"
+            handleOnChangeValue={(field, newValue) =>
+              handleOnChange(field, newValue)
+            }
             variant={{
+              rows: 8,
+              variant: "outlined",
               fullWidth: true,
-              variant: "contained",
-              color: "primary",
+              size: "small",
             }}
-            onClick={() => handleOnSubmit(profileFormik.values)}
+            fieldOptions={{
+              placeholder: "Course Type",
+            }}
           />
-        </Grid>
+        </Grid >
+
+        <Grid item sx={style}>
+          <GenericTextField
+            fieldName="course"
+            fieldLabel="Course"
+            handleOnChangeValue={(field, newValue) =>
+              handleOnChange(field, newValue)
+            }
+            variant={{
+              rows: 8,
+              variant: "outlined",
+              fullWidth: true,
+              size: "small",
+            }}
+            fieldOptions={{
+              placeholder: "Course",
+            }}
+          />
+        </Grid >
+
+        <Grid item sx={style}>
+          <GenericTextField
+            fieldName="degree"
+            fieldLabel="Degree"
+            handleOnChangeValue={(field, newValue) =>
+              handleOnChange(field, newValue)
+            }
+            variant={{
+              rows: 8,
+              variant: "outlined",
+              fullWidth: true,
+              size: "small",
+            }}
+            fieldOptions={{
+              placeholder: "Degree",
+            }}
+          />
+        </Grid >
+
+        <Grid item sx={style}>
+          <GenericTextField
+            fieldName="contact_no"
+            fieldLabel="Contact No"
+            handleOnChangeValue={(field, newValue) =>
+              handleOnChange(field, newValue)
+            }
+            variant={{
+              rows: 8,
+              variant: "outlined",
+              fullWidth: true,
+              size: "small",
+            }}
+            fieldOptions={{
+              placeholder: "Contact No",
+            }}
+          />
+        </Grid >
+
+        <Grid item sx={style}>
+          <GenericTextField
+            fieldName="account_type"
+            fieldLabel="Account Type"
+            handleOnChangeValue={(field, newValue) =>
+              handleOnChange(field, newValue)
+            }
+            variant={{
+              disabled: true,
+              rows: 8,
+              variant: "outlined",
+              fullWidth: true,
+              size: "small",
+            }}
+            fieldOptions={{
+              placeholder: "Account Type",
+            }}
+          />
+
+          <Grid container item sx={style} mt={'1rem'} mb={'1rem'}>
+            <GenericButton
+              disable={true}
+              title={"Update"}
+              variant={{
+                fullWidth: true,
+                variant: "contained",
+              }}
+              onClick={() => handleOnSubmit(profileFormik.values)}
+            />
+          </Grid>
+
+        </Grid >
+
+
       </form>
     </React.Fragment>
   );

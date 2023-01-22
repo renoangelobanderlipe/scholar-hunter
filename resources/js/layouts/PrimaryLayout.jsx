@@ -20,6 +20,7 @@ const SignInPage = React.lazy(() => import('./../pages/Auth/SignInPage'));
 const SignUpPage = React.lazy(() => import('./../pages/Auth/SignUpPage'));
 const LeftSection = React.lazy(() => import('./../components/LeftSection'))
 const NotFoundPage = React.lazy(() => import('./../components/NotFoundPage'))
+const UnauthorizePage = React.lazy(() => import('./../components/UnauthorizedPage'));
 
 const wrapper = {
   height: '100vh',
@@ -40,7 +41,7 @@ export const pageRoutes = [
     icon: ''
   },
   {
-    name: 'Scholarship List',
+    name: 'Scholarships',
     path: '/scholarship-list',
     component: <ScholarshipListPage />,
     icon: ''
@@ -52,7 +53,7 @@ export const pageRoutes = [
     icon: ''
   },
   {
-    name: 'Scholarship Management',
+    name: 'Scholarship',
     path: '/scholarship-management',
     component: <ScholarshipManagementPage />,
     icon: ''

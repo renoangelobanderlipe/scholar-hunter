@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
-import { Button, Grid, Box, Dialog, DialogTitle, DialogContentText, DialogContent, DialogActions } from '@mui/material';
-import { GenericButton } from './../components/GenericComponents/Button/GenericButton';
+import { Button, Grid, Box, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import TextField from '@mui/material/TextField';
-import { createUser } from '../config/apisauce';
+import { createUser, deleteUser, getUsers } from '../config/apisauce';
 import { useFormik } from 'formik';
 import { GenericTextField } from './../components/GenericComponents/TextField/GenericTextField';
 import { useSnackbar } from 'notistack';
 import { DialogWrapper } from './../components/GenericComponents/DialogBox/DialogWrapper';
+import { fetchUsers } from './../config/apisauce';
+import DeleteIcon from '@mui/icons-material/Delete';
+import CreateIcon from '@mui/icons-material/Create';
+import InfoIcon from '@mui/icons-material/Info';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
 
 const boxPadding = {
   p: '0.5rem 2rem',
@@ -37,7 +41,7 @@ const StyledGridOverlay = styled('div')(({ theme }) => ({
   },
 }));
 
-const CustomNoRowsOverlay = () => {
+function CustomNoRowsOverlay() {
   return (
     <StyledGridOverlay>
       <svg
@@ -85,7 +89,360 @@ const CustomNoRowsOverlay = () => {
 }
 
 
-const CustomButton = () => {
+function CustomButton({ setRows }) {
+  const [open, setOpen] = useState(false);
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
+  console.log('button', setRows);
+
+  const createUserFormik = useFormik({
+    initialValues: {
+      id_no: '',
+      firstname: '',
+      middlename: '',
+      lastname: '',
+      address: '',
+      username: '',
+      contact_no: '',
+      email: '',
+      course: '',
+      course_type: '',
+      role: '',
+      password: '',
+      status: '',
+    }
+  })
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleOnChange = (field, newValue) => {
+    createUserFormik.setFieldValue(field, newValue);
+  }
+
+  const handleCreateUser = async (values) => {
+    const res = await createUser({ values: values });
+
+    if (res.data.code == 200) {
+      setRows(prev => [...prev ?? []]);
+
+      enqueueSnackbar('Success', { variant: 'success' })
+      handleClose();
+    }
+  }
+
+  return (
+    <GridToolbarContainer>
+      <Button variant="outlined" onClick={handleClickOpen}>
+        Add User
+      </Button>
+      <form >
+        <DialogWrapper
+          open={open}
+          close={handleClose}>
+          <DialogTitle>Add User</DialogTitle>
+          <DialogContent>
+            {/* <DialogContentText>
+            By 
+          </DialogContentText> */}
+            <Box sx={boxPadding}>
+              <GenericTextField
+                fieldName="id_no"
+                fieldLabel="ID No"
+                handleOnChangeValue={(field, newValue) =>
+                  handleOnChange(field, newValue)
+                }
+                variant={{
+                  rows: 8,
+                  fullWidth: true,
+                  variant: "outlined",
+                  size: "small",
+                }}
+                fieldOptions={{
+                  placeholder: "181-1777-2",
+                  type: "text",
+                }}
+              />
+            </Box>
+            <Box sx={boxPadding}>
+              <GenericTextField
+                fieldName="firstname"
+                fieldLabel="Firstname"
+                handleOnChangeValue={(field, newValue) =>
+                  handleOnChange(field, newValue)
+                }
+                variant={{
+                  rows: 8,
+                  fullWidth: true,
+                  variant: "outlined",
+                  size: "small",
+                }}
+                fieldOptions={{
+                  placeholder: "Firstname",
+                  type: "text",
+                }}
+
+              />
+            </Box>
+            <Box sx={boxPadding}>
+              <GenericTextField
+                fieldName="middlename"
+                fieldLabel="Middlename"
+                handleOnChangeValue={(field, newValue) =>
+                  handleOnChange(field, newValue)
+                }
+                variant={{
+                  rows: 8,
+                  fullWidth: true,
+                  variant: "outlined",
+                  size: "small",
+                }}
+                fieldOptions={{
+                  placeholder: "Middlename",
+                  type: "text",
+                }}
+
+              />
+            </Box>
+            <Box sx={boxPadding}>
+              <GenericTextField
+                fieldName="lastname"
+                fieldLabel="Lastname"
+                handleOnChangeValue={(field, newValue) =>
+                  handleOnChange(field, newValue)
+                }
+                variant={{
+                  rows: 8,
+                  fullWidth: true,
+                  variant: "outlined",
+                  size: "small",
+                }}
+                fieldOptions={{
+                  placeholder: "Lastname",
+                  type: "text",
+                }}
+
+              />
+            </Box>
+            <Box sx={boxPadding}>
+              <GenericTextField
+                fieldName="address"
+                fieldLabel="Address"
+                handleOnChangeValue={(field, newValue) =>
+                  handleOnChange(field, newValue)
+                }
+                variant={{
+                  rows: 8,
+                  fullWidth: true,
+                  variant: "outlined",
+                  size: "small",
+                }}
+                fieldOptions={{
+                  placeholder: "Address",
+                  type: "text",
+                }}
+
+              />
+            </Box>
+            <Box sx={boxPadding}>
+              <GenericTextField
+                fieldName="username"
+                fieldLabel="Username"
+                handleOnChangeValue={(field, newValue) =>
+                  handleOnChange(field, newValue)
+                }
+                variant={{
+                  rows: 8,
+                  fullWidth: true,
+                  variant: "outlined",
+                  size: "small",
+                }}
+                fieldOptions={{
+                  placeholder: "Username",
+                  type: "text",
+                }}
+
+              />
+            </Box>
+            <Box sx={boxPadding}>
+              <GenericTextField
+                fieldName="contact_no"
+                fieldLabel="Contact No"
+                handleOnChangeValue={(field, newValue) =>
+                  handleOnChange(field, newValue)
+                }
+                variant={{
+                  rows: 8,
+                  fullWidth: true,
+                  variant: "outlined",
+                  size: "small",
+                }}
+                fieldOptions={{
+                  placeholder: "Contact No",
+                  type: "text",
+                }}
+
+              />
+            </Box>
+            <Box sx={boxPadding}>
+              <GenericTextField
+                fieldName="email"
+                fieldLabel="Email"
+                handleOnChangeValue={(field, newValue) =>
+                  handleOnChange(field, newValue)
+                }
+                variant={{
+                  rows: 8,
+                  fullWidth: true,
+                  variant: "outlined",
+                  size: "small",
+                }}
+                fieldOptions={{
+                  placeholder: "Email",
+                  type: "email",
+                }}
+
+              />
+            </Box>
+            <Box sx={boxPadding}>
+              <GenericTextField
+                fieldName="course"
+                fieldLabel="Course"
+                handleOnChangeValue={(field, newValue) =>
+                  handleOnChange(field, newValue)
+                }
+                variant={{
+                  rows: 8,
+                  fullWidth: true,
+                  variant: "outlined",
+                  size: "small",
+                }}
+                fieldOptions={{
+                  placeholder: "Course",
+                  type: "text",
+                }}
+
+              />
+            </Box>
+            <Box sx={boxPadding}>
+              <GenericTextField
+                fieldName="course_type"
+                fieldLabel="Course Type"
+                handleOnChangeValue={(field, newValue) =>
+                  handleOnChange(field, newValue)
+                }
+                variant={{
+                  rows: 8,
+                  fullWidth: true,
+                  variant: "outlined",
+                  size: "small",
+                }}
+                fieldOptions={{
+                  placeholder: "Course Type",
+                  type: "text",
+                }}
+
+              />
+            </Box>
+            <Box sx={boxPadding}>
+              <GenericTextField
+                fieldName="role"
+                fieldLabel="Role"
+                handleOnChangeValue={(field, newValue) =>
+                  handleOnChange(field, newValue)
+                }
+                variant={{
+                  rows: 8,
+                  fullWidth: true,
+                  variant: "outlined",
+                  size: "small",
+                }}
+                fieldOptions={{
+                  placeholder: "Role",
+                  type: "text",
+                }}
+
+              />
+            </Box>
+            <Box sx={boxPadding}>
+              <GenericTextField
+                fieldName="password"
+                fieldLabel="Password"
+                handleOnChangeValue={(field, newValue) =>
+                  handleOnChange(field, newValue)
+                }
+                variant={{
+                  rows: 8,
+                  fullWidth: true,
+                  variant: "outlined",
+                  size: "small",
+                }}
+                fieldOptions={{
+                  placeholder: "Password",
+                  type: "password",
+                }}
+
+              />
+            </Box>
+            <Box sx={boxPadding}>
+              <GenericTextField
+                fieldName="status"
+                fieldLabel="Status"
+                handleOnChangeValue={(field, newValue) =>
+                  handleOnChange(field, newValue)
+                }
+                variant={{
+                  rows: 8,
+                  fullWidth: true,
+                  variant: "outlined",
+                  size: "small",
+                }}
+                fieldOptions={{
+                  placeholder: "Status",
+                  type: "text",
+                }}
+
+              />
+            </Box>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Cancel</Button>
+            <Button onClick={() => handleCreateUser(createUserFormik.values)}>Submit</Button>
+          </DialogActions>
+        </DialogWrapper>
+      </form>
+    </GridToolbarContainer>
+  )
+}
+
+function CustomToolbar() {
+  return (
+    <GridToolbarContainer>
+      <Grid container justifyContent='space-between' p='0.5rem'>
+
+        <Grid item>
+          <GridToolbarColumnsButton />
+          <GridToolbarFilterButton />
+          <GridToolbarDensitySelector />
+          <GridToolbarExport />
+        </Grid>
+        <Grid item>
+          <CustomButton />
+        </Grid>
+
+
+      </Grid>
+
+    </GridToolbarContainer>
+  );
+}
+
+
+function EditUserInfo() {
   const [open, setOpen] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
@@ -116,9 +473,9 @@ const CustomButton = () => {
 
   return (
     <GridToolbarContainer>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Add User
-      </Button>
+      <IconButton onClick={handleClickOpen}>
+        <CreateIcon />
+      </IconButton>
       <form >
         <DialogWrapper
           open={open}
@@ -178,78 +535,144 @@ const CustomButton = () => {
   )
 }
 
-const CustomToolbar = () => {
+
+function UserInfo({ id }) {
+  const [info, setInfo] = useState();
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+    handleFetch();
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleFetch = async () => {
+    const res = await getUsers({ id });
+
+    if (res.data.code == 200) {
+      console.log('test', res.data.data);
+      // setInfo(res.data.data);
+    }
+  }
   return (
     <GridToolbarContainer>
-      <Grid container justifyContent='space-between' p='0.5rem'>
-
-        <Grid item>
-          <GridToolbarColumnsButton />
-          <GridToolbarFilterButton />
-          <GridToolbarDensitySelector />
-          <GridToolbarExport />
-        </Grid>
-        <Grid item>
-          <CustomButton />
-        </Grid>
-
-
-      </Grid>
-
+      <IconButton onClick={handleClickOpen}>
+        <InfoIcon />
+      </IconButton>
+      <form >
+        <DialogWrapper
+          open={open}
+          close={handleClose}>
+          <DialogTitle>Add User</DialogTitle>
+          <DialogContent>
+            {/* {
+              info.map((element) => console.log(element))
+            } */}
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Cancel</Button>
+          </DialogActions>
+        </DialogWrapper>
+      </form>
     </GridToolbarContainer>
-  );
+  )
 }
 
-const UserManagementPage = () => {
 
-  const rows = [
-    // {
-    //   id: 1,
-    //   name: 'Firstname',
-    //   stars: 28000,
-    // },
-    // {
-    //   id: 2,
-    //   name: 'Middlename',
-    //   stars: 15000,
-    // },
-    // {
-    //   id: 3,
-    //   name: 'Lastname',
-    //   stars: 28000,
-    // },
-    // {
-    //   id: 4,
-    //   name: 'Address',
-    //   stars: 15000,
-    // },
-    // {
-    //   id: 5,
-    //   name: 'Contact Number',
-    //   stars: 15000,
-    // },
-    // {
-    //   id: 6,
-    //   name: 'Email',
-    //   stars: 15000,
-    // },
-    // {
-    //   id: 7,
-    //   name: 'Action',
-    //   stars: 15000,
-    // },
-  ];
+const UserManagementPage = () => {
+  const [rows, setRows] = React.useState([]);
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  async function handleFetchUsers() {
+    const res = await fetchUsers();
+
+    if (res.data.code == 200) {
+      setRows(res.data.data);
+    }
+  }
+
+  async function handleDelete(id) {
+    const res = await deleteUser({ id: id });
+
+    if (res.data.code == 200) {
+      setRows(prev => {
+        return prev.filter(rows => rows.id !== id);
+      });
+      enqueueSnackbar('Deleted', { variant: 'success' })
+    } else {
+      console.log(res.data.message);
+
+      enqueueSnackbar('Please Try Again!', { variant: 'info' });
+    }
+  }
+
+  const createUserFunc = (values) => {
+
+    console.log(values);
+  }
+
+  React.useEffect(() => {
+    handleFetchUsers();
+  }, []);
 
   const columns = [
-    { field: 'Firstname', width: 200 },
-    { field: 'Middlename', width: 200 },
-    { field: 'Lastname', width: 200 },
-    { field: 'Address', width: 220 },
-    { field: 'Contact Number', width: 200 },
-    { field: 'Email', width: 220 },
-    { field: 'Action', width: 200 },
-  ];
+    { field: 'id', headerName: 'ID', width: 90, hide: true },
+    { field: 'id_no', headerName: 'ID No', width: 150 },
+    {
+      field: 'firstname',
+      headerName: 'First Name',
+      flex: 1,
+    },
+    {
+      field: 'middlename',
+      headerName: 'Middle Name',
+      flex: 1,
+    },
+    {
+      field: 'lastname',
+      headerName: 'Last Name',
+      flex: 1,
+    },
+    {
+      field: 'address',
+      headerName: 'Address',
+      flex: 1,
+    },
+    {
+      field: 'contact_no',
+      headerName: 'Contact No',
+      type: 'number',
+      flex: 1,
+    },
+    {
+      field: 'email',
+      headerName: 'Email',
+      flex: 1,
+    },
+    {
+      field: 'action',
+      headerName: 'Action',
+      // width: 200,
+      flex: 1,
+      renderCell: ({ row }) => {
+        return (
+          <React.Fragment>
+            <IconButton onClick={() => handleDelete(row.id)}>
+              <DeleteIcon />
+            </IconButton>
 
+            {/* <EditUserInfo /> */}
+
+            <UserInfo id={row.id} />
+
+
+          </React.Fragment >
+        )
+      }
+
+    },
+  ];
 
   return (
     <Box height='100%'>
@@ -264,7 +687,7 @@ const UserManagementPage = () => {
 
         }}
         componentsProps={{
-          toolbar: CustomButton
+          toolbar: CustomButton(setRows)
         }}
       />
     </Box>

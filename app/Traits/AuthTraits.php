@@ -6,10 +6,6 @@ use App\Models\User;
 
 trait AuthTraits
 {
-  protected function role()
-  {
-    return \Auth::user();
-  }
 
   protected function scopeUser()
   {
@@ -29,18 +25,4 @@ trait AuthTraits
       ->first();
   }
 
-  // protected function assignAdminRole($id)
-  // {
-  //   return $this->where('id_no', $id)->update(['role' => 'admin']);
-  // }
-
-  // protected function assignUserRole($id)
-  // {
-  //   return $this->where('id_no', $id)->update(['role' => 'student']);
-  // }
-
-  // protected function assignFoundationRole($id)
-  // {
-  //   return $this->where('id_no', $id)->update(['role' => 'foundation']);
-  // }
 }

@@ -44,14 +44,13 @@ const LeftSection = () => {
         <AppBar
           position="fixed"
           elevation={0}
-          sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px`, backgroundColor: '#e5e7eb' }}
+          sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px`, backgroundColor: '#86efac' }}
         >
           <Toolbar>
             <Typography variant="h6" noWrap component="div">
-              {/* {
-
-
-              } */}
+              {
+                location.pathname.split('/')
+              }
             </Typography>
           </Toolbar>
         </AppBar>
@@ -97,7 +96,7 @@ const LeftSection = () => {
         </Drawer>
 
         <Box
-          sx={{ backgroundColor: '#f9fafb', p: 4 }}
+          sx={{ backgroundColor: '#f0fdf4', p: 4 }}
         >
           <Toolbar />
           <Box sx={{ height: 600, width: '1225px' }}>

@@ -28,9 +28,8 @@ Route::controller(AuthController::class)->group(function () {
 });
 
 // Protected Routes
-Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::post('/logout', [AuthController::class, 'logout']);
-});
+// Route::group(['middleware' => ['auth:sanctum']], function () {
+Route::post('/logout', [AuthController::class, 'logout']);
 
 // Scholarship Type 
 Route::controller(ScholarshipTypeController::class)->prefix('scholarship-type')->group(function () {
@@ -46,7 +45,7 @@ Route::controller(ScholarshipManagementController::class)->prefix('scholarship-m
 // Profile Information\
 Route::controller(ProfileController::class)->prefix('profile')->group(function () {
     Route::post('/show', 'index');
-    Route::post('/update', 'update');
+    Route::put('/update', 'updateProfile');
     Route::post('/password-update', 'password');
 });
 
@@ -57,7 +56,11 @@ Route::controller(ConfigController::class)->prefix('config')->group(function () 
 });
 
 Route::controller(UserManagementController::class)->prefix('user-management')->group(function () {
+    Route::get('/list', 'list');
+    Route::post('/store', 'store');
+    Route::get('/listId', 'listById');
     Route::post('/update', 'store');
+    Route::delete('/delete', 'deleteUser');
 });
 
 // users
@@ -116,3 +119,4 @@ Route::controller(PostingController::class)->group(function () {
     Route::get('/postings/{posting}', 'show')
         ->name('apo.postings.show');
 });
+// });

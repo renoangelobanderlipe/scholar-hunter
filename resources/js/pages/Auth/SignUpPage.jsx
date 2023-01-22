@@ -10,7 +10,7 @@ import { GenericTextField } from '../../components/GenericComponents/TextField/G
 import { GenericButton } from '../../components/GenericComponents/Button/GenericButton';
 import { GenericTypography } from './../../components/GenericComponents/Typography/GenericTypography';
 
-import { register, courseShow, degreeShow, accountTypeShow } from './../../config/apisauce';
+import { register, courseShow, degreeShow, accountTypeShow, showProfile } from './../../config/apisauce';
 import useAuthStore from "../../config/store";
 import TextField from '@mui/material/TextField';
 
@@ -30,10 +30,6 @@ const linkTypography = {
   fontSize: '12px'
 }
 
-const courseArray = ['Information Technology', 'Arts and Science'];
-const degreeArray = ['test1', 'test2'];
-const accounTypeArr = ['Student', 'Foundation']
-
 const SignUpPage = () => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const { setLoggedIn } = useAuthStore();
@@ -41,38 +37,45 @@ const SignUpPage = () => {
 
   const registerFormik = useFormik({
     initialValues: {
-      email: "",
-      username: "",
-      firstname: "",
-      middlename: "",
-      lastname: "",
-      address: "",
-      course: [],
-      degree: [],
-      account_type: [],
-      password: "",
-      confirm_password: "",
+      firstname: '',
+      middlename: '',
+      lastname: '',
+      address: '',
+      username: '',
+      email: '',
+      course_type: '',
+      course: '',
+      degree: '',
+      contact_no: '',
+      account_type: '',
+      password: '',
+      confirm_password: ''
     },
   });
 
   const handleOnSubmit = async (values) => {
-    const [course] = values.course
+    const [course_type] = values.course_type
     const [degree] = values.degree
     const [account_type] = values.account_type
 
-    const res = await register({
-      firstname: values.firstname,
-      middlename: values.middlename,
-      lastname: values.lastname,
-      address: values.address,
-      username: values.username,
-      email: values.email,
-      course: course,
-      degree: degree,
-      account_type: account_type,
-      password: values.password,
-      password_confirmation: values.password,
-    });
+
+    const res = await showProfile();
+    console.log(res, document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
+
+    // const res = await register({
+    //   firstname: values.firstname,
+    //   middlename: values.middlename,
+    //   lastname: values.lastname,
+    //   address: values.address,
+    //   username: values.username,
+    //   email: values.email,
+    //   course_type: course_type,
+    //   degree: degree,
+    //   account_type: account_type,
+    //   contact_no: values.contact_no,
+    //   password: values.password,
+    //   password_confirmation: values.password,
+    // });
 
     // if (res.data.code == 200) {
     //   enqueueSnackbar('Success', { variant: 'success' })
@@ -85,67 +88,24 @@ const SignUpPage = () => {
     registerFormik.setFieldValue(field, newValue);
   };
 
-
-  const handleFetchCourse = async () => {
-    const res = await courseShow();
-    const { option_value } = res.data?.data;
-
-    if (res.data.code == 200) {
-      registerFormik.setFieldValue('course', [option_value]);
-    }
-  }
-
-  const handleFetchAccounType = async () => {
-    const res = await accountTypeShow();
-
-    const { option_value } = res.data?.data;
-
-    if (res.data.code == 200) {
-      registerFormik.setFieldValue('account_type', [option_value]);
-    }
-  }
-
-  const handleFetchDegree = async () => {
-    const res = await degreeShow();
-
-    const { option_value } = res.data?.data;
-
-    if (res.data.code == 200) {
-      registerFormik.setFieldValue('degree', [option_value]);
-    }
-  }
-
-  React.useEffect(() => {
-    handleFetchCourse();
-    handleFetchAccounType();
-    handleFetchDegree();
-  }, []);
-
   return (
     <React.Fragment>
-      <Grid item   >
-        <Box>
-          <Grid item sx={style}>
-            <Box sx={{
-              mb: '1.5rem'
-            }}>
-              <Typography>Logo Here</Typography>
-            </Box>
-            <GenericTypography
-              title={'Create an account'}
-              variant={{
-                variant: 'h5',
-                color: 'black',
-                fontWeight: 'bold',
-                mb: '1rem'
-              }}
-            />
-          </Grid>
+      <Grid item>
 
-        </Box>
+        <Grid item container justifyContent={'center'}>
+          <GenericTypography
+            title={'Create an account'}
+            variant={{
+              variant: 'h5',
+              color: 'black',
+              fontWeight: 'bold',
+              mb: '1rem'
+            }}
+          />
+        </Grid>
 
         <form>
-          <Box sx={container}>
+          <Grid item container sx={container}>
             <Grid item sx={style}>
               <GenericTextField
                 fieldName="firstname"
@@ -163,7 +123,7 @@ const SignUpPage = () => {
                   placeholder: "First Name",
                 }}
               />
-            </Grid >
+            </Grid>
 
             <Grid item sx={style}>
               <GenericTextField
@@ -183,8 +143,9 @@ const SignUpPage = () => {
                 }}
               />
             </Grid >
-          </Box>
-          <Box sx={container}>
+          </Grid >
+
+          <Grid item container sx={container}>
             <Grid item sx={style}>
               <GenericTextField
                 fieldName="lastname"
@@ -221,7 +182,7 @@ const SignUpPage = () => {
                 }}
               />
             </Grid >
-          </Box>
+          </Grid>
 
 
           <Grid item sx={style}>
@@ -262,25 +223,39 @@ const SignUpPage = () => {
               }}
             />
           </Grid >
-          <Box sx={container}>
-            <Grid item sx={style} width='50%'>
+          <Grid item container >
+            <Grid item container sx={style} fullWidth>
               <Autocomplete
+                fullWidth
                 disablePortal
-                options={registerFormik.values.course ?? []}
+                options={registerFormik.values.course_type ?? []}
                 size='small'
                 renderInput={(params) => <TextField {...params} label="Course" />}
               />
             </Grid >
 
-            <Grid item sx={style} width='50%'>
+            <Grid item container sx={style} fullWidth>
               <Autocomplete
+                fullWidth
                 disablePortal
                 options={registerFormik.values.degree ?? []}
                 size='small'
                 renderInput={(params) => <TextField {...params} label="Degree" />}
               />
             </Grid >
-          </Box>
+
+            <Grid item container sx={style} fullWidth>
+              <Autocomplete
+                fullWidth
+                disablePortal
+                options={registerFormik.values.account_type ?? []}
+                size='small'
+                renderInput={(params) => <TextField {...params} label="Account Type" />}
+              />
+            </Grid>
+
+          </Grid>
+
           <Grid item sx={style}>
             <GenericTextField
               fieldName="password"
@@ -299,9 +274,11 @@ const SignUpPage = () => {
                 type: "password",
               }}
             />
+
           </Grid>
 
           <Grid item sx={style}>
+
             <GenericTextField
               fieldName="confirm_password"
               fieldLabel="Confirm Password"
@@ -321,16 +298,7 @@ const SignUpPage = () => {
             />
           </Grid>
 
-          <Grid item sx={style}>
-            <Autocomplete
-              disablePortal
-              options={registerFormik.values.account_type ?? []}
-              size='small'
-              renderInput={(params) => <TextField {...params} label="Account Type" />}
-            />
-          </Grid>
-
-          <Grid item sx={style} mt={'1.5rem'} mb={'1rem'}>
+          <Grid item container sx={style} mt={'1.5rem'} mb={'1rem'}>
             <GenericButton
               disable={true}
               title={"Sign In"}

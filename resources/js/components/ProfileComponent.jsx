@@ -29,7 +29,7 @@ export const ProfileComponent = () => {
           size="small"
           sx={{ ml: 2 }}
           aria-controls={open ? "account-menu" : undefined}
-          aria-haspopup="true" 
+          aria-haspopup="true"
           aria-expanded={open ? "true" : undefined}
         >
           <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
@@ -83,7 +83,7 @@ export const ProfileComponent = () => {
       >
         <Box p={2}>
           <MenuItem>
-            <Avatar /> Profile
+            Profile
           </MenuItem>
 
           <Divider />
