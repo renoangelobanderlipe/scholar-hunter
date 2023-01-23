@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Grid, Card, CardContent, Typography, CardActions, Button, Autocomplete, DialogContent, DialogTitle, Input } from '@mui/material';
+import { Box, Grid, Card, CardContent, Typography, CardActions, Button, Autocomplete, DialogContent, DialogTitle, Input, Chip, } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import { Search } from '@mui/icons-material';
@@ -10,6 +10,13 @@ import { FilePond, registerPlugin } from 'react-filepond';
 // Import FilePond styles
 import 'filepond/dist/filepond.min.css';
 import SerachbarComponent from './../components/SerachbarComponent';
+import { scholarshipList, scholarshipListPage } from '../config/apisauce';
+import Pagination from '@mui/material/Pagination';
+import PaginationItem from '@mui/material/PaginationItem';
+import Stack from '@mui/material/Stack';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { escapeRegExp } from 'lodash';
 
 const container = {
   bgcolor: 'orange',
@@ -52,15 +59,49 @@ function FileUplaodButton() {
 }
 
 const ScholarshipListPage = () => {
-  const handleOnChange = () => {
+  const [scholarship, setScholarship] = React.useState([]);
 
+  const handleOnChange = async (event, page) => {
+    const res = await scholarshipListPage({ page });
+
+    if (res.data.code == 200) {
+      setScholarship(res.data.data.data);
+    }
   }
+
+  const handleScholarshipList = async () => {
+    const res = await scholarshipList();
+
+    if (res.data.code == 200) {
+      setScholarship(res.data.data.data);
+    }
+  }
+
+  const handleSearch = (value) => {
+    let filteredRows = [...scholarship];
+    if (value) {
+      const searchRegex = new RegExp(escapeRegExp(scholarship), 'i');
+      filteredRows = filteredRows.filter((row) => {
+        // console.log('ats', { ...row });
+
+        setScholarship(prev => [[...prev], { ...row }])
+        console.log('test', row)
+        // return Object.keys(row).some((value) => {
+        //   return searchRegex.test(row[value]?.toString());
+        // });
+      });
+    }
+  }
+  React.useEffect(() => {
+    handleScholarshipList();
+  }, [])
+
 
   return (
     <React.Fragment>
       <Box sx={{ p: '3rem 0' }}>
 
-        <SerachbarComponent placeholder={'Search'} onChange={(e) => handleOnChange()} />
+        <SerachbarComponent placeholder={'Search'} onChange={(value) => handleSearch(value)} />
 
         {/* <Search>
           <StyledInputBase
@@ -73,61 +114,74 @@ const ScholarshipListPage = () => {
 
       <Box sx={{ flexGrow: 1, p: '0 0 3rem 0' }}>
         <Grid container spacing={2}>
-          <Grid item xs={6}>
-            <Card elevation={4}>
-              <CardContent>
-                <Grid
-                  container
-                  // backgroundColor="orange"
-                  justifyContent="space-between"
-                >
-                  <Typography gutterBottom variant="h5" component="div">
-                    DepEd
-                  </Typography>
-                  <CardActions>
-                    {/* <Button variant="contained" endIcon={<AttachFileIcon />}>
+
+          {
+            scholarship.map((element, index) => (
+              <React.Fragment>
+                <Grid item xs={6} key={index}>
+                  <Card>
+                    <CardContent>
+
+                      <Grid
+                        container item
+                      // justifyContent="space-between"
+                      >
+                        <Grid container justifyContent={'space-between'}>
+                          <Box display={'flex'}>
+                            <Grid textAlign={'center'} justifyItems={'center'} justifyContent={'center'}>
+                              <Typography>
+                                {element.name}
+                              </Typography>
+                            </Grid>
+                            <Grid item>
+                              <Chip label={element.type} size="small" />
+                            </Grid>
+                          </Box>
+                          <FileUplaodButton />
+                        </Grid>
+
+                        <CardActions>
+                          {/* <Button variant="contained" endIcon={<AttachFileIcon />}>
                       Apply
                     </Button> */}
-                    <FileUplaodButton />
-                  </CardActions>
+                        </CardActions>
+                      </Grid>
+                      <Grid container item sx={{ p: '1rem 0', mt: '0.5rem' }}>
+                        <Typography variant="body2" color="text.primary">
+                          {element.description}
+                        </Typography>
+                        <Typography color="text.secondary">
+                          {element.address}
+                        </Typography>
+
+                        <Chip label={element.email} size="small" />
+
+                        <Chip label={element.contact_no} size="small" />
+                      </Grid>
+                    </CardContent>
+
+                  </Card>
                 </Grid>
-                <Grid container item sx={{ p: '1rem 0', mt: '0.5rem' }}>
-                  <Typography variant="body2" color="text.secondary">
-                    Lizards are a widespread group of squamate reptiles, with over 6,000
-                    species, ranging across all continents except Antarctica
-                  </Typography>
-                </Grid>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={6}>
-            <Card elevation={4}>
-              <CardContent>
-                <Grid
-                  container
-                  // backgroundColor="orange"
-                  justifyContent="space-between"
-                >
-                  <Typography gutterBottom variant="h5" component="div">
-                    DepEd
-                  </Typography>
-                  <CardActions>
-                    <Button variant="contained" endIcon={<AttachFileIcon />}>
-                      Apply
-                    </Button>
-                  </CardActions>
-                </Grid>
-                <Grid container item sx={{ p: '1rem 0', mt: '0.5rem' }}>
-                  <Typography variant="body2" color="text.secondary">
-                    Lizards are a widespread group of squamate reptiles, with over 6,000
-                    species, ranging across all continents except Antarctica
-                  </Typography>
-                </Grid>
-              </CardContent>
-            </Card>
-          </Grid>
+              </React.Fragment>
+            ))
+          }
 
         </Grid>
+
+
+        <Stack spacing={2}>
+          <Pagination
+            count={scholarship.length}
+            onChange={(event, value) => handleOnChange(event, value)}
+            renderItem={(item) => (
+              // console.log('test', item),
+              < PaginationItem
+                slots={{ previous: ArrowBackIcon, next: ArrowForwardIcon }}
+                {...item}
+              />
+            )}
+          />
+        </Stack>
       </Box>
     </React.Fragment>
   )

@@ -20,102 +20,106 @@ Route::controller(AuthController::class)->group(function () {
 });
 
 // Protected Routes
-Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::post('/logout', [AuthController::class, 'logout']);
+// Route::group(['middleware' => ['auth:sanctum']], function () {
+Route::post('/logout', [AuthController::class, 'logout']);
 
-    // Scholarship Type 
-    Route::controller(ScholarshipTypeController::class)->prefix('scholarship-type')->group(function () {
-        Route::post('/index', 'index');
-        Route::post('/store', 'store');
-    });
-
-    // Scholarship Management
-    Route::controller(ScholarshipManagementController::class)->prefix('scholarship-management')->group(function () {
-        Route::post('create', 'create');
-    });
-
-    // Profile Information\
-    Route::controller(ProfileController::class)->prefix('profile')->group(function () {
-        Route::post('/show', 'index');
-        Route::put('/update', 'updateProfile');
-        Route::post('/password-update', 'password');
-    });
-
-    Route::controller(UserManagementController::class)->prefix('user-management')->group(function () {
-        Route::get('/list', 'list');
-        Route::post('/store', 'store');
-        Route::get('/listId', 'listById');
-        Route::post('/update', 'store');
-        Route::delete('/delete', 'deleteUser');
-    });
-
-    // users
-    Route::controller(UserController::class)->group(function () {
-
-        Route::get('/users', 'index')
-            ->name('api.users.index');
-
-        Route::post('/users', 'store')
-            ->name('api.users.store');
-
-        Route::get('/users/{user}', 'show')
-            ->name('api.users.show');
-    });
-
-    // changing status endpoint for users
-    Route::post('/users/{user}/status', ChangeUserStatusController::class)
-        ->name('api.users.status');
-
-
-    // foundations
-    Route::controller(FoundationController::class)->group(function () {
-
-        Route::get('/foundations', 'index')
-            ->name('api.foundations.index');
-
-        Route::post('/foundations', 'store')
-            ->name('api.foundations.store');
-
-        Route::get('/foundations/{foundation}', 'show')
-            ->name('api.foundations.show');
-    });
-
-    // scholarships
-    Route::controller(ScholarshipController::class)->group(function () {
-
-        Route::get('/scholarships', 'index')
-            ->name('api.scholarships.index');
-
-        Route::post('/scholarships', 'store')
-            ->name('api.scholarships.store');
-
-        Route::get('/scholarships/{scholarship}', 'show')
-            ->name('api.scholarships.show');
-    });
-
-    // postings
-    Route::controller(PostingController::class)->group(function () {
-
-        Route::get('/postings', 'index')
-            ->name('api.postings.index');
-
-        Route::post('/postings', 'store')
-            ->name('api.postings.store');
-
-        Route::get('/postings/{posting}', 'show')
-            ->name('apo.postings.show');
-    });
-
-    // application
-    Route::controller(ApplicationController::class)->group(function () {
-
-        Route::get('/applications', 'index')
-            ->name('api.applications.index');
-
-        Route::post('/applications', 'store')
-            ->name('api.applications.store');
-
-        Route::get('/applications/{application}', 'show')
-            ->name('apo.applications.show');
-    });
+// Scholarship Type 
+Route::controller(ScholarshipTypeController::class)->prefix('scholarship-type')->group(function () {
+    Route::post('/index', 'index');
+    Route::post('/store', 'store');
 });
+
+// Scholarship Management
+Route::controller(ScholarshipManagementController::class)->prefix('scholarship-management')->group(function () {
+    Route::post('create', 'create');
+    Route::get('list', 'list');
+});
+
+// Profile Information\
+Route::controller(ProfileController::class)->prefix('profile')->group(function () {
+    Route::post('/show', 'index');
+    Route::put('/update', 'updateProfile');
+    Route::post('/password-update', 'password');
+});
+
+Route::controller(UserManagementController::class)->prefix('user-management')->group(function () {
+    Route::get('/list', 'list');
+    Route::post('/store', 'store');
+    Route::get('/listId', 'listById');
+    Route::post('/update', 'store');
+    Route::delete('/delete', 'deleteUser');
+});
+
+// users
+Route::controller(UserController::class)->group(function () {
+
+    Route::get('/users', 'index')
+        ->name('api.users.index');
+
+    Route::post('/users', 'store')
+        ->name('api.users.store');
+
+    Route::get('/users/{user}', 'show')
+        ->name('api.users.show');
+});
+
+// changing status endpoint for users
+Route::post('/users/{user}/status', ChangeUserStatusController::class)
+    ->name('api.users.status');
+
+
+// foundations
+Route::controller(FoundationController::class)->group(function () {
+
+    Route::get('/foundations', 'index')
+        ->name('api.foundations.index');
+
+    Route::post('/foundations', 'store')
+        ->name('api.foundations.store');
+
+    Route::get('/foundations/{foundation}', 'show')
+        ->name('api.foundations.show');
+});
+
+// scholarships
+Route::controller(ScholarshipController::class)->group(function () {
+
+    Route::get('/scholarships', 'index')
+        ->name('api.scholarships.index');
+
+    Route::post('/scholarships', 'store')
+        ->name('api.scholarships.store');
+
+    Route::get('/scholarships/{id}', 'index')
+        ->name('api.scholarships.store');
+
+    Route::get('/scholarships/{scholarship}', 'show')
+        ->name('api.scholarships.show');
+});
+
+// postings
+Route::controller(PostingController::class)->group(function () {
+
+    Route::get('/postings', 'index')
+        ->name('api.postings.index');
+
+    Route::post('/postings', 'store')
+        ->name('api.postings.store');
+
+    Route::get('/postings/{posting}', 'show')
+        ->name('apo.postings.show');
+});
+
+// application
+Route::controller(ApplicationController::class)->group(function () {
+
+    Route::get('/applications', 'index')
+        ->name('api.applications.index');
+
+    Route::post('/applications', 'store')
+        ->name('api.applications.store');
+
+    Route::get('/applications/{application}', 'show')
+        ->name('apo.applications.show');
+});
+// });

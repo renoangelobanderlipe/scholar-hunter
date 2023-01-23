@@ -22,8 +22,8 @@ export const deleteUser = (params) => apiSauce.delete('api/user-management/delet
 
 // Scholarship Management 
 export const createScholarship = (params) => apiSauce.post('api/scholarship-management/create', params);
-export const scholarshipList = () => apiSauce.get('api/scholarship-management/list');
-
+export const scholarshipList = () => apiSauce.get('api/scholarships');
+export const scholarshipListPage = (params) => apiSauce.get('api/scholarships', params);
 
 // Profile Information
 export const showProfile = () => apiSauce.post('api/profile/show')

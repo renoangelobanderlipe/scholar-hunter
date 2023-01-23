@@ -59,13 +59,10 @@ const SignInPage = () => {
       // SET LOGGED IN STATUS TO TRUE USING ZUSTAND! 
       setLoggedIn(true);
       setRole('user');
-      // console.log('login status : ', true);
       navigate('/home', { replace: true });
-
     } else {
       enqueueSnackbar(res.data.message, { variant: 'error' })
     }
-
   };
 
   const handleOnChange = (field, newValue) => {

@@ -226,8 +226,13 @@ const ScholarshipManagementPage = () => {
       enqueueSnackbar('Please Try Again!', { variant: 'info' });
     }
   }
-
   const columns = [
+    {
+      field: 'id',
+      headerName: 'ID',
+      flex: 1,
+      hide: true
+    },
     {
       field: 'name',
       headerName: 'Name',
@@ -239,21 +244,54 @@ const ScholarshipManagementPage = () => {
       flex: 1,
     },
     {
-      field: 'description',
-      headerName: 'Description',
+      field: 'address',
+      headerName: 'Address',
       flex: 1,
-      renderCell: ({ row }) => {
-        return (
-          <React.Fragment>
-            <IconButton onClick={() => handleDelete(row.id)}>
-              <DeleteIcon />
-            </IconButton>
-          </React.Fragment >
-        )
-      }
-
     },
-  ];
+    {
+      field: 'contact_no',
+      headerName: 'Contact No',
+      flex: 1,
+    },
+    {
+      field: 'email',
+      headerName: 'Email',
+      flex: 1,
+    },
+    {
+      field: 'type',
+      headerName: 'Type',
+      flex: 1,
+    },
+  ]
+
+  // const columns = [
+  //   {
+  //     field: 'name',
+  //     headerName: 'Name',
+  //     flex: 1,
+  //   },
+  //   {
+  //     field: 'description',
+  //     headerName: 'Description',
+  //     flex: 1,
+  //   },
+  //   {
+  //     field: 'description',
+  //     headerName: 'Description',
+  //     flex: 1,
+  //     renderCell: ({ row }) => {
+  //       return (
+  //         <React.Fragment>
+  //           <IconButton onClick={() => handleDelete(row.id)}>
+  //             <DeleteIcon />
+  //           </IconButton>
+  //         </React.Fragment >
+  //       )
+  //     }
+
+  //   },
+  // ];
 
 
   async function handleFetch() {
@@ -263,6 +301,8 @@ const ScholarshipManagementPage = () => {
       setRows(res.data?.data);
     }
   }
+
+
 
   React.useEffect(() => {
     handleFetch();

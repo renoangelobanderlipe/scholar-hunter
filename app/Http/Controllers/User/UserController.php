@@ -70,7 +70,7 @@ class UserController extends Controller
 
         return $this->success([
             'user' => $user,
-            // 'token' => $user->createToken('auth-token')->plainTextToken,
+            // 'token' => $user->createToken('auth-token')->plPPnTextToken,
         ]);
     }
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
 import { Grid, Box } from '@mui/material';
 import { styled } from '@mui/material/styles';
+// import { scholarshipList } from '../config/apisauce';
 
 const boxPadding = {
   p: '0.5rem 2rem',
@@ -95,42 +96,51 @@ const CustomToolbar = () => {
 }
 
 const ScholarListPage = () => {
+
+  // const handleFetchScholars = async () => {
+  //   const res = await scholarshipList();
+
+  //   console.log(res);
+
+  // }
+
+
   const rows = [
-    // {
-    //   id: 1,
-    //   name: 'Firstname',
-    //   stars: 28000,
-    // },
-    // {
-    //   id: 2,
-    //   name: 'Middlename',
-    //   stars: 15000,
-    // },
-    // {
-    //   id: 3,
-    //   name: 'Lastname',
-    //   stars: 28000,
-    // },
-    // {
-    //   id: 4,
-    //   name: 'Address',
-    //   stars: 15000,
-    // },
-    // {
-    //   id: 5,
-    //   name: 'Contact Number',
-    //   stars: 15000,
-    // },
-    // {
-    //   id: 6,
-    //   name: 'Email',
-    //   stars: 15000,
-    // },
-    // {
-    //   id: 7,
-    //   name: 'Action',
-    //   stars: 15000,
-    // },
+    {
+      id: 1,
+      name: 'Firstname',
+      stars: 28000,
+    },
+    {
+      id: 2,
+      name: 'Middlename',
+      stars: 15000,
+    },
+    {
+      id: 3,
+      name: 'Lastname',
+      stars: 28000,
+    },
+    {
+      id: 4,
+      name: 'Address',
+      stars: 15000,
+    },
+    {
+      id: 5,
+      name: 'Contact Number',
+      stars: 15000,
+    },
+    {
+      id: 6,
+      name: 'Email',
+      stars: 15000,
+    },
+    {
+      id: 7,
+      name: 'Action',
+      stars: 15000,
+    },
   ];
 
   const columns = [
@@ -142,6 +152,11 @@ const ScholarListPage = () => {
     { field: 'Email', width: 220 },
     { field: 'Action', width: 200 },
   ];
+
+
+  // React.useEffect(() => {
+  //   handleFetchScholars();
+  // }, [])
 
 
   return (

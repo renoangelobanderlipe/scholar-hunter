@@ -4,13 +4,15 @@ namespace App\Http\Controllers\Scholarship;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateScholarshipFormRequest;
+use App\Models\Foundation;
 use App\Models\Scholarship;
+use App\Traits\FoundationTraits;
 use Illuminate\Http\Request;
 use App\Traits\HttpResponseTraits;
 
 class ScholarshipController extends Controller
 {
-    use HttpResponseTraits;
+    use HttpResponseTraits, FoundationTraits;
     /**
      * Display a listing of the resource.
      *
@@ -18,7 +20,7 @@ class ScholarshipController extends Controller
      */
     public function index()
     {
-        dd('test');
+        return $this->success($this->joinScholarship());
     }
 
     /**
