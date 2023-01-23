@@ -29,7 +29,7 @@ class User extends Authenticatable
         'contact_no',
         'email',
         'course',
-        'course_type',
+        'course_type', // Bachelor, Masteral
         'password',
         'role',
         'status',

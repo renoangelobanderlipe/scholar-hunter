@@ -3,10 +3,11 @@ import { Routes, Route } from 'react-router-dom';
 
 import NotFoundPage from './NotFoundPage';
 import { pageRoutes } from './../layouts/PrimaryLayout';
+import { CircularProgress } from "@mui/material";
 
 const RightSection = () => {
   return (
-    <React.Suspense fallback="Loading...">
+    <React.Suspense fallback={<CircularProgress color="inherit" />}>
       <Routes>
         {
           pageRoutes.map((page, index) => (

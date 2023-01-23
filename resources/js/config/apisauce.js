@@ -4,7 +4,7 @@ const apiSauce = create({
   headers: {
     'X-Requested-With': 'XMLHttpRequest',
     'Accept': 'application/json',
-    // 'Content-Type': 'application/json',
+    'Content-Type': 'application/json',
     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
   },
 });

@@ -18,7 +18,6 @@ class FoundationController extends Controller
      */
     public function index()
     {
-        //
     }
 
     /**

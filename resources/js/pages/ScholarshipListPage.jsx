@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Grid, Card, CardContent, Typography, CardActions, Button, Autocomplete, DialogContent, DialogTitle } from '@mui/material';
+import { Box, Grid, Card, CardContent, Typography, CardActions, Button, Autocomplete, DialogContent, DialogTitle, Input } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import { Search } from '@mui/icons-material';
@@ -9,12 +9,12 @@ import { DialogWrapper } from './../components/GenericComponents/DialogBox/Dialo
 import { FilePond, registerPlugin } from 'react-filepond';
 // Import FilePond styles
 import 'filepond/dist/filepond.min.css';
+import SerachbarComponent from './../components/SerachbarComponent';
 
 const container = {
   bgcolor: 'orange',
   // height: '83vh',
   // width: '92vw',
-
   borderRadius: '10px'
 }
 
@@ -37,7 +37,6 @@ function FileUplaodButton() {
       </Button>
       {/* <Button variant="outlined" onClick={handleClickOpen}>
         Upload FHE Form
-        
       </Button> */}
       <DialogWrapper
         open={open}
@@ -53,9 +52,15 @@ function FileUplaodButton() {
 }
 
 const ScholarshipListPage = () => {
+  const handleOnChange = () => {
+
+  }
+
   return (
     <React.Fragment>
       <Box sx={{ p: '3rem 0' }}>
+
+        <SerachbarComponent placeholder={'Search'} onChange={(e) => handleOnChange()} />
 
         {/* <Search>
           <StyledInputBase

@@ -4,13 +4,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useFormik } from "formik";
 import { useSnackbar } from 'notistack';
 
-import { Grid, Box, Typography, Select, MenuItem, InputLabel, FormControl, Autocomplete } from '@mui/material';
-
+import { Grid, Typography, Autocomplete } from '@mui/material';
 import { GenericTextField } from '../../components/GenericComponents/TextField/GenericTextField';
 import { GenericButton } from '../../components/GenericComponents/Button/GenericButton';
 import { GenericTypography } from './../../components/GenericComponents/Typography/GenericTypography';
 
-import { register, courseShow, degreeShow, accountTypeShow, showProfile } from './../../config/apisauce';
+import { showProfile } from './../../config/apisauce';
 import useAuthStore from "../../config/store";
 import TextField from '@mui/material/TextField';
 
@@ -30,6 +29,9 @@ const linkTypography = {
   fontSize: '12px'
 }
 
+const course = ['Information Technology', 'Arts and Science', 'Education'];
+const degree = [''];
+
 const SignUpPage = () => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const { setLoggedIn } = useAuthStore();
@@ -37,6 +39,7 @@ const SignUpPage = () => {
 
   const registerFormik = useFormik({
     initialValues: {
+      id_no: '',
       firstname: '',
       middlename: '',
       lastname: '',
@@ -47,20 +50,14 @@ const SignUpPage = () => {
       course: '',
       degree: '',
       contact_no: '',
-      account_type: '',
+      account_type: 'student',
       password: '',
       confirm_password: ''
     },
   });
 
   const handleOnSubmit = async (values) => {
-    const [course_type] = values.course_type
-    const [degree] = values.degree
-    const [account_type] = values.account_type
-
-
     const res = await showProfile();
-    console.log(res, document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
 
     // const res = await register({
     //   firstname: values.firstname,
@@ -228,7 +225,7 @@ const SignUpPage = () => {
               <Autocomplete
                 fullWidth
                 disablePortal
-                options={registerFormik.values.course_type ?? []}
+                options={course}
                 size='small'
                 renderInput={(params) => <TextField {...params} label="Course" />}
               />
@@ -238,22 +235,11 @@ const SignUpPage = () => {
               <Autocomplete
                 fullWidth
                 disablePortal
-                options={registerFormik.values.degree ?? []}
+                options={degree}
                 size='small'
                 renderInput={(params) => <TextField {...params} label="Degree" />}
               />
             </Grid >
-
-            <Grid item container sx={style} fullWidth>
-              <Autocomplete
-                fullWidth
-                disablePortal
-                options={registerFormik.values.account_type ?? []}
-                size='small'
-                renderInput={(params) => <TextField {...params} label="Account Type" />}
-              />
-            </Grid>
-
           </Grid>
 
           <Grid item sx={style}>
