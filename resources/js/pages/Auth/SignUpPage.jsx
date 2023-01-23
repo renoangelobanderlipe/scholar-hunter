@@ -12,6 +12,7 @@ import { GenericTypography } from './../../components/GenericComponents/Typograp
 import { showProfile } from './../../config/apisauce';
 import useAuthStore from "../../config/store";
 import TextField from '@mui/material/TextField';
+import { course, courseType, roles } from './../../helper';
 
 const container = {
   display: 'flex'
@@ -28,9 +29,6 @@ const linkTypography = {
   color: 'gray',
   fontSize: '12px'
 }
-
-const course = ['Information Technology', 'Arts and Science', 'Education'];
-const degree = [''];
 
 const SignUpPage = () => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -50,7 +48,7 @@ const SignUpPage = () => {
       course: '',
       degree: '',
       contact_no: '',
-      account_type: 'student',
+      role: 'student',
       password: '',
       confirm_password: ''
     },
@@ -235,9 +233,19 @@ const SignUpPage = () => {
               <Autocomplete
                 fullWidth
                 disablePortal
-                options={degree}
+                options={courseType}
                 size='small'
-                renderInput={(params) => <TextField {...params} label="Degree" />}
+                renderInput={(params) => <TextField {...params} label="Course Type" />}
+              />
+            </Grid >
+
+            <Grid item container sx={style} fullWidth>
+              <Autocomplete
+                fullWidth
+                disablePortal
+                options={roles}
+                size='small'
+                renderInput={(params) => <TextField {...params} label="Roles" />}
               />
             </Grid >
           </Grid>

@@ -160,7 +160,6 @@ const UserManagementPage = () => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   async function handleFetchUsers() {
     const res = await fetchUsers();
-
     if (res.data.code == 200) {
       setRows(res.data.data);
     }

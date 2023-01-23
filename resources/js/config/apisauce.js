@@ -4,7 +4,6 @@ const apiSauce = create({
   headers: {
     'X-Requested-With': 'XMLHttpRequest',
     'Accept': 'application/json',
-    'Content-Type': 'application/json',
     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
   },
 });
@@ -24,6 +23,7 @@ export const deleteUser = (params) => apiSauce.delete('api/user-management/delet
 // Scholarship Management 
 export const createScholarship = (params) => apiSauce.post('api/scholarship-management/create', params);
 export const scholarshipList = () => apiSauce.get('api/scholarship-management/list');
+
 
 // Profile Information
 export const showProfile = () => apiSauce.post('api/profile/show')

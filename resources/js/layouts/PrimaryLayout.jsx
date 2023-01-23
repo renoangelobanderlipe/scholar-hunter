@@ -15,9 +15,9 @@ const UserManagementPage = React.lazy(() => import('./../pages/UserManagementPag
 const ScholarshipManagementPage = React.lazy(() => import('./../pages/ScholarshipManagementPage'));
 const SignInPage = React.lazy(() => import('./../pages/Auth/SignInPage'));
 const SignUpPage = React.lazy(() => import('./../pages/Auth/SignUpPage'));
-const LeftSection = React.lazy(() => import('./../components/LeftSection'))
 const NotFoundPage = React.lazy(() => import('./../components/NotFoundPage'))
 const UnauthorizePage = React.lazy(() => import('./../components/UnauthorizedPage'));
+import LeftSection from './../components/LeftSection';
 
 const wrapper = {
   height: '100vh',

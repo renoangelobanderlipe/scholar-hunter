@@ -3,15 +3,29 @@ import { persist } from 'zustand/middleware';
 
 const defaultAuthState = {
   loggedIn: false,
+  role: null,
   // permissions : [] // This will be implemented later using the laravel sanctum abilities 
 }
 
 const useAuthStore = create(persist((set, get) => ({
   ...defaultAuthState,
   setLoggedIn: (data) => {
-    return set((state) =>  {
+    return set((state) => {
       const tempState = {
-        loggedIn : true
+        loggedIn: true,
+
+      }
+      return tempState;
+    })
+  },
+
+  setRole: (data) => {
+    return set((state) => {
+      console.log('state', state.role, data, state);
+
+      const tempState = {
+        role: state.role,
+
       }
       return tempState;
     })

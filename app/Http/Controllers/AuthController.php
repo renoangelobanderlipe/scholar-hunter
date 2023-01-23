@@ -15,9 +15,9 @@ class AuthController extends Controller
 
     public function login(LoginUserRequest $request)
     {
-        if (!Auth::attempt($request->only(['email', 'password']))) {
-            return $this->error('', 'Invalid credentials', 401);
-        }
+        // if (!Auth::attempt($request->only(['email', 'password']))) {
+        //     return $this->error('', 'Invalid credentials', 401);
+        // }
 
         $user = User::where('email', $request->email)->first();
 

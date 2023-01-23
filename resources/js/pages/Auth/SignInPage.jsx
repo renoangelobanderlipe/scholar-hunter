@@ -35,7 +35,7 @@ const linkTypography = {
 const SignInPage = () => {
   const navigate = useNavigate();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  const { setLoggedIn } = useAuthStore();
+  const { setLoggedIn, setRole } = useAuthStore();
 
 
   const signInFormik = useFormik({
@@ -58,6 +58,7 @@ const SignInPage = () => {
 
       // SET LOGGED IN STATUS TO TRUE USING ZUSTAND! 
       setLoggedIn(true);
+      setRole('user');
       // console.log('login status : ', true);
       navigate('/home', { replace: true });
 
