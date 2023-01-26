@@ -46,7 +46,7 @@ export const EditInfoComponent = () => {
         <DialogWrapper
           open={open}
           close={handleClose}>
-          <DialogTitle>Add User</DialogTitle>
+          <DialogTitle>Create</DialogTitle>
           <DialogContent>
             {/* <DialogContentText>
             By 

@@ -15,15 +15,16 @@ class AuthController extends Controller
 
     public function login(LoginUserRequest $request)
     {
-        // if (!Auth::attempt($request->only(['email', 'password']))) {
-        //     return $this->error('', 'Invalid credentials', 401);
-        // }
+
+        if (!Auth::attempt($request->only(['email', 'password']))) {
+            return $this->error('', 'Invalid credentials', 401);
+        }
 
         $user = User::where('email', $request->email)->first();
 
         return $this->success([
             'user' => $user,
-            'token' => $user->createToken('auth-token ' . $user->name)->plainTextToken
+            'token' => $user->createToken('auth-token')->plainTextToken
         ]);
     }
 
@@ -34,6 +35,7 @@ class AuthController extends Controller
         ]));
 
         $user = User::create([
+            'id_no' => $request->id_no,
             'firstname' => $request->firstname,
             'middlename' => $request->middlename,
             'lastname' => $request->lastname,
@@ -42,9 +44,8 @@ class AuthController extends Controller
             'email' => $request->email,
             'course_type' => $request->course_type,
             'course' => $request->course_type,
-            'degree' => $request->degree,
+            'role' => $request->role,
             'contact_no' => $request->contact_no,
-            'account_type' => $request->account_type,
             'password' => Hash::make($request->password),
             'status' => 0,
         ]);
@@ -56,7 +57,8 @@ class AuthController extends Controller
 
     public function logout()
     {
-        Auth::user()->currentAccessToken()->delete();
+        dd(\Auth::user()->currentAccessToken()->delete());
+        \Auth::user()->currentAccessToken()->delete();
         return $this->success(['message' => 'Successfuly Logged out!']);
     }
 }

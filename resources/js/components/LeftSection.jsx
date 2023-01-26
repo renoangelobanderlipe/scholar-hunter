@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { AppBar, Box, Toolbar, List, Typography, Divider, ListItem, ListItemButton, ListItemIcon, ListItemText, Drawer } from '@mui/material';
+import { AppBar, Box, Toolbar, List, Typography, Divider, ListItem, ListItemButton, ListItemIcon, ListItemText, Drawer, Grid } from '@mui/material';
 
 import useAuthStore from '../config/store';
 import { useSnackbar } from 'notistack';
@@ -85,14 +85,10 @@ const LeftSection = () => {
           </List>
         </Drawer>
 
-        <Box
-          sx={{ backgroundColor: '#f0fdf4', p: 4 }}
-        >
+        <Grid width={'100%'} height={'100%'} p={4}>
           <Toolbar />
-          <Box sx={{ height: 600, width: '1225px' }}>
-            <RightSection />
-          </Box>
-        </Box>
+          <RightSection />
+        </Grid>
       </Box >
     </React.Fragment >
   )

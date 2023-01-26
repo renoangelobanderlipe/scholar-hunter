@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
-import { Button, Grid, Box, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Button, Grid, Box, DialogTitle, DialogContent, DialogActions, Chip } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { createUser, deleteUser, getUsers } from '../config/apisauce';
+import { approve, createUser, deleteUser, getUsers } from '../config/apisauce';
 import { useFormik } from 'formik';
 import { GenericTextField } from './../components/GenericComponents/TextField/GenericTextField';
 import { useSnackbar } from 'notistack';
@@ -14,6 +14,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import { CustomButton } from '../components/CustomButton';
+import { CheckCircle } from '@mui/icons-material';
 
 const boxPadding = {
   p: '0.5rem 2rem',
@@ -139,7 +140,7 @@ function UserInfo({ id }) {
         <DialogWrapper
           open={open}
           close={handleClose}>
-          <DialogTitle>Add User</DialogTitle>
+          <DialogTitle>Create</DialogTitle>
           <DialogContent>
             {/* {
               info.map((element) => console.log(element))
@@ -165,6 +166,14 @@ const UserManagementPage = () => {
     }
   }
 
+  async function handleApprove(id) {
+    const res = await approve({ id });
+
+    if (res.data.data == 200) {
+      enqueueSnackbar('Approved', { variant: 'success' })
+    }
+  }
+
   async function handleDelete(id) {
     const res = await deleteUser({ id: id });
 
@@ -180,10 +189,6 @@ const UserManagementPage = () => {
     }
   }
 
-  const createUserFunc = (values) => {
-
-    console.log(values);
-  }
 
   React.useEffect(() => {
     handleFetchUsers();
@@ -207,11 +212,11 @@ const UserManagementPage = () => {
       headerName: 'Last Name',
       flex: 1,
     },
-    {
-      field: 'address',
-      headerName: 'Address',
-      flex: 1,
-    },
+    // {
+    //   field: 'address',
+    //   headerName: 'Address',
+    //   flex: 1,
+    // },
     {
       field: 'contact_no',
       headerName: 'Contact No',
@@ -229,9 +234,20 @@ const UserManagementPage = () => {
       flex: 1,
     },
     {
+      field: 'status',
+      headerName: 'Status',
+      flex: 1,
+      renderCell: ({ row }) => {
+        return (
+          <React.Fragment>
+            {row.status == 1 ? <Chip label='Approved' color="success" /> : <Chip label='Pending' color="primary" />}
+          </React.Fragment >
+        )
+      }
+    },
+    {
       field: 'action',
       headerName: 'Action',
-      // width: 200,
       flex: 1,
       renderCell: ({ row }) => {
         return (
@@ -239,12 +255,10 @@ const UserManagementPage = () => {
             <IconButton onClick={() => handleDelete(row.id)}>
               <DeleteIcon />
             </IconButton>
-
-            {/* <EditUserInfo /> */}
-
+            <IconButton onClick={() => handleApprove(row.id)}>
+              <CheckCircle />
+            </IconButton>
             <UserInfo id={row.id} />
-
-
           </React.Fragment >
         )
       }
@@ -253,7 +267,8 @@ const UserManagementPage = () => {
   ];
 
   return (
-    <Box height='100%'>
+
+    <Grid container width={'80vw'} height={'80vh'} sx={12}>
       <DataGrid
         pageSize={10}
         rowsPerPageOptions={[5, 15, 50, 100]}
@@ -268,7 +283,8 @@ const UserManagementPage = () => {
           toolbar: CustomButton()
         }}
       />
-    </Box>
+    </Grid>
+
   );
 }
 

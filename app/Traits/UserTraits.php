@@ -9,6 +9,16 @@ trait UserTrait
     return \Auth::user();
   }
 
+  protected function userRole()
+  {
+    return $this->user()->role;
+  }
+
+  protected function userStatus()
+  {
+    return $this->user()->status;
+  }
+
   protected function firstName()
   {
     return $this->user()->firstname;

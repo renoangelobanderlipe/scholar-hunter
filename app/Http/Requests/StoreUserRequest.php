@@ -24,6 +24,7 @@ class StoreUserRequest extends FormRequest
     public function rules()
     {
         return [
+            'id_no' => ['required', 'string', 'max:255'],
             'firstname' => ['required', 'string', 'max:255'],
             'middlename' => ['required', 'string', 'max:255'],
             'lastname' => ['required', 'string', 'max:255'],
@@ -31,9 +32,9 @@ class StoreUserRequest extends FormRequest
             'username' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'max:255', 'unique:users'],
             'course_type' => ['required', 'string'],
-            'degree' => ['required', 'string'],
+            'course' => ['required', 'string'],
+            'role' => ['required', 'string'],
             'contact_no' => ['required', 'string'],
-            'account_type' => ['required', 'string'],
             'password' => ['required', 'confirmed']
         ];
     }

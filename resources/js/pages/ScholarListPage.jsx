@@ -97,14 +97,6 @@ const CustomToolbar = () => {
 
 const ScholarListPage = () => {
 
-  // const handleFetchScholars = async () => {
-  //   const res = await scholarshipList();
-
-  //   console.log(res);
-
-  // }
-
-
   const rows = [
     {
       id: 1,
@@ -153,14 +145,8 @@ const ScholarListPage = () => {
     { field: 'Action', width: 200 },
   ];
 
-
-  // React.useEffect(() => {
-  //   handleFetchScholars();
-  // }, [])
-
-
   return (
-    <Box height='100%'>
+    <Grid width={'80vw'} height={'80vh'}>
       <DataGrid
         pageSize={10}
         rowsPerPageOptions={[5, 15, 50, 100]}
@@ -171,7 +157,7 @@ const ScholarListPage = () => {
           Toolbar: CustomToolbar,
         }}
       />
-    </Box>
+    </Grid>
   );
 }
 

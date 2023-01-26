@@ -33,14 +33,16 @@ const signInDesign = {
 export const pageRoutes = [
   {
     name: 'Home',
-    path: '/home',
+    path: '/',
     component: <HomePage />,
+    role: 'all',
     icon: <DashboardRounded />
   },
   {
     name: 'Scholarships',
     path: '/scholarship-list',
     component: <ScholarshipListPage />,
+    role: '',
     icon: <SchoolRounded />
   },
   {
@@ -72,6 +74,7 @@ export const pageRoutes = [
 
 export const PrimaryLayout = () => {
   const { loggedIn } = useAuthStore();
+
   return (
     <React.Fragment>
       {
@@ -92,9 +95,7 @@ export const PrimaryLayout = () => {
           :
           (
             <Grid container>
-              <Grid item>
-                <LeftSection />
-              </Grid>
+              <LeftSection />
             </Grid>
           )
       }

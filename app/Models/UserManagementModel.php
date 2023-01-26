@@ -5,8 +5,6 @@ namespace App\Models;
 use App\Traits\HttpResponseTraits;
 use Illuminate\Database\Eloquent\Model;
 
-use function PHPUnit\Framework\throwException;
-
 class UserManagementModel extends Model
 {
 
@@ -53,6 +51,14 @@ class UserManagementModel extends Model
   public function getInfoById(int $id)
   {
     return $this->all()->where('id', $id)->toArray();
+  }
+
+  public function updateStatus($id)
+  {
+    $user = UserModel::find($id);
+    $user->status = 1;
+    $user->save();
+    return $user;
   }
 
   public function deleteUser(int $id)

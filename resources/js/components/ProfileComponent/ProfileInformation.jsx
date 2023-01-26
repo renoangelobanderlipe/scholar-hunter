@@ -21,6 +21,8 @@ const style = {
 
 
 export const ProfileInformation = () => {
+  const [user, setUser] = React.useState([]);
+
   const profileFormik = useFormik({
     initialValues: {
       username: "",
@@ -52,6 +54,10 @@ export const ProfileInformation = () => {
   const fetchUserInfo = async () => {
     const res = await showProfile();
 
+    if (res.data.code == 200) {
+      setUser(res.data.data);
+    }
+
   }
 
   React.useEffect(() => {
@@ -77,7 +83,7 @@ export const ProfileInformation = () => {
                 size: "small",
               }}
               fieldOptions={{
-                placeholder: "First Name",
+                placeholder: user.firstname,
               }}
             />
           </Grid >
@@ -97,7 +103,7 @@ export const ProfileInformation = () => {
                 size: "small",
               }}
               fieldOptions={{
-                placeholder: "Middle Name",
+                placeholder: user.middlename,
               }}
             />
           </Grid >
@@ -118,7 +124,7 @@ export const ProfileInformation = () => {
                 size: "small",
               }}
               fieldOptions={{
-                placeholder: "Last Name",
+                placeholder: user.lastname,
               }}
             />
           </Grid >
@@ -136,7 +142,7 @@ export const ProfileInformation = () => {
                 size: "small",
               }}
               fieldOptions={{
-                placeholder: "Username",
+                placeholder: user.username,
               }}
             />
           </Grid >
@@ -157,7 +163,7 @@ export const ProfileInformation = () => {
               size: "small",
             }}
             fieldOptions={{
-              placeholder: "Address",
+              placeholder: user.address,
             }}
 
           />
@@ -178,7 +184,7 @@ export const ProfileInformation = () => {
               size: "small",
             }}
             fieldOptions={{
-              placeholder: "Email",
+              placeholder: user.email,
             }}
           />
         </Grid >
@@ -197,7 +203,7 @@ export const ProfileInformation = () => {
               size: "small",
             }}
             fieldOptions={{
-              placeholder: "Course Type",
+              placeholder: user.course_type,
             }}
           />
         </Grid >
@@ -216,26 +222,7 @@ export const ProfileInformation = () => {
               size: "small",
             }}
             fieldOptions={{
-              placeholder: "Course",
-            }}
-          />
-        </Grid >
-
-        <Grid item sx={style}>
-          <GenericTextField
-            fieldName="degree"
-            fieldLabel="Degree"
-            handleOnChangeValue={(field, newValue) =>
-              handleOnChange(field, newValue)
-            }
-            variant={{
-              rows: 8,
-              variant: "outlined",
-              fullWidth: true,
-              size: "small",
-            }}
-            fieldOptions={{
-              placeholder: "Degree",
+              placeholder: user.course,
             }}
           />
         </Grid >
@@ -254,41 +241,21 @@ export const ProfileInformation = () => {
               size: "small",
             }}
             fieldOptions={{
-              placeholder: "Contact No",
+              placeholder: user.contact_no,
             }}
           />
         </Grid >
 
-        <Grid item sx={style}>
-          <GenericTextField
-            fieldName="account_type"
-            fieldLabel="Account Type"
-            handleOnChangeValue={(field, newValue) =>
-              handleOnChange(field, newValue)
-            }
+        <Grid container item sx={style} mt={'1rem'} mb={'1rem'}>
+          <GenericButton
+            disable={true}
+            title={"Update"}
             variant={{
-              disabled: true,
-              rows: 8,
-              variant: "outlined",
               fullWidth: true,
-              size: "small",
+              variant: "contained",
             }}
-            fieldOptions={{
-              placeholder: "Account Type",
-            }}
+            onClick={() => handleOnSubmit(profileFormik.values)}
           />
-
-          <Grid container item sx={style} mt={'1rem'} mb={'1rem'}>
-            <GenericButton
-              disable={true}
-              title={"Update"}
-              variant={{
-                fullWidth: true,
-                variant: "contained",
-              }}
-              onClick={() => handleOnSubmit(profileFormik.values)}
-            />
-          </Grid>
 
         </Grid >
 

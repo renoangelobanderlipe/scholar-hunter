@@ -31,7 +31,7 @@ class ProfileController extends Controller
     public function updateProfile(UserRequest $request)
     {
         try {
-            return $this->success($this->user->updatePassword());
+            return $this->success($this->user->updateProfile());
         } catch (\Throwable $throwable) {
             $this->error($throwable->getMessage());
         }
@@ -40,6 +40,7 @@ class ProfileController extends Controller
     public function updatePassword()
     {
         try {
+            return $this->success($this->user->updatePassword());
         } catch (\Throwable $throwable) {
             $this->error($throwable->getMessage());
         }

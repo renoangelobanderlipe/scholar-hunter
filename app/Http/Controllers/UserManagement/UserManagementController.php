@@ -46,6 +46,11 @@ class UserManagementController extends Controller
         }
     }
 
+    public function approveUser(Request $request)
+    {
+        return $this->success($this->user->updateStatus($request->all()));
+    }
+
 
     public function deleteUser(Request $request)
     {

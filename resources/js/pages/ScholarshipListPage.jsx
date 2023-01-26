@@ -17,7 +17,8 @@ import Stack from '@mui/material/Stack';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { escapeRegExp } from 'lodash';
-
+import { minHeight } from '@mui/system';
+import { validateUser } from './../config/apisauce';
 const container = {
   bgcolor: 'orange',
   // height: '83vh',
@@ -36,21 +37,16 @@ function FileUplaodButton() {
     setOpen(false);
   };
 
-
   return (
     <React.Fragment>
-      <Button variant="contained" endIcon={<AttachFileIcon />} onClick={handleClickOpen}>
+      <Button variant="contained" size="small" endIcon={<AttachFileIcon />} onClick={handleClickOpen}>
         Apply
       </Button>
-      {/* <Button variant="outlined" onClick={handleClickOpen}>
-        Upload FHE Form
-      </Button> */}
       <DialogWrapper
         open={open}
         close={handleClose}>
         <DialogTitle>Upload FHE Form</DialogTitle>
         <DialogContent>
-          {/* <input type="file" name="file" id="file" /> */}
           <FilePond allowMultiple={true} maxFiles={1} server="/upload" />
         </ DialogContent>
       </DialogWrapper>
@@ -60,6 +56,7 @@ function FileUplaodButton() {
 
 const ScholarshipListPage = () => {
   const [scholarship, setScholarship] = React.useState([]);
+  const [role, setRole] = React.useState();
 
   const handleOnChange = async (event, page) => {
     const res = await scholarshipListPage({ page });
@@ -75,6 +72,15 @@ const ScholarshipListPage = () => {
     if (res.data.code == 200) {
       setScholarship(res.data.data.data);
     }
+  }
+
+  const fetchUserRole = async () => {
+    const res = await validateUser();
+
+    if (res.data.code == 200) {
+      setRole(res.data.data);
+    }
+
   }
 
   const handleSearch = (value) => {
@@ -93,97 +99,80 @@ const ScholarshipListPage = () => {
     }
   }
   React.useEffect(() => {
+    fetchUserRole();
     handleScholarshipList();
   }, [])
 
-
   return (
     <React.Fragment>
-      <Box sx={{ p: '3rem 0' }}>
+      <Grid container>
+        <Box width={"100%"} sx={{ mb: '2.5rem ' }}>
+          <SerachbarComponent placeholder={'Search'} onChange={(value) => handleSearch(value)} />
+        </Box>
 
-        <SerachbarComponent placeholder={'Search'} onChange={(value) => handleSearch(value)} />
-
-        {/* <Search>
-          <StyledInputBase
-            placeholder="Search…"
-            inputProps={{ 'aria-label': 'search' }}
-          />
-        </Search> */}
-
-      </Box>
-
-      <Box sx={{ flexGrow: 1, p: '0 0 3rem 0' }}>
-        <Grid container spacing={2}>
-
+        <Grid container spacing={4}>
           {
             scholarship.map((element, index) => (
               <React.Fragment>
-                <Grid item xs={6} key={index}>
-                  <Card>
-                    <CardContent>
-
-                      <Grid
-                        container item
-                      // justifyContent="space-between"
-                      >
-                        <Grid container justifyContent={'space-between'}>
-                          <Box display={'flex'}>
-                            <Grid textAlign={'center'} justifyItems={'center'} justifyContent={'center'}>
-                              <Typography>
-                                {element.name}
-                              </Typography>
-                            </Grid>
-                            <Grid item>
-                              <Chip label={element.type} size="small" />
-                            </Grid>
-                          </Box>
-                          <FileUplaodButton />
-                        </Grid>
-
-                        <CardActions>
-                          {/* <Button variant="contained" endIcon={<AttachFileIcon />}>
-                      Apply
-                    </Button> */}
-                        </CardActions>
+                <Grid item xs={4} key={index}>
+                  <CardContent
+                    sx={{
+                      bgcolor: '#fafafa',
+                      boxShadow: 1,
+                      borderRadius: 2,
+                      fontWeight: 'bold',
+                      p: 2,
+                      minWidth: 300,
+                      minHeight: 200
+                    }}>
+                    <Grid container item >
+                      <Grid container justifyContent={'space-between'} sx={{ mb: '0.5rem' }}>
+                        <Box sx={{ color: 'text.primary', fontSize: 14, fontWeight: 'bold' }}>
+                          {element.name}
+                        </Box>
+                        <Chip label={element.type} size={'small'} />
                       </Grid>
-                      <Grid container item sx={{ p: '1rem 0', mt: '0.5rem' }}>
-                        <Typography variant="body2" color="text.primary">
-                          {element.description}
-                        </Typography>
-                        <Typography color="text.secondary">
-                          {element.address}
-                        </Typography>
+                      <Box sx={{ color: 'text.secondary', fontSize: 12, mb: '1rem' }}>{element.address}</Box>
+                    </Grid>
+                    <Box sx={{ color: 'text.secondary', fontSize: 12, mb: '0.5rem' }}>{element.description}</Box>
 
-                        <Chip label={element.email} size="small" />
-
-                        <Chip label={element.contact_no} size="small" />
+                    <Grid container mb="0.5rem">
+                      <Grid mr="0.5rem">
+                        <Chip label={element.contact_no} sx={{ fontWeight: 'medium' }} size={'small'} />
                       </Grid>
-                    </CardContent>
-
-                  </Card>
+                      <Grid>
+                        <Chip label={element.email} sx={{ fontWeight: 'medium' }} size={'small'} />
+                      </Grid>
+                    </Grid>
+                    <CardActions sx={{ justifyContent: "end" }}>
+                      {role != 'admin' || role != 'foundation' ? <FileUplaodButton /> : ''}
+                    </CardActions>
+                  </CardContent>
                 </Grid>
               </React.Fragment>
             ))
           }
 
+
         </Grid>
 
-
-        <Stack spacing={2}>
+        <Grid container item p="4rem 0" justifyContent={'end'} >
           <Pagination
             count={scholarship.length}
             onChange={(event, value) => handleOnChange(event, value)}
             renderItem={(item) => (
-              // console.log('test', item),
               < PaginationItem
                 slots={{ previous: ArrowBackIcon, next: ArrowForwardIcon }}
                 {...item}
               />
             )}
           />
-        </Stack>
-      </Box>
-    </React.Fragment>
+        </Grid>
+
+      </Grid>
+
+
+    </React.Fragment >
   )
 }
 

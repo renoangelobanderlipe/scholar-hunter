@@ -57,7 +57,7 @@ export const CustomButton = () => {
   return (
     <GridToolbarContainer>
       <Button variant="outlined" onClick={handleClickOpen}>
-        Add User
+        Create
       </Button>
       <form >
         <DialogWrapper

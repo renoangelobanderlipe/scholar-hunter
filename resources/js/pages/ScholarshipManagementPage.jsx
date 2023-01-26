@@ -6,7 +6,7 @@ import { styled } from '@mui/material/styles';
 
 import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
 
-import { Button, Grid, Box, DialogTitle, DialogContent, DialogActions, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { Button, Grid, Box, DialogTitle, DialogContent, DialogActions, FormControl, InputLabel, Select, MenuItem, Chip } from '@mui/material';
 
 import { GenericTextField } from './../components/GenericComponents/TextField/GenericTextField';
 import { DialogWrapper } from './../components/GenericComponents/DialogBox/DialogWrapper';
@@ -116,7 +116,6 @@ const CustomButton = () => {
 
   const handleCreateScholarship = async (values) => {
     const res = await createScholarship({ value: values })
-
     if (res.data.code == 200) {
 
       enqueueSnackbar('Success', { variant: 'success' })
@@ -127,7 +126,7 @@ const CustomButton = () => {
   return (
     <GridToolbarContainer>
       <Button variant="outlined" onClick={handleClickOpen}>
-        Add Scholarship
+        Create
       </Button>
       <form>
         <DialogWrapper
@@ -135,9 +134,6 @@ const CustomButton = () => {
           close={handleClose}>
           <DialogTitle>Add Scholarship</DialogTitle>
           <DialogContent>
-            {/* <DialogContentText>
-            By 
-          </DialogContentText> */}
             <Box sx={boxPadding}>
               <GenericTextField
                 fieldName="name"
@@ -262,47 +258,23 @@ const ScholarshipManagementPage = () => {
       field: 'type',
       headerName: 'Type',
       flex: 1,
+      renderCell: ({ row }) => {
+        return (
+          <React.Fragment>
+            {row.type === 'private' ? <Chip label='Private' color="success" /> : <Chip label='Public' color="primary" />}
+          </React.Fragment >
+        )
+      }
     },
   ]
-
-  // const columns = [
-  //   {
-  //     field: 'name',
-  //     headerName: 'Name',
-  //     flex: 1,
-  //   },
-  //   {
-  //     field: 'description',
-  //     headerName: 'Description',
-  //     flex: 1,
-  //   },
-  //   {
-  //     field: 'description',
-  //     headerName: 'Description',
-  //     flex: 1,
-  //     renderCell: ({ row }) => {
-  //       return (
-  //         <React.Fragment>
-  //           <IconButton onClick={() => handleDelete(row.id)}>
-  //             <DeleteIcon />
-  //           </IconButton>
-  //         </React.Fragment >
-  //       )
-  //     }
-
-  //   },
-  // ];
-
 
   async function handleFetch() {
     const res = await scholarshipList();
 
     if (res.data.code == 200) {
-      setRows(res.data?.data);
+      setRows(res.data?.data?.data);
     }
   }
-
-
 
   React.useEffect(() => {
     handleFetch();
@@ -310,7 +282,7 @@ const ScholarshipManagementPage = () => {
 
 
   return (
-    <Box height='100%'>
+    <Box height='80vh' width='80vw'>
       <DataGrid
         pageSize={10}
         rowsPerPageOptions={[5, 15, 50, 100]}

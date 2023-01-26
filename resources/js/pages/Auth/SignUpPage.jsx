@@ -9,7 +9,7 @@ import { GenericTextField } from '../../components/GenericComponents/TextField/G
 import { GenericButton } from '../../components/GenericComponents/Button/GenericButton';
 import { GenericTypography } from './../../components/GenericComponents/Typography/GenericTypography';
 
-import { showProfile } from './../../config/apisauce';
+import { register, showProfile } from './../../config/apisauce';
 import useAuthStore from "../../config/store";
 import TextField from '@mui/material/TextField';
 import { course, courseType, roles } from './../../helper';
@@ -37,46 +37,46 @@ const SignUpPage = () => {
 
   const registerFormik = useFormik({
     initialValues: {
-      id_no: '',
-      firstname: '',
-      middlename: '',
-      lastname: '',
-      address: '',
-      username: '',
-      email: '',
-      course_type: '',
-      course: '',
-      degree: '',
-      contact_no: '',
+      id_no: 'asd',
+      firstname: 'asd',
+      middlename: 'asd',
+      lastname: 'asd',
+      address: 'asf',
+      username: 'saf',
+      email: 'test@gmail.com',
+      course_type: 'asd',
+      course: 'asd',
+      contact_no: 'asd',
       role: 'student',
-      password: '',
-      confirm_password: ''
+      password: 'password123',
+      confirm_password: 'password123'
     },
   });
 
   const handleOnSubmit = async (values) => {
-    const res = await showProfile();
 
-    // const res = await register({
-    //   firstname: values.firstname,
-    //   middlename: values.middlename,
-    //   lastname: values.lastname,
-    //   address: values.address,
-    //   username: values.username,
-    //   email: values.email,
-    //   course_type: course_type,
-    //   degree: degree,
-    //   account_type: account_type,
-    //   contact_no: values.contact_no,
-    //   password: values.password,
-    //   password_confirmation: values.password,
-    // });
+    const res = await register({
+      id_no: values.id_no,
+      firstname: values.firstname,
+      middlename: values.middlename,
+      lastname: values.lastname,
+      address: values.address,
+      username: values.username,
+      email: values.email,
+      course_type: values.course_type,
+      account_type: values.account_type,
+      course: 'asd',
+      contact_no: values.contact_no,
+      role: 'student',
+      password: values.password,
+      password_confirmation: values.password,
+    });
 
-    // if (res.data.code == 200) {
-    //   enqueueSnackbar('Success', { variant: 'success' })
+    if (res.data.code == 200) {
+      enqueueSnackbar('Success', { variant: 'success' })
 
-    //   navigate('/home', { replace: true });
-    // }
+      navigate('/home', { replace: true });
+    }
   };
 
   function handleOnChange(field, newValue) {
