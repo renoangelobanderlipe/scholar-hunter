@@ -5,10 +5,35 @@
         "build": "vite build"
     },
     "devDependencies": {
+        "@emotion/react": "^11.10.5",
+        "@emotion/styled": "^11.10.5",
+        "@mui/icons-material": "^5.8.4",
+        "@mui/material": "^5.9.3",
+        "@mui/x-data-grid": "^5.15.3",
         "axios": "^1.1.2",
-        "laravel-vite-plugin": "^0.7.2",
+        "eslint": "^8.28.0",
+        "eslint-config-prettier": "^8.5.0",
+        "eslint-plugin-prettier": "^4.2.1",
+        "formik": "^2.2.9",
+        "laravel-vite-plugin": "^0.6.0",
         "lodash": "^4.17.19",
+        "moment": "^2.29.3",
+        "moment-timezone": "^0.5.34",
         "postcss": "^8.1.14",
-        "vite": "^4.0.0"
+        "prettier": "^2.7.1",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "react-query": "^3.39.2",
+        "react-router-dom": "^6.3.0",
+        "react-transition-group": "^4.4.5",
+        "vite": "^3.0.0",
+        "yup": "^0.32.11",
+        "zustand": "^4.0.0"
+    },
+    "dependencies": {
+        "apisauce": "^2.1.6",
+        "filepond": "^4.30.4",
+        "notistack": "^2.0.8",
+        "react-filepond": "^7.1.2"
     }
 }
