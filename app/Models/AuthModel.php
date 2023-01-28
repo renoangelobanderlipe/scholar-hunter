@@ -26,7 +26,7 @@ class AuthModel extends Model
             'password' => Hash::make($data->password),
             'status' => 0,
         ]);
-        $data = ['token' => $user->createToken('auth_token')->plainTextToken,];
+        $data = ['token' => $user->createToken(env("SANCTUM_SECRET"))->plainTextToken,];
 
         $user->assignRole('user');
         \DB::commit();
@@ -36,11 +36,12 @@ class AuthModel extends Model
 
     public function login($data)
     {
+
         $user = User::where('email', $data['email'])->first();
 
         return [
             'user' => $user,
-            'token' => $user->createToken('auth_token')->plainTextToken
+            'token' => $user->createToken(env("SANCTUM_SECRET"))->plainTextToken
         ];
     }
 

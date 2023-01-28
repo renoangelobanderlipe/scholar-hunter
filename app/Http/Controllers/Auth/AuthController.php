@@ -34,6 +34,7 @@ class AuthController extends Controller
 
     public function logout()
     {
+
         try {
             return $this->success((new AuthModel)->logout());
         } catch (\Throwable $throwable) {

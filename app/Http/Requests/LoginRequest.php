@@ -3,11 +3,13 @@
 namespace App\Http\Requests;
 
 use App\Models\AuthModel;
+use App\Traits\HttpResponseTraits;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
 class LoginRequest extends FormRequest
 {
+    use HttpResponseTraits;
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -34,9 +36,10 @@ class LoginRequest extends FormRequest
 
     public function login()
     {
-        if (!Auth::attempt($this->all())) {
-            return $this->error(['message'=>'Invalid credentials'], 401);
-        }
+
+        // if (!Auth::attempt($this->all())) {
+        //     return $this->error(['message' => 'Invalid credentials'], 401);
+        // }
         return (new AuthModel)->login($this->all());
     }
 }
