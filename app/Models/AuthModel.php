@@ -2,142 +2,50 @@
 
 namespace App\Models;
 
-use App\Contract\AuthContract;
-use App\Traits\UserTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 
-class AuthModel extends Model implements AuthContract
+class AuthModel extends Model
 {
-
-    use UserTrait;
-
-    protected $idNo;
-    protected $firstname;
-    protected $middlename;
-    protected $lastname;
-    protected $address;
-    protected $username;
-    protected $email;
-    protected $courseType;
-    protected $course;
-    protected $role;
-    protected $contactNo;
-    protected $password;
-    protected $status;
-
-    public function idNo(string $idNo)
+    const DEFAULT_ROLE = 'student';
+    public function register($data)
     {
-        $this->idNo = $idNo;
-    }
 
-    public function firstname(string $firstname)
-    {
-        $this->firstname = $firstname;
-    }
-
-    public function middlename(string $middlename)
-    {
-        $this->middlename = $middlename;
-    }
-
-    public function lastname(string $lastname)
-    {
-        $this->lastname = $lastname;
-    }
-    public function address(string $address)
-    {
-        $this->address = $address;
-    }
-
-    public function username(string $username)
-    {
-        $this->username = $username;
-    }
-
-    public function email($email)
-    {
-        $this->email = $email;
-    }
-
-    public function course(string $course)
-    {
-        $this->course = $course;
-    }
-
-    public function role(string $role)
-    {
-        $this->role = $role;
-    }
-
-    public function contact_no($contactNo)
-    {
-        $this->contactNo = $contactNo;
-    }
-
-    public function password($password)
-    {
-        $this->password = Hash::make($password);
-    }
-
-    public function status(bool $status)
-    {
-        $this->status = self::STATUS;
-    }
-
-    public function register()
-    {
         \DB::beginTransaction();
-        $user = [
-            'id_no' => $this->idNo,
-            'firstname' => $this->firstname,
-            'middlename' => $this->middlename,
-            'lastname' => $this->lastname,
-            'address' => $this->address,
-            'username' => $this->username,
-            'email' => $this->email,
-            'course_type' => $this->course_type,
-            'course' => $this->course_type,
-            'role' => $this->role,
-            'contact_no' => $this->contact_no,
-            'password' => Hash::make($this->password),
+        $user = User::create([
+            'id_no' => $data->id_no,
+            'firstname' => $data->firstname,
+            'middlename' => $data->middlename,
+            'lastname' => $data->lastname,
+            'address' => $data->address,
+            'username' => $data->username,
+            'email' => $data->email,
+            'course_type' => $data->course_type,
+            'course' => $data->course,
+            'contact_no' => $data->contact_no,
+            'password' => Hash::make($data->password),
             'status' => 0,
-        ];
+        ]);
+        $data = ['token' => $user->createToken('auth_token')->plainTextToken,];
 
-        $createdUser = User::updateOrCreate([
-            'id_no' => $this->idNo,
-            'email' => $this->email,
-        ], $user);
-
+        $user->assignRole('user');
         \DB::commit();
 
-        $createdUser->assignRole('user');
-
-        return $this->success([
-            'token' => $createdUser->createToken('auth-token')->plainTextToken,
-        ]);
+        return $data;
     }
 
-    public function login()
+    public function login($data)
     {
-        \DB::beginTransaction();
-        $user = User::where('email', $this->email)->first();
-        \DB::commit();
+        $user = User::where('email', $data['email'])->first();
 
-        return $this->success([
+        return [
             'user' => $user,
-            'token' => $user->createToken('auth-token')->plainTextToken
-        ]);
+            'token' => $user->createToken('auth_token')->plainTextToken
+        ];
     }
 
     public function logout()
     {
-        if ($this->hasAuth()) {
-            $this->hasAuth()->currentAccssToken()->delete();
-
-            return ['data' => 'Successfully Deleted'];
-        }
-
-        return ['data' => 'No User Found'];
+        return \Auth::user()->currentAccessToken()->delete();
     }
 }

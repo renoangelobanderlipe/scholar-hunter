@@ -4,7 +4,6 @@ import * as yup from 'yup';
 import { TextFieldComponent } from '../../components/TextFieldComponents/TextFieldComponent';
 import { Grid } from '@mui/material';
 import { ButtonComponent } from './../../components/ButtonComponent';
-import { TextFieldPasswordComponent } from './../../components/TextFieldPasswordComponent';
 import { HeaderComponent } from './../../components/HeaderComponent';
 import { PasswordFieldComponent } from './../../components/TextFieldComponents/PasswordFieldComponent';
 
@@ -31,7 +30,6 @@ const LoginPage = () => {
   });
 
   const handleOnChange = (field, values) => {
-    console.log('fieldname', field, 'values', values);
     loginFormik.setFieldValue(field, values);
   }
 
@@ -49,7 +47,7 @@ const LoginPage = () => {
         <form>
           <Grid item width={'20vw'}>
             <HeaderComponent
-              title={'Sign In'}
+              title={'Login'}
               variant={{
                 variant: 'h5',
                 color: 'black',
@@ -98,7 +96,7 @@ const LoginPage = () => {
             </Grid>
 
             <ButtonComponent
-              title={'Login'}
+              title={'Submit'}
               onClick={() => handleCreateAccount(loginFormik.values)}
             />
           </Grid>
