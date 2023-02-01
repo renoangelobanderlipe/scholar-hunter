@@ -24,6 +24,7 @@ class RegisterRequest extends FormRequest
      */
     public function rules()
     {
+
         return [
             'id_no' => ['required', 'string', 'max:255'],
             'firstname' => ['required', 'string', 'max:255'],
@@ -41,7 +42,7 @@ class RegisterRequest extends FormRequest
 
     public function register()
     {
-        $request = (object)$this->all()['values'];
+        $request = (object)$this->all();
 
         return (new AuthModel)->register($request);
     }

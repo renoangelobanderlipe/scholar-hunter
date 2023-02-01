@@ -16,29 +16,16 @@ class AuthController extends Controller
 
     public function register(RegisterRequest $request)
     {
-        try {
-            return $this->success($request->register());
-        } catch (\Throwable $throwable) {
-            return $this->error($throwable->getMessage());
-        }
+        return $request->register();
     }
 
     public function login(LoginRequest $request)
     {
-        try {
-            return $this->success($request->login());
-        } catch (\Throwable $throwable) {
-            return $this->error($throwable->getMessage());
-        }
+        return $request->login();
     }
 
     public function logout()
     {
-
-        try {
-            return $this->success((new AuthModel)->logout());
-        } catch (\Throwable $throwable) {
-            return $this->error($throwable->getMessage());
-        }
+        return (new AuthModel)->logout();
     }
 }

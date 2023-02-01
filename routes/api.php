@@ -18,4 +18,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(AuthController::class)->prefix('auth')->group(function () {
         Route::post('logout', 'logout');
     });
+
+    // 
+    Route::controller()->prefix('role')->group(function () {
+        Route::get('check', 'check');
+    });
 });

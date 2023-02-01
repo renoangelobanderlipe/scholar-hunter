@@ -36,10 +36,9 @@ class LoginRequest extends FormRequest
 
     public function login()
     {
-
-        // if (!Auth::attempt($this->all())) {
-        //     return $this->error(['message' => 'Invalid credentials'], 401);
-        // }
+        if (!Auth::attempt($this->only(['email', 'password']))) {
+            return $this->error(['message' => 'Invalid credentials'], 401);
+        }
         return (new AuthModel)->login($this->all());
     }
 }

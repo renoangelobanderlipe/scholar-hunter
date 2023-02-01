@@ -7,10 +7,11 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthModel extends Model
 {
-    const DEFAULT_ROLE = 'student';
+    protected $table = 'users';
+    protected $hidden = ['id', 'created_at', 'updated_at'];
+
     public function register($data)
     {
-
         \DB::beginTransaction();
         $user = User::create([
             'id_no' => $data->id_no,
@@ -38,10 +39,16 @@ class AuthModel extends Model
     {
 
         $user = User::where('email', $data['email'])->first();
-
         return [
-            'user' => $user,
-            'token' => $user->createToken(env("SANCTUM_SECRET"))->plainTextToken
+            'data' => [
+                'firstname' => $user->firstname,
+                'middlename' => $user->middlename,
+                'lastname' => $user->lastname,
+                'email' => $user->email,
+                'role' => $user->getRoleNames()->first(),
+            ]
+            // 'user' => $user,
+            // 'token' => $user->createToken(env("SANCTUM_SECRET"))->plainTextToken
         ];
     }
 

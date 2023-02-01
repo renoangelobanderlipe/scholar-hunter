@@ -1,12 +1,19 @@
+import { CircularProgress } from "@mui/material";
 import React from "react";
-import ValidateRequestPage from './../pages/AutComponents/ValidateRequestPage';
+const ValidateRequestPage = React.lazy(() => import('./../pages/AutComponents/ValidateRequestPage'));
+import { Route, Routes } from 'react-router-dom';
+import { ProgressIdicator } from './../fallback/ProgressIndicator';
 
 
 export const PrimaryLayout = () => {
 
   return (
     <React.Fragment>
-      <ValidateRequestPage />
+      <React.Suspense fallback={<ProgressIdicator />} >
+        <Routes>
+          <Route path="/" element={<ValidateRequestPage />} />
+        </Routes>
+      </React.Suspense>
     </React.Fragment>
   );
 };

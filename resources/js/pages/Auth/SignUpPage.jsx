@@ -5,6 +5,9 @@ import { HeaderComponent } from './../../components/HeaderComponent';
 import { TextFieldComponent } from './../../components/TextFieldComponents/TextFieldComponent';
 import { ButtonComponent } from './../../components/ButtonComponent';
 import { register } from '../../utils/apisauce';
+import { Link } from 'react-router-dom';
+import { Typography } from '@mui/material';
+import { sanctum } from './../../utils/apisauce';
 
 const SignUpPage = () => {
   const signUpFormik = useFormik({
@@ -29,8 +32,8 @@ const SignUpPage = () => {
   }
 
   const handleOnSubmit = (values) => {
-
-    const res = register({ values });
+    sanctum();
+    const res = register({ ...values });
 
     if (res.data.code == 200) {
       // 
@@ -217,12 +220,20 @@ const SignUpPage = () => {
               />
 
             </Grid>
-
+            <Grid container sx={{
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}>
+              <Link to='/'>
+                <Typography >
+                  ALREADY HAVE AN ACCOUNT?
+                </Typography>
+              </Link>
+            </Grid>
           </Grid>
         </form>
       </Grid >
     </React.Fragment >
   );
 }
-
 export default SignUpPage;

@@ -6,6 +6,10 @@ import { Grid } from '@mui/material';
 import { ButtonComponent } from './../../components/ButtonComponent';
 import { HeaderComponent } from './../../components/HeaderComponent';
 import { PasswordFieldComponent } from './../../components/TextFieldComponents/PasswordFieldComponent';
+import { login, sanctum } from './../../utils/apisauce';
+import { Link } from 'react-router-dom';
+import { Typography } from '@mui/material';
+import useAuthStore from './../../utils/store';
 
 const validationSchema = yup.object({
   email: yup
@@ -19,7 +23,7 @@ const validationSchema = yup.object({
 });
 
 const LoginPage = () => {
-
+  const { setRole, setLoggedIn } = useAuthStore();
   const loginFormik = useFormik({
     initialValues: {
       email: "",
@@ -33,8 +37,16 @@ const LoginPage = () => {
     loginFormik.setFieldValue(field, values);
   }
 
-  const handleCreateAccount = async (values) => {
-    console.log('values', values);
+  const handleCreateAccount = async ({ ...values }) => {
+    sanctum();
+    const res = await login(values);
+
+    if (res.status == 200) {
+      setRole(res.data.data);
+      setLoggedIn(true);
+    }
+
+
   }
 
   return (
@@ -95,11 +107,27 @@ const LoginPage = () => {
               />
             </Grid>
 
+            <Grid container sx={{
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}>
+              <Link to='/register'>
+                <Typography sx={{
+                  fontWeight: 'bold',
+                  color: 'gray',
+                  fontSize: '12px'
+                }} >
+                  ALREADY HAVE AN ACCOUNT?
+                </Typography>
+              </Link>
+            </Grid>
             <ButtonComponent
               title={'Submit'}
               onClick={() => handleCreateAccount(loginFormik.values)}
             />
           </Grid>
+
+
         </form>
       </Grid>
     </React.Fragment>

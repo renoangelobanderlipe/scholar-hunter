@@ -27,13 +27,13 @@
         "react-router-dom": "^6.3.0",
         "react-transition-group": "^4.4.5",
         "vite": "^3.0.0",
-        "yup": "^0.32.11"
+        "yup": "^0.32.11",
+        "zustand": "^4.0.0"
     },
     "dependencies": {
         "apisauce": "^2.1.6",
         "filepond": "^4.30.4",
         "notistack": "^2.0.8",
-        "react-filepond": "^7.1.2",
-        "zustand": "^4.3.2"
+        "react-filepond": "^7.1.2"
     }
 }
