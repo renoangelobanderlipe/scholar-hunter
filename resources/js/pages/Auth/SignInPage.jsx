@@ -3,12 +3,13 @@ import { useFormik } from "formik";
 import { GenericTextField } from "../../components/GenericComponents/TextField/GenericTextField";
 import { GenericButton } from "../../components/GenericComponents/Button/GenericButton";
 import { login, sanctum } from './../../config/apisauce';
-import { Grid, Typography } from '@mui/material';
+import { Grid, InputAdornment, Typography } from '@mui/material';
 import { GenericTypography } from './../../components/GenericComponents/Typography/GenericTypography';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import useAuthStore from './../../config/store';
 import * as yup from 'yup';
+import { IconButton } from '@mui/material/IconButton';
 
 const validationSchema = yup.object({
   email: yup
@@ -32,7 +33,7 @@ const linkTypography = {
   fontSize: '12px'
 }
 
-const SignInPage = () => {
+const SignInPage = ({ theme }) => {
   const navigate = useNavigate();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const { setLoggedIn, setRole } = useAuthStore();
@@ -81,11 +82,12 @@ const SignInPage = () => {
               fontWeight: 'bold',
               mb: '1rem'
             }}
+
           />
         </Grid>
 
         <form>
-          <Grid item sx={container}>
+          <Grid item sx={container} backgroundColor="orange">
             <GenericTextField
               fieldName="email"
               fieldLabel="Last Name"
@@ -93,7 +95,6 @@ const SignInPage = () => {
                 handleOnChange(field, newValue)
               }
               variant={{
-                rows: 8,
                 variant: "outlined",
                 fullWidth: true,
                 size: "small",
@@ -122,14 +123,23 @@ const SignInPage = () => {
                 variant: "outlined",
                 size: "small",
               }}
-              fieldOptions={{
-                placeholder: "Password",
-                type: "password",
-              }}
+
               formikErrors={{
                 error: signInFormik.errors.password,
                 helperText: signInFormik.errors.password,
               }}
+
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
             />
           </Grid>
 

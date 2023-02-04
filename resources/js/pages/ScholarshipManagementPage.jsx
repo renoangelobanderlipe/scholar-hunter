@@ -21,7 +21,6 @@ const StyledGridOverlay = styled('div')(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  justifyContent: 'center',
   height: '100%',
   '& .ant-empty-img-1': {
     fill: theme.palette.mode === 'light' ? '#aeb8c2' : '#262626',

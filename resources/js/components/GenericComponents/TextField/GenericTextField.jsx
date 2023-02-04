@@ -2,19 +2,21 @@ import React from "react";
 import TextField from "@mui/material/TextField";
 
 export const GenericTextField = ({
-  fieldName,
+  fieldname,
+  fieldlabel,
   variant,
   fieldOptions,
   handleOnChangeValue,
   formikErrors
 }) => {
   const handleOnChangeData = (newValue) => {
-    handleOnChangeValue(fieldName, newValue);
+    handleOnChangeValue(fieldname, newValue);
   };
 
   return (
     <React.Fragment>
       <TextField
+        label={fieldlabel}
         {...variant}
         {...fieldOptions}
         onChange={(event) => handleOnChangeData(event.currentTarget.value)}

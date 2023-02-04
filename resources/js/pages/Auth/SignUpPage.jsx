@@ -100,8 +100,8 @@ const SignUpPage = () => {
         </Grid>
 
         <form>
-          <Grid item container sx={container}>
-            <Grid item sx={style}>
+          <Grid item container sx={container} mb="1rem">
+            <Grid item sx={style} >
               <GenericTextField
                 fieldName="firstname"
                 fieldLabel="First Name"
@@ -128,7 +128,6 @@ const SignUpPage = () => {
                   handleOnChange(field, newValue)
                 }
                 variant={{
-                  rows: 8,
                   variant: "outlined",
                   fullWidth: true,
                   size: "small",

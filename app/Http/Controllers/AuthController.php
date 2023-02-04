@@ -49,7 +49,6 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
             'status' => 0,
         ]);
-
         return $this->success([
             'token' => $user->createToken('auth-token')->plainTextToken,
         ]);
@@ -57,8 +56,7 @@ class AuthController extends Controller
 
     public function logout()
     {
-        dd(\Auth::user()->currentAccessToken()->delete());
         \Auth::user()->currentAccessToken()->delete();
-        return $this->success(['message' => 'Successfuly Logged out!']);
+        return ['message' => 'Successfuly Logged out!'];
     }
 }

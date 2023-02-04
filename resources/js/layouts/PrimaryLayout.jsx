@@ -26,7 +26,6 @@ const wrapper = {
 const signInDesign = {
   height: '100%',
   display: 'flex',
-  justifyContent: 'center',
   alignItems: 'center'
 }
 
@@ -81,9 +80,8 @@ export const PrimaryLayout = () => {
         !loggedIn ? (
           <Box sx={wrapper}>
             <Box sx={signInDesign} >
-              <React.Suspense fallback='Loading...'>
+              <React.Suspense fallback={'Loading...'}>
                 <Routes>
-                  {/* <Route key={index} path={element.path} element={element.component} /> */}
                   <Route path="/" element={<SignInPage />} />
                   <Route path="/register" element={<SignUpPage />} />
                   <Route path="*" element={<NotFoundPage />} />

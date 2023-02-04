@@ -2,6 +2,10 @@ import React from 'react';
 import { Box, Grid } from '@mui/material';
 
 const UnauthorizePage = () => {
+  React.useEffect(() => {
+
+  }, []);
+
   return (
     <React.Fragment>
       <Grid justifyContent={'center'}>
