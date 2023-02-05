@@ -33,19 +33,21 @@ const LeftSection = () => {
             }
           >
             <Grid py="2rem">
-              <Link to='/home' style={{ textDecoration: 'none', color: '#1f2937' }} >
-                {/* <ListItemButton selected={location.pathname === element.path ? true : false}> */}
-                <ListItemButton >
-                  <ListItemIcon>
-                    <DashboardRounded />
-                  </ListItemIcon>
-                  Home
-                  {/* {
+              <React.Suspense fallback={'Loading..'}>
+                <Link to='/home' style={{ textDecoration: 'none', color: '#1f2937' }} >
+                  {/* <ListItemButton selected={location.pathname === element.path ? true : false}> */}
+                  <ListItemButton >
+                    <ListItemIcon>
+                      <DashboardRounded />
+                    </ListItemIcon>
+                    Home
+                    {/* {
                     Object.values(pageRoutes)[0]['name'] === 'Home' ?
                       <ListItemText primary={Object.values(pageRoutes)[0]['name']} /> : ''
                   } */}
-                </ListItemButton>
-              </Link>
+                  </ListItemButton>
+                </Link>
+              </React.Suspense>
 
               <Link to='/listing' style={{ textDecoration: 'none', color: '#1f2937' }} >
                 <ListItemButton>
