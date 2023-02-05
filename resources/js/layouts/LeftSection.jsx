@@ -9,14 +9,13 @@ import Collapse from '@mui/material/Collapse';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import StarBorder from '@mui/icons-material/StarBorder';
-import RightSection from './RightSection';
 import { DashboardRounded, SchoolRounded, ManageAccountsRounded } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
-import { pageRoutes } from './../pages/AutComponents/ValidateRequestPage';
 import useAuthStore from './../utils/store';
+import RightSection from './RightSection';
 
 
-export const LeftSection = () => {
+const LeftSection = () => {
   const [open, setOpen] = React.useState(false);
   const { role } = useAuthStore();
 
@@ -34,26 +33,26 @@ export const LeftSection = () => {
             }
           >
             <Grid py="2rem">
-              <Link to={'/home'} style={{ textDecoration: 'none', color: '#1f2937' }} >
+              <Link to='/home' style={{ textDecoration: 'none', color: '#1f2937' }} >
                 {/* <ListItemButton selected={location.pathname === element.path ? true : false}> */}
                 <ListItemButton >
                   <ListItemIcon>
                     <DashboardRounded />
                   </ListItemIcon>
-
-                  {
+                  Home
+                  {/* {
                     Object.values(pageRoutes)[0]['name'] === 'Home' ?
                       <ListItemText primary={Object.values(pageRoutes)[0]['name']} /> : ''
-                  }
+                  } */}
                 </ListItemButton>
               </Link>
 
-              <Link to={'/home'} style={{ textDecoration: 'none', color: '#1f2937' }} >
+              <Link to='/listing' style={{ textDecoration: 'none', color: '#1f2937' }} >
                 <ListItemButton>
                   <ListItemIcon>
                     <ManageAccountsRounded />
                   </ListItemIcon>
-                  <ListItemText primary="Scholarship List" />
+                  <ListItemText primary="Scholarship Listing" />
                 </ListItemButton>
               </Link>
 
@@ -69,7 +68,7 @@ export const LeftSection = () => {
                   </ListItemButton>
 
                   <Collapse in={open} timeout="auto" unmountOnExit>
-                    <Link to={'/home'} style={{ textDecoration: 'none', color: '#1f2937' }} >
+                    <Link to='/scholars' style={{ textDecoration: 'none', color: '#1f2937' }} >
                       <List component="div" disablePadding>
                         <ListItemButton sx={{ pl: 4 }}>
                           <ListItemIcon>
@@ -80,7 +79,7 @@ export const LeftSection = () => {
                       </List>
                     </Link>
 
-                    <Link to={'/home'} style={{ textDecoration: 'none', color: '#1f2937' }} >
+                    <Link to='/scholarships' style={{ textDecoration: 'none', color: '#1f2937' }} >
                       <List component="div" disablePadding>
                         <ListItemButton sx={{ pl: 4 }}>
                           <ListItemIcon>
@@ -91,7 +90,7 @@ export const LeftSection = () => {
                       </List>
                     </Link>
 
-                    <Link to={'/home'} style={{ textDecoration: 'none', color: '#1f2937' }} >
+                    <Link to='/users' style={{ textDecoration: 'none', color: '#1f2937' }} >
                       <List component="div" disablePadding>
                         <ListItemButton sx={{ pl: 4 }}>
                           <ListItemIcon>
@@ -105,7 +104,7 @@ export const LeftSection = () => {
                 </React.Fragment>
               ) : (<></>)}
 
-              <Link to={'/home'} style={{ textDecoration: 'none', color: '#1f2937' }} >
+              <Link to='/profile' style={{ textDecoration: 'none', color: '#1f2937' }} >
                 <ListItemButton>
                   <ListItemIcon>
                     <ManageAccountsRounded />
@@ -126,3 +125,4 @@ export const LeftSection = () => {
 }
 
 
+export default LeftSection;

@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
-import { Box, Tab, Tabs, Typography } from '@mui/material';
-import { ProfileInformation } from '../components/ProfileComponent/ProfileInformation';
-import { Password } from './../components/ProfileComponent/Password';
+import React from 'react';
+import { Box, Tab, Tabs, Typography, Grid } from '@mui/material';
+import { ProfileInfo } from './ProfileInfo';
+import { PasswordInfo } from './PasswordInfo';
+import { updateProfile } from '../../utils/apisauce';
+
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
   return (
-    <div
+    <Grid
       role="tabpanel"
       hidden={value !== index}
       id={`vertical-tabpanel-${index}`}
@@ -15,23 +17,27 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3 }}>
+        <Grid sx={{ p: 3 }}>
           <Typography>{children}</Typography>
-        </Box>
+        </Grid>
       )}
-    </div>
+    </Grid>
   );
 }
 
-const AccountPage = () => {
-  const [value, setValue] = useState(0);
+const ProfilePage = () => {
+  const [value, setValue] = React.useState(0);
+
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+ 
+
   return (
     <React.Fragment>
-      <Box sx={{ display: 'flex', }}>
+      <Grid container p={'2rem'}>
         <Tabs
           orientation="vertical"
           variant="scrollable"
@@ -44,15 +50,15 @@ const AccountPage = () => {
           <Tab label="Password" />
         </Tabs>
         <TabPanel value={value} index={0}>
-          <ProfileInformation />
+          <ProfileInfo />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <Password />
+          <PasswordInfo />
         </TabPanel>
 
-      </Box>
+      </Grid>
     </React.Fragment>
-  )
+  );
 }
 
-export default AccountPage;
+export default ProfilePage;

@@ -7,8 +7,8 @@ export const ButtonComponent = ({ title, variant, onClick, others }) => {
   return (
     <React.Fragment>
       <Box sx={{ py: '1rem' }}>
-
         <Button
+          disableElevation
           fullWidth
           {...variant}
           {...others}

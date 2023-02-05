@@ -3,61 +3,23 @@
 namespace App\Http\Controllers\UserManagement;
 
 use App\Http\Controllers\Controller;
-use App\Models\UserManagementModel;
+use App\Models\UserManagement\UserManagementModel;
 use App\Traits\HttpResponseTraits;
 use Illuminate\Http\Request;
 
 class UserManagementController extends Controller
 {
-    use HttpResponseTraits;
 
     protected $user;
 
-    // Dependency Inject to avoid redundant calls
     public function __construct(UserManagementModel $user)
     {
-        $this->user = $user;
+        return $this->user = $user;
     }
 
-    public function list()
+    public function show()
     {
-        try {
-            return $this->success($this->user->showList());
-        } catch (\Throwable $throwable) {
-            return $this->error($throwable->getMessage());
-        }
-    }
-
-    public function listById(Request $request)
-    {
-        try {
-            return $this->success($this->user->getInfoById($request->only(['id'])['id']));
-        } catch (\Throwable $throwable) {
-            return $this->error($throwable->getMessage());
-        }
-    }
-
-    public function store(Request $request)
-    {
-        try {
-            return $this->success($this->user->createUser($request->only(['values'])['values']));
-        } catch (\Throwable $throwable) {
-            $this->error($throwable->getMessage());
-        }
-    }
-
-    public function approveUser(Request $request)
-    {
-        return $this->success($this->user->updateStatus($request->all()));
-    }
-
-
-    public function deleteUser(Request $request)
-    {
-        try {
-            return $this->success($this->user->deleteUser((int)$request->only(['id'])['id']));
-        } catch (\Throwable $throwable) {
-            return $this->error($throwable->getMessage());
-        }
+        $this->user->page(10);
+        return $this->user->show();
     }
 }

@@ -23,7 +23,7 @@ const validationSchema = yup.object({
 });
 
 const LoginPage = () => {
-  const { setRole, setLoggedIn } = useAuthStore();
+  const { setRole, setStatus, setLoggedIn } = useAuthStore();
   const loginFormik = useFormik({
     initialValues: {
       email: "",
@@ -37,16 +37,15 @@ const LoginPage = () => {
     loginFormik.setFieldValue(field, values);
   }
 
-  const handleCreateAccount = async ({ ...values }) => {
+  const handleLogin = async ({ ...values }) => {
     sanctum();
     const res = await login(values);
 
     if (res.status == 200) {
       setRole(res.data.data);
       setLoggedIn(true);
+      navigate('/home', { replace: true });
     }
-
-
   }
 
   return (
@@ -81,7 +80,7 @@ const LoginPage = () => {
               />
             </Grid>
 
-            <Grid item py={1} >
+            {/* <Grid item py={1} >
               <TextFieldComponent
                 fieldname={'id_no'}
                 fieldlabel={'ID No'}
@@ -92,7 +91,7 @@ const LoginPage = () => {
                 }}
                 handleOnChange={(field, value) => handleOnChange(field, value)}
               />
-            </Grid>
+            </Grid> */}
 
             <Grid item py={1} >
               <PasswordFieldComponent
@@ -108,8 +107,10 @@ const LoginPage = () => {
             </Grid>
 
             <Grid container sx={{
-              justifyContent: 'center',
-              alignItems: 'center'
+              mt: '1rem',
+              mb: '1rem',
+              justifyContent: 'end',
+              alignItems: 'end'
             }}>
               <Link to='/register'>
                 <Typography sx={{
@@ -117,13 +118,16 @@ const LoginPage = () => {
                   color: 'gray',
                   fontSize: '12px'
                 }} >
-                  ALREADY HAVE AN ACCOUNT?
+                  Create an account?
                 </Typography>
               </Link>
             </Grid>
             <ButtonComponent
               title={'Submit'}
-              onClick={() => handleCreateAccount(loginFormik.values)}
+              variant={{
+                variant: 'contained'
+              }}
+              onClick={() => handleLogin(loginFormik.values)}
             />
           </Grid>
 

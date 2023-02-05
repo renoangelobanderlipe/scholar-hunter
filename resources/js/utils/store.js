@@ -3,6 +3,7 @@ import { persist } from 'zustand/middleware';
 
 const defaultAuthState = {
   loggedIn: false,
+  userStatus: 0,
   role: [],
 }
 
@@ -22,6 +23,15 @@ const useAuthStore = create(persist((set, get) => ({
     return set((state) => {
       const tempState = {
         role: data,
+      }
+      return tempState;
+    })
+  },
+
+  setStatus: (data) => {
+    return set((state) => {
+      const tempState = {
+        userStatus: data,
       }
       return tempState;
     })

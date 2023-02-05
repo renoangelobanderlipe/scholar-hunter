@@ -1,3 +1,8 @@
+export const courseType = [
+  'Bachelor',
+  'Graduate',
+];
+
 export const course = [
   'Bachelor of Science in Information Technology',
   'Bachelor of Science in Industrial Technology',
@@ -14,12 +19,4 @@ export const course = [
   'Bachelor of Science in Business Administration',
 ];
 
-export const courseType = [
-  'Bachelor',
-  'Graduate',
-];
 
-export const roles = [
-  'Student',
-  'Foundation'
-]

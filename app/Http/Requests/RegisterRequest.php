@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Http\Controllers\Auth\AuthController;
 use App\Models\AuthModel;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -24,7 +25,6 @@ class RegisterRequest extends FormRequest
      */
     public function rules()
     {
-
         return [
             'id_no' => ['required', 'string', 'max:255'],
             'firstname' => ['required', 'string', 'max:255'],
@@ -43,7 +43,22 @@ class RegisterRequest extends FormRequest
     public function register()
     {
         $request = (object)$this->all();
+        $authModel = new AuthModel;
 
-        return (new AuthModel)->register($request);
+        $authModel->idNo($request->id_no);
+        $authModel->firstname($request->firstname);
+        $authModel->middlename($request->middlename);
+        $authModel->lastname($request->lastname);
+        $authModel->address($request->address);
+        $authModel->username($request->username);
+        $authModel->contactNo($request->contact_no);
+        $authModel->email($request->email);
+        $authModel->course($request->course);
+        $authModel->courseType($request->course_type);
+        $authModel->password($request->password);
+
+        return $authModel->registerTransaction();
     }
+
+
 }

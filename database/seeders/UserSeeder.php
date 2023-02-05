@@ -28,41 +28,39 @@ class UserSeeder extends Seeder
             'email' => 'admin@scholarhunter.com',
             'course' => '',
             'course_type' => '',
-            'role' => 'admin',
             'status' => 1,
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
-        ]);   
+        ]);
 
-        for($i = 1; $i<=150; $i++)
-        {
+        for ($i = 1; $i <= 150; $i++) {
             $id_no = null;
-            if(rand(1,0) === 1) {
+            if (rand(1, 0) === 1) {
                 $id_no = fake()->numerify('221-####-2');
 
-                while(User::where('id_no', $id_no)->exists()) {
+                while (User::where('id_no', $id_no)->exists()) {
                     $id_no = fake()->numerify('221-####-2');
                 }
             }
 
             $username = fake()->word();
-            while(User::where('username', $username)->exists())  {
+            while (User::where('username', $username)->exists()) {
                 $username = fake()->word();
             }
 
             $email = fake()->unique()->safeEmail();
-            while(User::where('email', $email)->exists()) {
+            while (User::where('email', $email)->exists()) {
                 $email = fake()->unique()->safeEmail();
             }
 
             $contact_no = fake()->numerify('09#########');
-            while(User::where('contact_no', $contact_no)->exists()) {
+            while (User::where('contact_no', $contact_no)->exists()) {
                 $contact_no = fake()->numerify('09#########');
             }
 
-            $seed_middlename = rand(1,0);
-        
+            $seed_middlename = rand(1, 0);
+
 
             User::factory()->create([
                 'id_no' => $id_no,
@@ -73,15 +71,13 @@ class UserSeeder extends Seeder
                 'username' => $username,
                 'contact_no' => $contact_no,
                 'email' => $email,
-                'course' => $id_no !== null ? DataHelper::getCourses()[rand(0,12)] : '',
+                'course' => $id_no !== null ? DataHelper::getCourses()[rand(0, 12)] : '',
                 'course_type' => $id_no !== null ? DataHelper::getCourseTypes()[0] : '',
-                'role' => $id_no !== null ? 'student' : 'foundation',
                 'status' => 1,
                 'email_verified_at' => now(),
                 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
                 'remember_token' => Str::random(10),
             ]);
         }
-        
     }
 }

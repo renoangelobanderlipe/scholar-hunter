@@ -4,11 +4,7 @@ namespace App\Traits;
 
 trait UserTrait
 {
-  /**
-   * User logged in information
-   * 
-   */
-  protected function hasAuth()
+  protected function info()
   {
     return \Auth::user();
   }

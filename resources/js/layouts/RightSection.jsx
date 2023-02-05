@@ -1,12 +1,13 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 import { Grid } from '@mui/material';
-import { CircularProgress } from '@mui/material';
-import { Routes } from 'react-router-dom';
-import { Route } from 'react-router-dom';
-import NotFoundPage from './../fallback/NotfoundPage';
-import HomePage from './../pages/HomePage';
 import useAuthStore from './../utils/store';
+import { Route, Routes } from 'react-router-dom';
+
+const HomePage = React.lazy(() => import('./../pages/HomePage'));
+const ScholarshipListing = React.lazy(() => import('./../pages/ScholarshipListing'));
+const ProfilePage = React.lazy(() => import('./../pages/Profile/ProfilePage'));
+const UserManagementPage = React.lazy(() => import('./../pages/UserManagementPage'));
 
 const RightSection = () => {
   const { role } = useAuthStore();
@@ -19,20 +20,12 @@ const RightSection = () => {
               Home Page
             </Typography>
           </Grid>
-          <Grid item xs={12}>
-            <React.Suspense fallback={<CircularProgress color="inherit" />}>
-              {
-                role.role != 'user' ? (<React.Fragment>
-                  <Routes>
-                    <Route path={'/home'} element={<HomePage />} />
-                    {/* <Route path={'/scholar-list'} element={< />} />
-                    <Route path={'/home'} element={<HomePage />} /> */}
-                    {/* <Route path='*' element={<NotFoundPage />} /> */}
-                  </Routes>
-                </React.Fragment>
-                ) : ""}
-            </React.Suspense>
-          </Grid>
+          <Routes>
+            <Route path="/home" element={<HomePage />} />
+            <Route path="/listing" element={<ScholarshipListing />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/users" element={<UserManagementPage />} />
+          </Routes>
         </Grid>
       </Box>
     </React.Fragment>
