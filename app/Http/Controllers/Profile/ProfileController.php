@@ -5,12 +5,12 @@ namespace App\Http\Controllers\Profile;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Models\UserModel;
-use App\Traits\HttpResponseTraits;
+use App\Traits\HttpResponse;
 use Illuminate\Http\Request;
 
 class ProfileController extends Controller
 {
-    use HttpResponseTraits;
+    use HttpResponse;
 
     protected $user;
 

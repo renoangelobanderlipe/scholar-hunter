@@ -5,12 +5,11 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ChangeUserStatusFormRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
-use App\Traits\HttpResponseTraits;
+use App\Traits\HttpResponse;
 
 class ChangeUserStatusController extends Controller
 {
-    use HttpResponseTraits;
+    use HttpResponse;
     /**
      * Handle the incoming request.
      *

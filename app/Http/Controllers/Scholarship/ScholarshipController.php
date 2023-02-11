@@ -19,10 +19,31 @@ class ScholarshipController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return $this->success(Scholarship::leftjoin('foundations', 'scholarships.foundation_id', '=', 'foundations.id')->get()->toArray());
-        // return $this->success($this->joinScholarship());
+        return $this->success(
+            Scholarship::leftjoin('foundations', 'scholarships.foundation_id', '=', 'foundations.id')
+                ->orderBy('foundations.name', 'asc')
+                ->paginate(12)
+        );
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        // NOTE: OPTIMIZE THIS QUERY @peanut
+        $keyword = $request->only(['keyword'])['keyword'];
+
+        return $this->success(
+            Scholarship::leftjoin('foundations', 'scholarships.foundation_id', '=', 'foundations.id')
+                ->where('foundations.name', 'LIKE', '%' . $keyword . '%')
+                ->orderBy('foundations.name', 'asc')
+                ->paginate(12)
+        );
     }
 
     /**

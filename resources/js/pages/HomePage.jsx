@@ -1,12 +1,19 @@
 import React from 'react';
-import { foundationCount, scholarsCount } from './../utils/apisauce';
+import { foundationCount, scholarsCount, userStatus } from './../utils/apisauce';
 import { Grid } from '@mui/material';
+import useAuthStore from '../utils/store';
 
 const HomePage = () => {
   const [foundationPrivate, setPrivate] = React.useState(0);
   const [foundationPublic, setPublic] = React.useState(0);
   const [active, setActive] = React.useState(0);
   const [inactive, setInActive] = React.useState(0);
+  const [applied, setApplied] = React.useState(0);
+  const [pending, setPending] = React.useState(0);
+  const [approved, setApproved] = React.useState(0);
+
+  const { loggedIn, role } = useAuthStore();
+
 
   const handleFoundationPublic = async () => {
     const res = await foundationCount({ type: 'public' });
@@ -37,27 +44,69 @@ const HomePage = () => {
     }
   }
 
+  const handleApplied = async () => {
+    const res = await userStatus({ type: 'applied' });
+
+    if (re.data.code == 200) {
+      setApplied(res.data?.data);
+    }
+  }
+  const handlePending = async () => {
+    const res = await userStatus({ type: 'pending' });
+
+    if (re.data.code == 200) {
+      setPending(res.data?.data);
+    }
+  }
+  const handleApproved = async () => {
+    const res = await userStatus({ type: 'approved' });
+
+    if (re.data.code == 200) {
+      setApproved(res.data?.data);
+    }
+  }
+
   React.useEffect(() => {
-    handleFoundationPublic();
-    handleFoundationPrivate();
-    handleActiveScholars();
-    handleInActiveScholars();
+    if (role != 'user') {
+      handleFoundationPublic();
+      handleFoundationPrivate();
+      handleActiveScholars();
+      handleInActiveScholars();
+    } else {
+      handleApplied();
+      handlePending();
+      handleApproved();
+    }
   }, []);
   return (
     <React.Fragment>
       <Grid container spacing={2}>
-        <Grid item xs={4} >
-          Foundation Public {foundationPublic}
-        </Grid>
-        <Grid item xs={4} >
-          Foundation Private {foundationPrivate}
-        </Grid>
-        <Grid item xs={4} >
-          Scholars ACtive {active}
-        </Grid>
-        <Grid item xs={4} >
-          Scholars Inactive {inactive}
-        </Grid>
+        {role != 'user' ? (<React.Fragment>
+          <Grid item xs={4} >
+            Foundation Public {foundationPublic}
+          </Grid>
+          <Grid item xs={4} >
+            Foundation Private {foundationPrivate}
+          </Grid>
+          <Grid item xs={4} >
+            Scholars ACtive {active}
+          </Grid>
+          <Grid item xs={4} >
+            Scholars Inactive {inactive}
+          </Grid>
+        </React.Fragment>)
+          :
+          (<React.Fragment>
+            <Grid item xs={4} >
+              Applied Scholarships {applied}
+            </Grid>
+            <Grid item xs={4} >
+              Pending Scholarships {pending}
+            </Grid>
+            <Grid item xs={4} >
+              Approved Scholarships {approved}
+            </Grid>
+          </React.Fragment>)}
       </Grid>
     </React.Fragment>
   )

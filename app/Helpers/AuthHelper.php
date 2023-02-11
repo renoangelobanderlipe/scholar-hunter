@@ -4,13 +4,12 @@ namespace App\Helpers;
 
 use App\Contracts\AuthContract;
 use App\Models\User;
-use App\Traits\HttpResponseTraits;
-use App\Traits\UserTrait;
+use App\Traits\HttpResponse;
 use Illuminate\Support\Facades\Hash;
 
 class AuthHelper implements AuthContract
 {
-  use UserTrait, HttpResponseTraits;
+  use HttpResponse;
 
   protected $idNo;
   protected $firstname;
@@ -81,7 +80,7 @@ class AuthHelper implements AuthContract
 
   public function show()
   {
-    $response = $this->info();
+    $response = \Auth::user();
 
     $data = [
       'email' => $response->email,

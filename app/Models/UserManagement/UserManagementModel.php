@@ -4,12 +4,12 @@ namespace App\Models\UserManagement;
 
 use App\Contracts\UserManagementContract;
 use App\Models\User;
-use App\Traits\HttpResponseTraits;
+use App\Traits\HttpResponse;
 use Illuminate\Database\Eloquent\Model;
 
 class UserManagementModel extends Model implements UserManagementContract
 {
-    use HttpResponseTraits;
+    use HttpResponse;
 
     protected $page;
 

@@ -6,14 +6,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\CreateUserFormRequest;
 use App\Models\User;
-use App\Traits\HttpResponseTraits;
-use App\Traits\UserTrait;
+use App\Traits\HttpResponse;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
 
-    use HttpResponseTraits;
+    use HttpResponse;
 
     /**
      * Display a listing of the resource.
@@ -22,7 +21,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        dd('test',\Auth::user());
+        dd('test', \Auth::user());
         // return $this->success(['role' => $this->userRole(), 'status' => $this->userStatus()]);
     }
 

@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-use App\Traits\HttpResponseTraits;
+use App\Traits\HttpResponse;
 use Illuminate\Database\Eloquent\Model;
 
 class RoleListener extends Model
 {
-    use HttpResponseTraits;
+    use HttpResponse;
     
     public function listen()
     {

@@ -25,4 +25,9 @@ class HomePageController extends Controller
     {
         return $this->home->scholarsCount($request->type);
     }
+
+    public function userStatus(Request $request)
+    {
+        return $this->home->status($request->type);
+    }
 }

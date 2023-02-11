@@ -20,12 +20,14 @@ export const logout = () => apiSauce.post('api/logout', params)
 export const updatePassword = (params) => apiSauce.post('api/auth/update/password', params);
 
 // Scholarship List
-export const scholarshipList = () => apiSauce.get('api/scholarship/index');
+export const scholarshipList = (params) => apiSauce.get('api/scholarship/index', params);
 export const submitScholarship = (params) => apiSauce.post('api/scholarship/store', params);
+export const handleSearch = (params) => apiSauce.get('api/scholarship/search', params);
 
 // HomePage
 export const foundationCount = (params) => apiSauce.get('api/home/foundation', params);
 export const scholarsCount = (params) => apiSauce.get('api/home/scholars', params);
+export const userStatus = (params) => apiSauce.get('api/home/status', params);
 
 // Role Listener 
 export const roleListener = () => apiSauce.get('api/listener/listen');

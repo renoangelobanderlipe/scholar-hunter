@@ -3,13 +3,13 @@
 namespace App\Models;
 
 use App\Contracts\AuthContract;
-use App\Traits\HttpResponseTraits;
+use App\Traits\HttpResponse;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 
 class AuthModel extends Model implements AuthContract
 {
-    use HttpResponseTraits;
+    use HttpResponse;
 
     protected $table = 'users';
     protected $hidden = ['id', 'created_at', 'updated_at'];

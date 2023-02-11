@@ -3,13 +3,13 @@
 namespace App\Http\Requests;
 
 use App\Models\AuthModel;
-use App\Traits\HttpResponseTraits;
+use App\Traits\HttpResponse;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
 class LoginRequest extends FormRequest
 {
-    use HttpResponseTraits;
+    use HttpResponse;
     /**
      * Determine if the user is authorized to make this request.
      *

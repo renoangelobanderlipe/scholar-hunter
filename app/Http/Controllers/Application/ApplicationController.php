@@ -5,13 +5,13 @@ namespace App\Http\Controllers\Application;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateApplicationFormRequest;
 use App\Models\Application;
+use App\Traits\HttpResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use App\Traits\HttpResponseTraits;
 
 class ApplicationController extends Controller
 {
-    use HttpResponseTraits;
+    use HttpResponse;
 
     /**
      * Display a listing of the resource.
@@ -48,7 +48,7 @@ class ApplicationController extends Controller
                 array_push($files, Storage::putFile('public/files/attachments', $attachment));
             }
         }
-        
+
         $application = Application::create([
             'user_id' => $request->validated('user_id'),
             'scholarship_id' => $request->validated('scholarship_id'),

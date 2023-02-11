@@ -1,14 +1,62 @@
 import React from 'react';
-import { Grid, Box, Dialog, Pagination, PaginationItem, CardContent, Chip, CardActions, Button, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
+import { Grid, Box, Dialog, Pagination, PaginationItem, CardContent, Chip, CardActions, Button, DialogTitle, DialogContent, DialogContentText, DialogActions, TextField, IconButton, InputAdornment } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { scholarshipList } from '../utils/apisauce';
+import { handleSearch, scholarshipList } from '../utils/apisauce';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import { FilePond, registerPlugin } from 'react-filepond';
 import 'filepond/dist/filepond.min.css';
 import { useFormik } from 'formik';
 import { submitScholarship } from './../utils/apisauce';
 import { useSnackbar } from 'notistack';
+import { SearchOutlined } from '@mui/icons-material';
+
+const SerachbarComponent = ({ scholarship, lastPage }) => {
+
+  const searchFormik = useFormik({
+    initialValues: {
+      keyword: ''
+    }
+  })
+
+  const handleOnSubmit = async () => {
+    const keyword = searchFormik.values.keyword;
+    const res = await handleSearch({ keyword });
+
+    if (res.data.code == 200) {
+      scholarship(res.data?.data?.data)
+      lastPage(res.data.data.last_page)
+    }
+  }
+
+  const handleOnChange = (val) => {
+    searchFormik.setFieldValue('keyword', val)
+  }
+  return (
+    <React.Fragment>
+      <Grid container>
+        <TextField
+          sx={{ width: '50%' }}
+          label={'Foundation Name'}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleOnSubmit}
+                  edge="end"
+                >
+                  <SearchOutlined />
+                </IconButton>
+              </InputAdornment>
+            )
+          }}
+          onChange={(event) => handleOnChange(event.currentTarget.value)}
+        />
+      </Grid>
+    </React.Fragment>
+  );
+}
 
 const FileUplaodButton = ({ handleId, foundationId }) => {
   const [open, setOpen] = React.useState(false);
@@ -68,35 +116,39 @@ const FileUplaodButton = ({ handleId, foundationId }) => {
 
 const ScholarshipListing = () => {
   const [scholarship, setScholarship] = React.useState([]);
-
-  const scholarshipFormik = useFormik({
-    initialValues: {
-      scholarshipFile: null
-    }
-  })
-
+  const [lastPage, setLastPage] = React.useState(0);
 
   const handleList = async () => {
     const res = await scholarshipList();
 
     if (res.data.code == 200) {
-      setScholarship(res.data?.data);
+      setScholarship(res.data?.data?.data);
+      setLastPage(res.data.data.last_page);
     }
   }
 
+  const handleOnChange = async (value) => {
+    const res = await scholarshipList({ page: value });
+
+    setScholarship(res.data.data.data);
+  }
+
+
   React.useEffect(() => {
     handleList();
+    handleOnChange()
   }, []);
 
   return (
     <React.Fragment>
       <Grid container>
-        <Box width={"100%"} sx={{ mb: '2.5rem ' }}>
-          {/* <SerachbarComponent placeholder={'Search'} onChange={(value) => handleSearch(value)} /> */}
-          SEARCH
-        </Box>
+        <Grid container item px={6} py={4} >
+          <SerachbarComponent scholarship={setScholarship} lastPag={setLastPage} />
+        </Grid>
 
-        <Grid container spacing={4} p={6}>
+        <Grid container spacing={4} px={6} py={4}>
+
+
           {
             scholarship.map((element, index) =>
               <Grid item xs={4} key={index}>
@@ -140,9 +192,8 @@ const ScholarshipListing = () => {
 
         <Grid container item p="4rem 0" justifyContent={'end'} >
           <Pagination
-            // count={scholarship.length}
-            count={10}
-            // onChange={(event, value) => handleOnChange(event, value)}
+            count={lastPage}
+            onChange={(event, value) => handleOnChange(value)}
             renderItem={(item) => (
               <PaginationItem
                 slots={{ previous: ArrowBackIcon, next: ArrowForwardIcon }}

@@ -34,11 +34,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(ScholarshipController::class)->prefix('scholarship')->group(function () {
         Route::get('index', 'index');
         Route::post('store', 'store');
+        Route::get('search', 'search');
     });
 
     Route::controller(HomePageController::class)->prefix('home')->group(function () {
         Route::get('foundation', 'foundation');
         Route::get('scholars', 'scholars');
+        Route::get('status', 'userStatus');
     });
 
     // Role Listener

@@ -5,12 +5,12 @@ namespace App\Http\Controllers\Posting;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreatePostingFormRequest;
 use App\Models\Posting;
+use App\Traits\HttpResponse;
 use Illuminate\Http\Request;
-use App\Traits\HttpResponseTraits;
 
 class PostingController extends Controller
 {
-    use HttpResponseTraits;
+    use HttpResponse;
 
     /**
      * Display a listing of the resource.
