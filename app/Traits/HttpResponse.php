@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-trait HttpResponseTraits
+trait HttpResponse
 {
 
   protected function success($data, $code = 200)

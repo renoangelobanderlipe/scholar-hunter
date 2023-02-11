@@ -1,7 +1,11 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\HomePage\HomePageController;
+use App\Http\Controllers\RoleListener\RoleListenerController;
+use App\Http\Controllers\Scholarship\ScholarshipController;
 use App\Http\Controllers\UserManagement\UserManagementController;
+use App\Models\RoleListener;
 use Illuminate\Support\Facades\Route;
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -25,6 +29,21 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::controller(UserManagementController::class)->prefix('user')->group(function () {
         Route::get('show', 'show');
+    });
+
+    Route::controller(ScholarshipController::class)->prefix('scholarship')->group(function () {
+        Route::get('index', 'index');
+        Route::post('store', 'store');
+    });
+
+    Route::controller(HomePageController::class)->prefix('home')->group(function () {
+        Route::get('foundation', 'foundation');
+        Route::get('scholars', 'scholars');
+    });
+
+    // Role Listener
+    Route::controller(RoleListenerController::class)->prefix('listener')->group(function () {
+        Route::get('listen', 'index');
     });
 
     // 

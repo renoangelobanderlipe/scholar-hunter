@@ -139,6 +139,7 @@ class AuthModel extends Model implements AuthContract
                 'lastname' => $user->lastname,
                 'email' => $user->email,
                 'role' => $user->getRoleNames()->first(),
+                'status' => $user->status == 0 ? 'pending' : 'active',
             ]
             // 'user' => $user,
             // 'token' => $user->createToken(env("SANCTUM_SECRET"))->plainTextToken

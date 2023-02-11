@@ -42,7 +42,8 @@ const LoginPage = () => {
     const res = await login(values);
 
     if (res.status == 200) {
-      setRole(res.data.data);
+      setRole(res.data.data.role);
+      // setStatus(res.data.data.status);
       setLoggedIn(true);
       navigate('/home', { replace: true });
     }

@@ -8,6 +8,8 @@ const HomePage = React.lazy(() => import('./../pages/HomePage'));
 const ScholarshipListing = React.lazy(() => import('./../pages/ScholarshipListing'));
 const ProfilePage = React.lazy(() => import('./../pages/Profile/ProfilePage'));
 const UserManagementPage = React.lazy(() => import('./../pages/UserManagementPage'));
+import ScholarshipsPage from './../pages/ScholarshipsPage';
+import FoundationsPage from './../pages/FoundationsPage';
 
 const RightSection = () => {
   const { role } = useAuthStore();
@@ -25,6 +27,8 @@ const RightSection = () => {
             <Route path="/listing" element={<ScholarshipListing />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/users" element={<UserManagementPage />} />
+            <Route path="/scholarships" element={<ScholarshipsPage />} />
+            <Route path="/foundations" element={<FoundationsPage />} />
           </Routes>
         </Grid>
       </Box>

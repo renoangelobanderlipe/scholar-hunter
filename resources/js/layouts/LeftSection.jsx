@@ -92,6 +92,17 @@ const LeftSection = () => {
                       </List>
                     </Link>
 
+                    <Link to='/foundations' style={{ textDecoration: 'none', color: '#1f2937' }} >
+                      <List component="div" disablePadding>
+                        <ListItemButton sx={{ pl: 4 }}>
+                          <ListItemIcon>
+                            <StarBorder />
+                          </ListItemIcon>
+                          <ListItemText primary="Foundations " />
+                        </ListItemButton>
+                      </List>
+                    </Link>
+
                     <Link to='/users' style={{ textDecoration: 'none', color: '#1f2937' }} >
                       <List component="div" disablePadding>
                         <ListItemButton sx={{ pl: 4 }}>

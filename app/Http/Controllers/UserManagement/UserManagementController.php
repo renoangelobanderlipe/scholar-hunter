@@ -20,6 +20,7 @@ class UserManagementController extends Controller
     public function show()
     {
         $this->user->page(10);
+        
         return $this->user->show();
     }
 }

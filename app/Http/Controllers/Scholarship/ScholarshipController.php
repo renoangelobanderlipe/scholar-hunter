@@ -4,15 +4,16 @@ namespace App\Http\Controllers\Scholarship;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateScholarshipFormRequest;
+use App\Http\Requests\ScholarshipRequest;
 use App\Models\Foundation;
 use App\Models\Scholarship;
 use App\Traits\FoundationTraits;
 use Illuminate\Http\Request;
-use App\Traits\HttpResponseTraits;
+use App\Traits\HttpResponse;
 
 class ScholarshipController extends Controller
 {
-    use HttpResponseTraits, FoundationTraits;
+    use HttpResponse, FoundationTraits;
     /**
      * Display a listing of the resource.
      *
@@ -20,7 +21,8 @@ class ScholarshipController extends Controller
      */
     public function index()
     {
-        return $this->success($this->joinScholarship());
+        return $this->success(Scholarship::leftjoin('foundations', 'scholarships.foundation_id', '=', 'foundations.id')->get()->toArray());
+        // return $this->success($this->joinScholarship());
     }
 
     /**
@@ -39,11 +41,9 @@ class ScholarshipController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateScholarshipFormRequest $request)
+    public function store(ScholarshipRequest $request)
     {
-        $scholarship = Scholarship::create($request->validated());
-
-        return $this->success($scholarship);
+        return (new Scholarship)->apply((object)$request->all());
     }
 
     /**
