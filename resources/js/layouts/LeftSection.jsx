@@ -83,7 +83,7 @@ const LeftSection = () => {
                   <ListItemIcon>
                     <ListIcon />
                   </ListItemIcon>
-                  <ListItemText primary="Scholar" />
+                  <ListItemText primary="Management" />
                   {open ? <ExpandLess /> : <ExpandMore />}
                 </ListItemButton>
 
