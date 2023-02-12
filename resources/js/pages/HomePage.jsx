@@ -1,6 +1,6 @@
 import React from 'react';
 import { foundationCount, scholarsCount, userStatus } from './../utils/apisauce';
-import { Grid } from '@mui/material';
+import { Grid, Card, Box } from '@mui/material';
 import useAuthStore from '../utils/store';
 
 const HomePage = () => {
@@ -97,8 +97,25 @@ const HomePage = () => {
         </React.Fragment>)
           :
           (<React.Fragment>
+
             <Grid item xs={4} >
-              Applied Scholarships {applied}
+              <Card
+                variant="outlined"
+                orientation="horizontal"
+                sx={{
+                  width: 320,
+                  gap: 2,
+                  '&:hover': { boxShadow: 'md', borderColor: 'neutral.outlinedHoverBorder' },
+                  height: "30vh"
+                }}
+              >
+                <Grid item backgroundColor="orange" height={'100%'}>
+                  <Grid item sx={{ dispaly: 'flex', justifyContent: 'center', alignContent: 'center' }}>
+                    Applied Scholarships {applied}
+                  </Grid>
+                </Grid>
+              </Card>
+
             </Grid>
             <Grid item xs={4} >
               Pending Scholarships {pending}

@@ -36,9 +36,10 @@ class AuthController extends Controller
         return $request->login();
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
-        return (new AuthModel)->logout();
+        return $request->user()->currentAccessToken()->delete();
+        // return (new AuthModel)->logout();
     }
 
     public function updateProfile(Request $request)

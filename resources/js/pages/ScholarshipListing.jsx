@@ -25,7 +25,7 @@ const SerachbarComponent = ({ scholarship, lastPage }) => {
 
     if (res.data.code == 200) {
       scholarship(res.data?.data?.data)
-      lastPage(res.data.data.last_page)
+      // lastPage(res.data.data.last_page)
     }
   }
 
@@ -196,6 +196,7 @@ const ScholarshipListing = () => {
             onChange={(event, value) => handleOnChange(value)}
             renderItem={(item) => (
               <PaginationItem
+
                 slots={{ previous: ArrowBackIcon, next: ArrowForwardIcon }}
                 {...item}
               />

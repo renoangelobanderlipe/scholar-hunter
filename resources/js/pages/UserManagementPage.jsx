@@ -1,21 +1,43 @@
 import React, { useState } from 'react';
 import { DataGrid, GridToolbarContainer, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, GridToolbarExport } from '@mui/x-data-grid';
-import { Button, DialogTitle, DialogContent, Dialog, Grid, DialogActions, IconButton, Chip } from '@mui/material';
+import { Button, DialogTitle, DialogContent, Dialog, Grid, DialogActions, IconButton, Chip, Typography } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { useFormik } from 'formik';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { getUserList } from '../utils/apisauce';
+import { approveUser, destroyUser, getUserList } from '../utils/apisauce';
+import { CheckCircle } from '@mui/icons-material';
+import useAuthStore from '../utils/store';
+import { ButtonComponent } from './../components/ButtonComponent';
+import { Link } from 'react-router-dom';
+import { PasswordFieldComponent } from './../components/TextFieldComponents/PasswordFieldComponent';
+import { AutoCompleteComponent } from './../components/AutoCompleteComponent';
+import { TextFieldComponent } from './../components/TextFieldComponents/TextFieldComponent';
+import { course } from '../utils/helper';
+import { courseType, roles } from './../utils/helper';
+import { HeaderComponent } from './../components/HeaderComponent';
+import { createUser } from './../utils/apisauce';
 
 
-function CustomButton() {
+const CustomButton = () => {
   const [open, setOpen] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const createUserFormik = useFormik({
     initialValues: {
+      id_no: '',
+      firstname: '',
+      middlename: '',
+      lastname: '',
+      address: '',
+      username: '',
+      contact_no: '',
       email: '',
+      course_type: '',
+      course: '',
+      role: '',
       password: '',
-    }
+      confirm_password: ''
+    },
   })
 
   const handleClickOpen = () => {
@@ -29,39 +51,216 @@ function CustomButton() {
     createUserFormik.setFieldValue(field, newValue);
   }
 
-  const handleCreateUser = async (values) => {
-    const res = await createUser({ email: values.email, password: values.password });
+  const handleOnSubmit = async (values) => {
+    const res = await createUser({ values });
 
-    enqueueSnackbar('Success', { variant: 'success' })
-    handleClose();
+    if (res.data.code == 200) {
+      enqueueSnackbar('Success', { variant: 'success' })
+      handleClose();
+    }
   }
 
   return (
-    <GridToolbarContainer>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Add User
-      </Button>
-      <form >
-        <Dialog
-          fullWidth open={open} onClose={handleClose}>
-          <DialogTitle>Add User</DialogTitle>
-          <DialogContent>
-            {/* <DialogContentText>
-            By 
-          </DialogContentText> */}
+    <React.Fragment>
+      <GridToolbarContainer>
+        <Button variant="outlined" onClick={handleClickOpen}>
+          Add User
+        </Button>
+        <form >
+          <Dialog
+            fullWidth open={open} onClose={handleClose}>
+            <DialogContent>
+              <form>
+                <Grid >
+                  <HeaderComponent
+                    title={'Create an Account'}
+                    variant={{
+                      variant: 'h5',
+                      color: 'black',
+                      fontWeight: 'bold',
+                      mb: '2.5rem'
+                    }}
+                  />
 
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose}>Cancel</Button>
-            <Button onClick={() => handleCreateUser()}>Submit</Button>
-          </DialogActions>
-        </Dialog>
-      </form>
-    </GridToolbarContainer>
+                  <Grid item display={'flex'} fullWidth p={'0.5rem 0'} >
+                    <Grid item pr={2} >
+                      <TextFieldComponent
+                        fieldname={'email'}
+                        fieldlabel={'Email'}
+                        variant={{
+                          variant: "outlined",
+                          size: "small",
+                        }}
+                        handleOnChange={(field, value) => handleOnChange(field, value)}
+                      />
+                    </Grid>
+
+                    <Grid item >
+                      <TextFieldComponent
+                        fieldname={'id_no'}
+                        fieldlabel={'ID No'}
+                        variant={{
+                          variant: "outlined",
+                          size: "small",
+                        }}
+                        handleOnChange={(field, value) => handleOnChange(field, value)}
+                      />
+                    </Grid>
+                  </Grid>
+
+                  <Grid item display={'flex'} p={'0.5rem 0'}>
+                    <Grid item pr={2}  >
+                      <TextFieldComponent
+                        fieldname={'firstname'}
+                        fieldlabel={'Firstname'}
+                        variant={{
+                          variant: "outlined",
+                          size: "small",
+                        }}
+                        handleOnChange={(field, value) => handleOnChange(field, value)}
+                      />
+                    </Grid>
+
+                    <Grid item >
+                      <TextFieldComponent
+                        fieldname={'middlename'}
+                        fieldlabel={'Middlename'}
+                        variant={{
+                          variant: "outlined",
+                          size: "small",
+                        }}
+                        handleOnChange={(field, value) => handleOnChange(field, value)}
+                      />
+                    </Grid>
+                  </Grid>
+
+                  <Grid item display={'flex'} p={'0.5rem 0'}>
+                    <Grid item pr={2}  >
+                      <TextFieldComponent
+                        fieldname={'lastname'}
+                        fieldlabel={'Lastname'}
+                        variant={{
+                          variant: "outlined",
+                          size: "small",
+                        }}
+                        handleOnChange={(field, value) => handleOnChange(field, value)}
+                      />
+                    </Grid>
+
+                    <Grid item >
+                      <TextFieldComponent
+                        fieldname={'username'}
+                        fieldlabel={'Username'}
+                        variant={{
+                          variant: "outlined",
+                          size: "small",
+                        }}
+                        handleOnChange={(field, value) => handleOnChange(field, value)}
+                      />
+                    </Grid>
+                  </Grid>
+
+                  <Grid item display={'flex'} p={'0.5rem 0'}>
+                    <Grid item pr={2}  >
+                      <TextFieldComponent
+                        fieldname={'address'}
+                        fieldlabel={'Address'}
+                        variant={{
+                          variant: "outlined",
+                          size: "small",
+                        }}
+                        handleOnChange={(field, value) => handleOnChange(field, value)}
+                      />
+                    </Grid>
+
+                    <Grid item >
+                      <TextFieldComponent
+                        fieldname={'contact_no'}
+                        fieldlabel={'Contact No'}
+                        variant={{
+                          variant: "outlined",
+                          size: "small",
+                        }}
+                        handleOnChange={(field, value) => handleOnChange(field, value)}
+                      />
+                    </Grid>
+                  </Grid>
+
+                  <Grid item display={'flex'} p={'0.5rem 0'}>
+                    <AutoCompleteComponent
+                      fieldName={'course'}
+                      fieldLabel={'Course'}
+                      options={course}
+                      handleOnChange={(field, value) => handleOnChange(field, value)}
+                    />
+
+                  </Grid>
+
+                  <Grid item display={'flex'} p={'0.5rem 0'}>
+                    <AutoCompleteComponent
+                      fieldName={'course_type'}
+                      fieldLabel={'Course Type'}
+                      options={courseType}
+                      handleOnChange={(field, value) => handleOnChange(field, value)}
+                    />
+
+                  </Grid>
+
+                  <Grid item py={1} >
+                    <PasswordFieldComponent
+                      fieldname={'password'}
+                      fieldlabel={'Password'}
+                      variant={{
+                        fullWidth: true,
+                        variant: "outlined",
+                        size: "small",
+                      }}
+                      handleOnChange={(field, value) => handleOnChange(field, value)}
+                    />
+                  </Grid>
+                  <Grid item py={1} >
+                    <PasswordFieldComponent
+                      fieldname={'password_confirmation'}
+                      fieldlabel={'Confirm Password'}
+                      variant={{
+                        fullWidth: true,
+                        variant: "outlined",
+                        size: "small",
+                      }}
+                      handleOnChange={(field, value) => handleOnChange(field, value)}
+                    />
+                  </Grid>
+
+                  <Grid item display={'flex'} p={'0.5rem 0'}>
+                    <AutoCompleteComponent
+                      fieldName={'role'}
+                      fieldLabel={'Role'}
+                      options={roles}
+                      handleOnChange={(field, value) => handleOnChange(field, value)}
+                    />
+                  </Grid>
+
+                  <ButtonComponent
+                    disable={createUserFormik.values.password != createUserFormik.values.confirm_password ? false : true}
+                    title={'Create Account'}
+                    variant={{
+                      variant: 'contained'
+                    }}
+                    onClick={() => handleOnSubmit(createUserFormik.values)}
+                  />
+                </Grid>
+
+
+              </form>
+            </DialogContent>
+          </Dialog>
+        </form>
+      </GridToolbarContainer>
+    </React.Fragment>
   )
 }
 
-function CustomToolbar() {
+const CustomToolbar = () => {
   return (
     <GridToolbarContainer>
       <Grid container justifyContent='space-between' p='0.5rem'>
@@ -85,23 +284,21 @@ function CustomToolbar() {
 
 const UserManagementPage = () => {
   const [rows, setRows] = React.useState([]);
-
+  const { role } = useAuthStore();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const handleFetchUsers = async () => {
     const page = 1;
-    
+
     const res = await getUserList({ page });
-    
+
     if (res.data.code == 200) {
-      setRows(res.data.data.data);
+      setRows(res.data.data);
     }
   }
 
-  console.log('teststtsts', rows);
-
   const handleApprove = async (id) => {
-    const res = await approve({ id });
+    const res = await approveUser({ id });
 
     if (res.data.data == 200) {
       enqueueSnackbar('Approved', { variant: 'success' })
@@ -109,17 +306,16 @@ const UserManagementPage = () => {
   }
 
   const handleDelete = async (id) => {
-    const res = await deleteUser({ id: id });
+
+    const res = await destroyUser({ id });
 
     if (res.data.code == 200) {
       setRows(prev => {
         return prev.filter(rows => rows.id !== id);
       });
-      enqueueSnackbar('Deleted', { variant: 'success' })
+      enqueueSnackbar(res.data.data.message, { variant: 'success' })
     } else {
-      console.log(res.data.message);
-
-      enqueueSnackbar('Please Try Again!', { variant: 'info' });
+      enqueueSnackbar('Something Wen\'t Wrong, Please Try Again!', { variant: 'info' });
     }
   }
 
@@ -181,13 +377,15 @@ const UserManagementPage = () => {
       renderCell: ({ row }) => {
         return (
           <React.Fragment>
-            <IconButton onClick={() => handleDelete(row.id)}>
-              <DeleteIcon />
-            </IconButton>
-            {/* <IconButton onClick={() => handleApprove(row.id)}>
-              <CheckCircle />
-            </IconButton> */}
-            {/* <UserInfo id={row.id} /> */}
+            {role == 'admin' ? <>
+              <IconButton onClick={() => handleDelete(row.id)}>
+                <DeleteIcon />
+              </IconButton>
+              <IconButton variant='success' onClick={() => handleApprove(row.id)}>
+                <CheckCircle />
+              </IconButton>
+              {/* <UserInfo id={row.id} /> */}
+            </> : <></>}
           </React.Fragment >
         )
       }

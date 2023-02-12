@@ -19,4 +19,8 @@ export const course = [
   'Bachelor of Science in Business Administration',
 ];
 
-
+export const roles = [
+  'user',
+  'admin',
+  'foundation'
+]

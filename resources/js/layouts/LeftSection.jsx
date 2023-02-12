@@ -13,11 +13,20 @@ import { DashboardRounded, SchoolRounded, ManageAccountsRounded } from '@mui/ico
 import { Link } from 'react-router-dom';
 import useAuthStore from './../utils/store';
 import RightSection from './RightSection';
+import { logout } from '../utils/apisauce';
 
 
 const LeftSection = () => {
   const [open, setOpen] = React.useState(false);
   const { role } = useAuthStore();
+
+  const handleLogout = async () => {
+    const res = await logout();
+
+    if (res.data.code == 200) {
+      console.log('loggoute');
+    }
+  }
 
   return (
     <React.Fragment>
@@ -70,16 +79,19 @@ const LeftSection = () => {
                 </ListItemButton>
 
                 <Collapse in={open} timeout="auto" unmountOnExit>
-                  <Link to='/scholars' style={{ textDecoration: 'none', color: '#1f2937' }} >
-                    <List component="div" disablePadding>
-                      <ListItemButton sx={{ pl: 4 }}>
-                        <ListItemIcon>
-                          <SchoolRounded />
-                        </ListItemIcon>
-                        <ListItemText primary="Scholars List" />
-                      </ListItemButton>
-                    </List>
-                  </Link>
+                  {
+                    role !== 'user' && role !== 'admin' ?
+                      <Link to='/scholars' style={{ textDecoration: 'none', color: '#1f2937' }} >
+                        <List component="div" disablePadding>
+                          <ListItemButton sx={{ pl: 4 }}>
+                            <ListItemIcon>
+                              <SchoolRounded />
+                            </ListItemIcon>
+                            <ListItemText primary="Scholars List" />
+                          </ListItemButton>
+                        </List>
+                      </Link> : <></>
+                  }
 
                   <Link to='/scholarships' style={{ textDecoration: 'none', color: '#1f2937' }} >
                     <List component="div" disablePadding>
@@ -124,6 +136,13 @@ const LeftSection = () => {
                   <ListItemText primary="Profile" />
                 </ListItemButton>
               </Link>
+
+              <ListItemButton onClick={() => handleLogout()}>
+                <ListItemIcon >
+                  <ManageAccountsRounded />
+                </ListItemIcon>
+                <ListItemText primary="Logout" />
+              </ListItemButton>
             </Grid>
 
           </List>

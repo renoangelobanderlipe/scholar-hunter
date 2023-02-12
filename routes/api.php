@@ -29,6 +29,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::controller(UserManagementController::class)->prefix('user')->group(function () {
         Route::get('show', 'show');
+        Route::post('update', 'update');
+        Route::post('create', 'create');
+        Route::delete('destroy', 'destroy');
     });
 
     Route::controller(ScholarshipController::class)->prefix('scholarship')->group(function () {
@@ -46,10 +49,5 @@ Route::middleware('auth:sanctum')->group(function () {
     // Role Listener
     Route::controller(RoleListenerController::class)->prefix('listener')->group(function () {
         Route::get('listen', 'index');
-    });
-
-    // 
-    Route::controller()->prefix('role')->group(function () {
-        Route::get('check', 'check');
     });
 });

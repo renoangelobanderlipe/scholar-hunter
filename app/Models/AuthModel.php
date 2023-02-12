@@ -13,6 +13,7 @@ class AuthModel extends Model implements AuthContract
 
     protected $table = 'users';
     protected $hidden = ['id', 'created_at', 'updated_at'];
+    protected $guard_name = 'api';
 
     protected $idNo;
     protected $firstname;
@@ -107,7 +108,6 @@ class AuthModel extends Model implements AuthContract
             \DB::beginTransaction();
             $data = User::create($this->register());
 
-
             $user = [
                 'data' => [
                     'id_no' => $data->id_no,
@@ -141,13 +141,17 @@ class AuthModel extends Model implements AuthContract
                 'role' => $user->getRoleNames()->first(),
                 'status' => $user->status == 0 ? 'pending' : 'active',
             ]
-            // 'user' => $user,
             // 'token' => $user->createToken(env("SANCTUM_SECRET"))->plainTextToken
+            // 'user' => $user,
         ];
     }
 
     public function logout()
     {
-        return \Auth::user()->currentAccessToken()->delete();
+        \Auth::user()->currentAccessToken()->delete();
+
+        return $this->success([
+            'message' => 'Successfully Logged Out!'
+        ]);
     }
 }

@@ -85,7 +85,7 @@ export const PasswordInfo = () => {
 
             <ButtonComponent
               // disable={signUpFormik.values.password != signUpFormik.values.confirm_password ? false : true}
-              title={'Submit'}
+              title={'Update Password'}
               variant={{
                 variant: 'contained'
               }}

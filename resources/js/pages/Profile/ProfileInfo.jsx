@@ -212,7 +212,7 @@ export const ProfileInfo = () => {
 
               <ButtonComponent
                 // disable={signUpFormik.values.password != signUpFormik.values.confirm_password ? false : true}
-                title={'Submit'}
+                title={'Update Profile'}
                 variant={{
                   variant: 'contained'
                 }}

@@ -7,7 +7,6 @@ const SignUpPage = React.lazy(() => import('./../pages/Auth/SignUpPage'));
 const LoginPage = React.lazy(() => import('./../pages/Auth/LoginPage'));
 const LeftSection = React.lazy(() => import("../layouts/LeftSection"));
 const NotFoundPage = React.lazy(() => import('./../fallback/NotfoundPage'));
-// import ScholarshipListing from './../pages/ScholarshipListing';
 // import HomePage from './../pages/HomePage';
 // import { UnauthorizedPage } from './../fallback/UnauthorizedPage';
 

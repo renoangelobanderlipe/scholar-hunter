@@ -16,7 +16,7 @@ export const login = (params) => apiSauce.post('api/login', params)
 export const register = (params) => apiSauce.post('api/register', params)
 export const updateProfile = (params) => apiSauce.post('api/auth/update/profile', params)
 export const profileShow = () => apiSauce.get('api/auth/show')
-export const logout = () => apiSauce.post('api/logout', params)
+export const logout = () => apiSauce.post('api/auth/logout')
 export const updatePassword = (params) => apiSauce.post('api/auth/update/password', params);
 
 // Scholarship List
@@ -32,8 +32,11 @@ export const userStatus = (params) => apiSauce.get('api/home/status', params);
 // Role Listener 
 export const roleListener = () => apiSauce.get('api/listener/listen');
 
-
+// User Management
 export const getUserList = (params) => apiSauce.get('api/user/show', params);
+export const approveUser = (params) => apiSauce.post('api/user/update', params);
+export const createUser = (params) => apiSauce.post('api/user/create', params);
+export const destroyUser = (params) => apiSauce.delete('api/user/destroy', params);
 
 
 
