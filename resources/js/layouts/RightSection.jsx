@@ -111,13 +111,12 @@ const RightSection = () => {
 
                   </Box>
                   <MenuItem onClick={handleCloseUserMenu}>
-                    <IconButton onClick={() => console.log('log')}>
-                      <Typography>
-                        Logout
-                        {/* <LogoutIcon /> */}
-                      </Typography>
-
-                    </IconButton>
+                    {/* <IconButton onClick={() => console.log('log')}> */}
+                    <Typography py="0.5rem">
+                      Logout
+                      {/* <LogoutIcon /> */}
+                    </Typography>
+                    {/* </IconButton> */}
                   </MenuItem>
                 </Box>
               </Menu>
