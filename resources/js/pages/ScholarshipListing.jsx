@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Box, Dialog, Pagination, PaginationItem, CardContent, Chip, CardActions, Button, DialogTitle, DialogContent, DialogContentText, DialogActions, TextField, IconButton, InputAdornment } from '@mui/material';
+import { Grid, Box, Dialog, Pagination, PaginationItem, CardContent, Chip, CardActions, Button, DialogTitle, DialogContent, DialogContentText, DialogActions, TextField, IconButton, InputAdornment, Typography } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { handleSearch, scholarshipList } from '../utils/apisauce';
@@ -34,9 +34,10 @@ const SerachbarComponent = ({ scholarship, lastPage }) => {
   }
   return (
     <React.Fragment>
-      <Grid container >
+      <Grid container backgroundColor="#fff" sx={{ borderRadius: '10px', border: 'none' }}>
         <TextField
-          sx={{ width: '50%' }}
+          size='medium'
+          sx={{ width: '100%' }}
           label={'Foundation Name'}
           InputProps={{
             endAdornment: (
@@ -141,17 +142,18 @@ const ScholarshipListing = () => {
 
   return (
     <React.Fragment>
-      <Grid container p={4} backgroundColor="#c8e6c9">
-        <Grid container item backgroundColor="#fff" sx={{ minHeight: '80vh', borderRadius: '10px' }}>
-          <Grid container item px={6} py={4} >
-            <SerachbarComponent scholarship={setScholarship} lastPag={setLastPage} />
+      <Grid container px={4} backgroundColor="#c8e6c9">
+        <Grid container item py={4} >
+          <Grid container item sx={{ borderRadius: '10px' }}>
+            <SerachbarComponent scholarship={setScholarship} lastPage={setLastPage} />
           </Grid>
+        </Grid>
+        <Grid container item backgroundColor="#fff" sx={{ minHeight: '65vh', borderRadius: '10px' }}>
 
           <Grid container spacing={4} px={6} py={4}>
 
-
             {
-              scholarship.map((element, index) =>
+              scholarship.length > 0 ? (scholarship.map((element, index) =>
                 <Grid item xs={4} key={index}>
                   <CardContent
                     sx={{
@@ -187,23 +189,33 @@ const ScholarshipListing = () => {
                     </CardActions>
                   </CardContent>
                 </Grid>
-              )
+              ))
+                :
+                (
+                  <React.Fragment>
+                    <Grid height="100%" textAlign={'center'} justifyContent={'center'} alignContent={'center'}>
+                      <Typography>Empty List</Typography>
+                    </Grid>
+                  </React.Fragment>
+                )
             }
+
+
           </Grid>
 
-          <Grid container backgroundColor="orange" justifyContent={'end'} >
-            <Pagination
-              count={lastPage}
-              onChange={(event, value) => handleOnChange(value)}
-              renderItem={(item) => (
-                <PaginationItem
+        </Grid>
+        <Grid container py={2} justifyContent={'end'}>
+          <Pagination
+            count={lastPage}
+            onChange={(event, value) => handleOnChange(value)}
+            renderItem={(item) => (
+              <PaginationItem
 
-                  slots={{ previous: ArrowBackIcon, next: ArrowForwardIcon }}
-                  {...item}
-                />
-              )}
-            />
-          </Grid>
+                slots={{ previous: ArrowBackIcon, next: ArrowForwardIcon }}
+                {...item}
+              />
+            )}
+          />
         </Grid>
       </Grid>
     </React.Fragment>
