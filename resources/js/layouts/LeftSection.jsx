@@ -10,7 +10,7 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import StarBorder from '@mui/icons-material/StarBorder';
 import { DashboardRounded, SchoolRounded, ManageAccountsRounded } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import useAuthStore from './../utils/store';
 import RightSection from './RightSection';
 import { logout } from '../utils/apisauce';
@@ -27,6 +27,9 @@ const LeftSection = () => {
       console.log('loggoute');
     }
   }
+
+
+  const location = useLocation();
 
   return (
     <React.Fragment>
@@ -45,7 +48,7 @@ const LeftSection = () => {
               <React.Suspense fallback={'Loading..'}>
                 <Link to='/home' style={{ textDecoration: 'none', color: '#1f2937' }} >
                   {/* <ListItemButton selected={location.pathname === element.path ? true : false}> */}
-                  <ListItemButton >
+                  <ListItemButton selected={location.pathname === '/home' ? true : false} >
                     <ListItemIcon>
                       <DashboardRounded />
                     </ListItemIcon>
@@ -59,7 +62,7 @@ const LeftSection = () => {
               </React.Suspense>
 
               <Link to='/listing' style={{ textDecoration: 'none', color: '#1f2937' }} >
-                <ListItemButton>
+                <ListItemButton selected={location.pathname === '/listing' ? true : false}>
                   <ListItemIcon>
                     <ManageAccountsRounded />
                   </ListItemIcon>
@@ -83,7 +86,7 @@ const LeftSection = () => {
                     role !== 'user' && role !== 'admin' ?
                       <Link to='/scholars' style={{ textDecoration: 'none', color: '#1f2937' }} >
                         <List component="div" disablePadding>
-                          <ListItemButton sx={{ pl: 4 }}>
+                          <ListItemButton sx={{ pl: 4 }} selected={location.pathname === '/scholars' ? true : false}>
                             <ListItemIcon>
                               <SchoolRounded />
                             </ListItemIcon>
@@ -95,7 +98,7 @@ const LeftSection = () => {
 
                   <Link to='/scholarships' style={{ textDecoration: 'none', color: '#1f2937' }} >
                     <List component="div" disablePadding>
-                      <ListItemButton sx={{ pl: 4 }}>
+                      <ListItemButton sx={{ pl: 4 }} selected={location.pathname === '/scholarships' ? true : false}>
                         <ListItemIcon>
                           <StarBorder />
                         </ListItemIcon>
@@ -106,7 +109,7 @@ const LeftSection = () => {
 
                   <Link to='/foundations' style={{ textDecoration: 'none', color: '#1f2937' }} >
                     <List component="div" disablePadding>
-                      <ListItemButton sx={{ pl: 4 }}>
+                      <ListItemButton sx={{ pl: 4 }} selected={location.pathname === '/foundations' ? true : false}>
                         <ListItemIcon>
                           <StarBorder />
                         </ListItemIcon>
@@ -117,7 +120,7 @@ const LeftSection = () => {
 
                   <Link to='/users' style={{ textDecoration: 'none', color: '#1f2937' }} >
                     <List component="div" disablePadding>
-                      <ListItemButton sx={{ pl: 4 }}>
+                      <ListItemButton sx={{ pl: 4 }} selected={location.pathname === '/users' ? true : false}>
                         <ListItemIcon>
                           <ManageAccountsRounded />
                         </ListItemIcon>
@@ -129,7 +132,7 @@ const LeftSection = () => {
               </React.Fragment> : <></>}
 
               <Link to='/profile' style={{ textDecoration: 'none', color: '#1f2937' }} >
-                <ListItemButton>
+                <ListItemButton selected={location.pathname === '/profile' ? true : false}>
                   <ListItemIcon>
                     <ManageAccountsRounded />
                   </ListItemIcon>
