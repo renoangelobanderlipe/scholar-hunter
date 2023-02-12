@@ -34,7 +34,7 @@ const SerachbarComponent = ({ scholarship, lastPage }) => {
   }
   return (
     <React.Fragment>
-      <Grid container>
+      <Grid container >
         <TextField
           sx={{ width: '50%' }}
           label={'Foundation Name'}
@@ -141,69 +141,70 @@ const ScholarshipListing = () => {
 
   return (
     <React.Fragment>
-      <Grid container>
-        <Grid container item px={6} py={4} >
-          <SerachbarComponent scholarship={setScholarship} lastPag={setLastPage} />
-        </Grid>
+      <Grid container p={4} backgroundColor="#c8e6c9">
+        <Grid container item backgroundColor="#fff" sx={{ minHeight: '80vh', borderRadius: '10px' }}>
+          <Grid container item px={6} py={4} >
+            <SerachbarComponent scholarship={setScholarship} lastPag={setLastPage} />
+          </Grid>
 
-        <Grid container spacing={4} px={6} py={4}>
+          <Grid container spacing={4} px={6} py={4}>
 
 
-          {
-            scholarship.map((element, index) =>
-              <Grid item xs={4} key={index}>
-                <CardContent
-                  sx={{
-                    bgcolor: '#fafafa',
-                    boxShadow: 1,
-                    borderRadius: 2,
-                    fontWeight: 'bold',
-                    p: 2,
-                    minWidth: 300,
-                    minHeight: 200
-                  }}>
-                  <Grid container item >
-                    <Grid container justifyContent={'space-between'} sx={{ mb: '0.5rem' }}>
-                      <Box sx={{ color: 'text.primary', fontSize: 14, fontWeight: 'bold' }}>
-                        {element.name}
-                      </Box>
-                      <Chip label={element.type} size={'small'} />
+            {
+              scholarship.map((element, index) =>
+                <Grid item xs={4} key={index}>
+                  <CardContent
+                    sx={{
+                      bgcolor: '#fafafa',
+                      boxShadow: 1,
+                      borderRadius: 2,
+                      fontWeight: 'bold',
+                      p: 2,
+                      minWidth: 300,
+                      minHeight: 200
+                    }}>
+                    <Grid container item >
+                      <Grid container justifyContent={'space-between'} sx={{ mb: '0.5rem' }}>
+                        <Box sx={{ color: 'text.primary', fontSize: 14, fontWeight: 'bold' }}>
+                          {element.name}
+                        </Box>
+                        <Chip label={element.type} size={'small'} />
+                      </Grid>
+                      <Box sx={{ color: 'text.secondary', fontSize: 12, mb: '1rem' }}>{element.address}</Box>
                     </Grid>
-                    <Box sx={{ color: 'text.secondary', fontSize: 12, mb: '1rem' }}>{element.address}</Box>
-                  </Grid>
-                  <Box sx={{ color: 'text.secondary', fontSize: 12, mb: '0.5rem' }}>{element.description}</Box>
+                    <Box sx={{ color: 'text.secondary', fontSize: 12, mb: '0.5rem' }}>{element.description}</Box>
 
-                  <Grid container mb="0.5rem">
-                    <Grid mr="0.5rem">
-                      <Chip label={element.contact_no} sx={{ fontWeight: 'medium' }} size={'small'} />
+                    <Grid container mb="0.5rem">
+                      <Grid mr="0.5rem">
+                        <Chip label={element.contact_no} sx={{ fontWeight: 'medium' }} size={'small'} />
+                      </Grid>
+                      <Grid>
+                        <Chip label={element.email} sx={{ fontWeight: 'medium' }} size={'small'} />
+                      </Grid>
                     </Grid>
-                    <Grid>
-                      <Chip label={element.email} sx={{ fontWeight: 'medium' }} size={'small'} />
-                    </Grid>
-                  </Grid>
-                  <CardActions sx={{ justifyContent: "end" }}>
-                    <FileUplaodButton handleId={element.id} foundationId={element.foundation_id} />
-                  </CardActions>
-                </CardContent>
-              </Grid>
-            )
-          }
+                    <CardActions sx={{ justifyContent: "end" }}>
+                      <FileUplaodButton handleId={element.id} foundationId={element.foundation_id} />
+                    </CardActions>
+                  </CardContent>
+                </Grid>
+              )
+            }
+          </Grid>
+
+          <Grid container backgroundColor="orange" justifyContent={'end'} >
+            <Pagination
+              count={lastPage}
+              onChange={(event, value) => handleOnChange(value)}
+              renderItem={(item) => (
+                <PaginationItem
+
+                  slots={{ previous: ArrowBackIcon, next: ArrowForwardIcon }}
+                  {...item}
+                />
+              )}
+            />
+          </Grid>
         </Grid>
-
-        <Grid container item p="4rem 0" justifyContent={'end'} >
-          <Pagination
-            count={lastPage}
-            onChange={(event, value) => handleOnChange(value)}
-            renderItem={(item) => (
-              <PaginationItem
-
-                slots={{ previous: ArrowBackIcon, next: ArrowForwardIcon }}
-                {...item}
-              />
-            )}
-          />
-        </Grid>
-
       </Grid>
     </React.Fragment>
   );

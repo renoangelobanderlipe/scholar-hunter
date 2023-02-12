@@ -162,22 +162,27 @@ const ScholarshipsPage = () => {
 
   return (
     <React.Fragment>
-      <Grid container p={'2rem'}>
-        <DataGrid
-          autoHeight
-          pageSize={10}
-          rowsPerPageOptions={[5, 15, 50, 100]}
-          rows={rows}
-          columns={columns}
-          components={{
-            // NoRowsOverlay: CustomNoRowsOverlay,
-            Toolbar: CustomToolbar,
+      <Grid container p={4} backgroundColor="#c8e6c9">
+        <Grid container item backgroundColor="#fff" sx={{ minHeight: '80vh', borderRadius: '10px' }}>
 
-          }}
-          componentsProps={{
-            toolbar: CustomButton
-          }}
-        />
+          <Grid container p={'2rem'}>
+            <DataGrid
+              autoHeight
+              pageSize={10}
+              rowsPerPageOptions={[5, 15, 50, 100]}
+              rows={rows}
+              columns={columns}
+              components={{
+                // NoRowsOverlay: CustomNoRowsOverlay,
+                Toolbar: CustomToolbar,
+
+              }}
+              componentsProps={{
+                toolbar: CustomButton
+              }}
+            />
+          </Grid>
+        </Grid>
       </Grid>
     </React.Fragment>
   );

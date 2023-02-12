@@ -80,50 +80,55 @@ const HomePage = () => {
   }, []);
   return (
     <React.Fragment>
-      <Grid container spacing={2}>
-        {role != 'user' ? (<React.Fragment>
-          <Grid item xs={4} >
-            Foundation Public {foundationPublic}
-          </Grid>
-          <Grid item xs={4} >
-            Foundation Private {foundationPrivate}
-          </Grid>
-          <Grid item xs={4} >
-            Scholars ACtive {active}
-          </Grid>
-          <Grid item xs={4} >
-            Scholars Inactive {inactive}
-          </Grid>
-        </React.Fragment>)
-          :
-          (<React.Fragment>
+      <Grid container p={4} backgroundColor="#c8e6c9">
+        <Grid container item backgroundColor="#fff" sx={{ minHeight: '80vh', borderRadius: '10px' }}>
+          
+          <Grid container spacing={2} p={2}>
+            {role != 'user' ? (<React.Fragment>
+              <Grid item xs={4} >
+                Foundation Public {foundationPublic}
+              </Grid>
+              <Grid item xs={4} >
+                Foundation Private {foundationPrivate}
+              </Grid>
+              <Grid item xs={4} >
+                Scholars ACtive {active}
+              </Grid>
+              <Grid item xs={4} >
+                Scholars Inactive {inactive}
+              </Grid>
+            </React.Fragment>)
+              :
+              (<React.Fragment>
 
-            <Grid item xs={4} >
-              <Card
-                variant="outlined"
-                orientation="horizontal"
-                sx={{
-                  width: 320,
-                  gap: 2,
-                  '&:hover': { boxShadow: 'md', borderColor: 'neutral.outlinedHoverBorder' },
-                  height: "30vh"
-                }}
-              >
-                <Grid item backgroundColor="orange" height={'100%'}>
-                  <Grid item sx={{ dispaly: 'flex', justifyContent: 'center', alignContent: 'center' }}>
-                    Applied Scholarships {applied}
-                  </Grid>
+                <Grid item xs={4} >
+                  <Card
+                    variant="outlined"
+                    orientation="horizontal"
+                    sx={{
+                      width: 320,
+                      gap: 2,
+                      '&:hover': { boxShadow: 'md', borderColor: 'neutral.outlinedHoverBorder' },
+                      height: "30vh"
+                    }}
+                  >
+                    <Grid item backgroundColor="orange" height={'100%'}>
+                      <Grid item sx={{ dispaly: 'flex', justifyContent: 'center', alignContent: 'center' }}>
+                        Applied Scholarships {applied}
+                      </Grid>
+                    </Grid>
+                  </Card>
+
                 </Grid>
-              </Card>
-
-            </Grid>
-            <Grid item xs={4} >
-              Pending Scholarships {pending}
-            </Grid>
-            <Grid item xs={4} >
-              Approved Scholarships {approved}
-            </Grid>
-          </React.Fragment>)}
+                <Grid item xs={4} >
+                  Pending Scholarships {pending}
+                </Grid>
+                <Grid item xs={4} >
+                  Approved Scholarships {approved}
+                </Grid>
+              </React.Fragment>)}
+          </Grid>
+        </Grid>
       </Grid>
     </React.Fragment>
   )

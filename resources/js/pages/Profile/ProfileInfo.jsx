@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid } from '@mui/material';
+import { Grid, Typography, Box } from '@mui/material';
 import { HeaderComponent } from './../../components/HeaderComponent';
 import { TextFieldComponent } from './../../components/TextFieldComponents/TextFieldComponent';
 import { ButtonComponent } from './../../components/ButtonComponent';
@@ -60,8 +60,15 @@ export const ProfileInfo = () => {
 
   return (
     <React.Fragment>
-      <form>
-        <Grid container>
+      <Grid sx={{ display: 'flex', width: '60vw' }}>
+        <Grid container item >
+          <Box sx={{ display: 'flex', alignItems: 'center', p: '3rem' }}>
+            <Typography fontWeight={'bold'} color="#263238">
+              Important Notice: It is highly recommended that you regularly update your profile to ensure that the information displayed is accurate and up-to-date.
+            </Typography>
+          </Box>
+        </Grid>
+        <Grid container item >
           <form>
             <Grid item>
               <HeaderComponent
@@ -222,7 +229,7 @@ export const ProfileInfo = () => {
 
           </form>
         </Grid>
-      </form >
+      </Grid>
     </React.Fragment >
   );
 }

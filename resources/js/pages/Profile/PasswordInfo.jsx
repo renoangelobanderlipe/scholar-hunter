@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid } from '@mui/material';
+import { Grid, Box, Typography } from '@mui/material';
 import { PasswordFieldComponent } from './../../components/TextFieldComponents/PasswordFieldComponent';
 import { HeaderComponent } from './../../components/HeaderComponent';
 import { ButtonComponent } from './../../components/ButtonComponent';
@@ -28,24 +28,34 @@ export const PasswordInfo = () => {
 
   const handleUpdate = async (values) => {
     console.log('values', values);
-    const res = await updatePassword(values );
+    const res = await updatePassword(values);
   }
 
   return (
-    <React.Fragment>
-      <Grid container>
+    <Grid sx={{ display: 'flex', width: '60vw' }}>
+      <Grid container item >
+        <Box sx={{ display: 'flex', alignItems: 'center', p: '3rem' }}>
+          <Typography fontWeight={'bold'} color="#263238">
+            Warning: Changing your password regularly is a crucial step in maintaining the security of your account. Please make sure to choose a strong and unique password for your account protection.
+          </Typography>
+        </Box>
+
+      </Grid>
+      <Grid container item >
         <form>
-          <Grid item>
+          <Grid item width={'30vw'} >
             <HeaderComponent
+              padding={'1.5rem 0'}
               title={'Update Password'}
               variant={{
+                padding: '1.5rem 0',
                 variant: 'h5',
                 color: 'black',
                 fontWeight: 'bold',
                 mb: '1rem'
               }}
             />
-            <Grid item py={1} >
+            <Grid item py="0.5rem">
               <PasswordFieldComponent
                 fieldname={'current_password'}
                 fieldlabel={'CurrentPassword'}
@@ -57,7 +67,7 @@ export const PasswordInfo = () => {
                 handleOnChange={(field, value) => handleOnChange(field, value)}
               />
             </Grid>
-            <Grid item py={1} >
+            <Grid item py="0.5rem">
               <PasswordFieldComponent
                 fieldname={'password'}
                 fieldlabel={'Update Password'}
@@ -70,7 +80,7 @@ export const PasswordInfo = () => {
               />
             </Grid>
 
-            <Grid item py={1} >
+            <Grid item py="0.5rem">
               <PasswordFieldComponent
                 fieldname={'password_confirmation'}
                 fieldlabel={'Confirm Password'}
@@ -87,6 +97,7 @@ export const PasswordInfo = () => {
               // disable={signUpFormik.values.password != signUpFormik.values.confirm_password ? false : true}
               title={'Update Password'}
               variant={{
+                padding: '1.5rem 0',
                 variant: 'contained'
               }}
               onClick={() => handleUpdate(passwordFormik.values)}
@@ -94,6 +105,6 @@ export const PasswordInfo = () => {
           </Grid>
         </form>
       </Grid>
-    </React.Fragment >
+    </Grid>
   )
 }

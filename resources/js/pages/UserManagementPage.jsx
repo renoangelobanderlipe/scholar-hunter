@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { DataGrid, GridToolbarContainer, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, GridToolbarExport } from '@mui/x-data-grid';
-import { Button, DialogTitle, DialogContent, Dialog, Grid, DialogActions, IconButton, Chip, Typography } from '@mui/material';
+import { Button, DialogTitle, DialogContent, Dialog, Grid, DialogActions, IconButton, Chip, Typography, Tooltip } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { useFormik } from 'formik';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -378,13 +378,21 @@ const UserManagementPage = () => {
         return (
           <React.Fragment>
             {role == 'admin' ? <>
-              <IconButton onClick={() => handleDelete(row.id)}>
-                <DeleteIcon />
-              </IconButton>
-              <IconButton variant='success' onClick={() => handleApprove(row.id)}>
-                <CheckCircle />
-              </IconButton>
-              {/* <UserInfo id={row.id} /> */}
+              <Tooltip title="Delete">
+                <IconButton color="error" onClick={() => handleDelete(row.id)}>
+                  <DeleteIcon />
+                </IconButton>
+              </Tooltip>
+
+              <Tooltip title="Approve">
+                <IconButton color="primary" variant='success' onClick={() => handleApprove(row.id)}>
+                  <CheckCircle />
+                </IconButton>
+              </Tooltip>
+
+              {/* <Tooltip title="Approve">
+              <UserInfo id={row.id} />
+              </Tooltip> */}
             </> : <></>}
           </React.Fragment >
         )
@@ -394,22 +402,27 @@ const UserManagementPage = () => {
   ];
   return (
     <React.Fragment>
-      <Grid container p={'2rem'}>
-        <DataGrid
-          autoHeight
-          pageSize={10}
-          rowsPerPageOptions={[5, 15, 50, 100]}
-          rows={rows}
-          columns={columns}
-          components={{
-            // NoRowsOverlay: CustomNoRowsOverlay,
-            Toolbar: CustomToolbar,
+      <Grid container p={4} backgroundColor="#c8e6c9">
+        <Grid container item backgroundColor="#fff" sx={{ minHeight: '80vh', borderRadius: '10px' }}>
+          <Grid container p={'2rem'}>
+            <DataGrid
+              autoHeight
+              pageSize={10}
+              rowsPerPageOptions={[5, 15, 50, 100]}
+              rows={rows}
+              columns={columns}
+              components={{
+                // NoRowsOverlay: CustomNoRowsOverlay,
+                Toolbar: CustomToolbar,
 
-          }}
-          componentsProps={{
-            toolbar: CustomButton
-          }}
-        />
+              }}
+              componentsProps={{
+                toolbar: CustomButton
+              }}
+            />
+          </Grid>
+        </Grid>
+
       </Grid>
     </React.Fragment>
   );

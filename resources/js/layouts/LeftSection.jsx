@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid } from '@mui/material';
+import { Grid, Typography, Box } from '@mui/material';
 import ListSubheader from '@mui/material/ListSubheader';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -11,6 +11,11 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import StarBorder from '@mui/icons-material/StarBorder';
 import { DashboardRounded, SchoolRounded, ManageAccountsRounded } from '@mui/icons-material';
 import { Link, useLocation } from 'react-router-dom';
+import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
+import ListIcon from '@mui/icons-material/List';
+import ViewStreamIcon from '@mui/icons-material/ViewStream';
+import PersonIcon from '@mui/icons-material/Person';
+import LogoutIcon from '@mui/icons-material/Logout';
 import useAuthStore from './../utils/store';
 import RightSection from './RightSection';
 import { logout } from '../utils/apisauce';
@@ -35,12 +40,13 @@ const LeftSection = () => {
     <React.Fragment>
       <Grid container height={'100vh'}>
         <Grid item xs={2}  >
-
           <List
             component="nav"
             subheader={
-              <ListSubheader component="div" id="nested-list-subheader">
-                SCHOLAR HUNTER
+              <ListSubheader sx={{ height: '4.5rem' }} component="div" id="nested-list-subheader">
+                <Box sx={{ height: '100%', display: 'flex', alignItems: 'center', }}>
+                  <Typography sx={{ fontWeight: 'bold', color: "#263238" }}>SCHOLAR HUNTER</Typography>
+                </Box>
               </ListSubheader>
             }
           >
@@ -64,7 +70,7 @@ const LeftSection = () => {
               <Link to='/listing' style={{ textDecoration: 'none', color: '#1f2937' }} >
                 <ListItemButton selected={location.pathname === '/listing' ? true : false}>
                   <ListItemIcon>
-                    <ManageAccountsRounded />
+                    <ViewStreamIcon />
                   </ListItemIcon>
                   <ListItemText primary="Scholarship Listing" />
                 </ListItemButton>
@@ -75,7 +81,7 @@ const LeftSection = () => {
               {role != 'user' ? <React.Fragment>
                 <ListItemButton onClick={() => setOpen(!open)}>
                   <ListItemIcon>
-                    <SchoolRounded />
+                    <ListIcon />
                   </ListItemIcon>
                   <ListItemText primary="Scholar" />
                   {open ? <ExpandLess /> : <ExpandMore />}
@@ -111,7 +117,7 @@ const LeftSection = () => {
                     <List component="div" disablePadding>
                       <ListItemButton sx={{ pl: 4 }} selected={location.pathname === '/foundations' ? true : false}>
                         <ListItemIcon>
-                          <StarBorder />
+                          <WorkspacePremiumIcon />
                         </ListItemIcon>
                         <ListItemText primary="Foundations " />
                       </ListItemButton>
@@ -134,18 +140,18 @@ const LeftSection = () => {
               <Link to='/profile' style={{ textDecoration: 'none', color: '#1f2937' }} >
                 <ListItemButton selected={location.pathname === '/profile' ? true : false}>
                   <ListItemIcon>
-                    <ManageAccountsRounded />
+                    <PersonIcon />
                   </ListItemIcon>
                   <ListItemText primary="Profile" />
                 </ListItemButton>
               </Link>
 
-              <ListItemButton onClick={() => handleLogout()}>
+              {/* <ListItemButton onClick={() => handleLogout()}>
                 <ListItemIcon >
-                  <ManageAccountsRounded />
+                  <LogoutIcon />
                 </ListItemIcon>
                 <ListItemText primary="Logout" />
-              </ListItemButton>
+              </ListItemButton> */}
             </Grid>
 
           </List>
