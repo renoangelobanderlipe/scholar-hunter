@@ -1,16 +1,17 @@
-import React from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { foundationCount, scholarsCount, userStatus } from './../utils/apisauce';
-import { Grid, Card, Box } from '@mui/material';
+import { Grid, Card, Box, CardContent, Typography, IconButton } from '@mui/material';
 import useAuthStore from '../utils/store';
+import { CardComponent } from './../components/CardComponent';
 
 const HomePage = () => {
-  const [foundationPrivate, setPrivate] = React.useState(0);
-  const [foundationPublic, setPublic] = React.useState(0);
-  const [active, setActive] = React.useState(0);
-  const [inactive, setInActive] = React.useState(0);
-  const [applied, setApplied] = React.useState(0);
-  const [pending, setPending] = React.useState(0);
-  const [approved, setApproved] = React.useState(0);
+  const [foundationPrivate, setPrivate] = useState(0);
+  const [foundationPublic, setPublic] = useState(0);
+  const [active, setActive] = useState(0);
+  const [inactive, setInActive] = useState(0);
+  const [applied, setApplied] = useState(0);
+  const [pending, setPending] = useState(0);
+  const [approved, setApproved] = useState(0);
 
   const { loggedIn, role } = useAuthStore();
 
@@ -72,62 +73,67 @@ const HomePage = () => {
       handleFoundationPrivate();
       handleActiveScholars();
       handleInActiveScholars();
-    } else {
+    } else if (role == 'foundation') {
       handleApplied();
       handlePending();
       handleApproved();
+    } else {
+      console.log('User')
     }
   }, []);
   return (
     <React.Fragment>
-      <Grid container p={4} backgroundColor="#c8e6c9">
-        <Grid container item backgroundColor="#fff" sx={{ minHeight: '80vh', borderRadius: '10px' }}>
-          
-          <Grid container spacing={2} p={2}>
-            {role != 'user' ? (<React.Fragment>
-              <Grid item xs={4} >
-                Foundation Public {foundationPublic}
-              </Grid>
-              <Grid item xs={4} >
-                Foundation Private {foundationPrivate}
-              </Grid>
-              <Grid item xs={4} >
-                Scholars ACtive {active}
-              </Grid>
-              <Grid item xs={4} >
-                Scholars Inactive {inactive}
-              </Grid>
-            </React.Fragment>)
-              :
-              (<React.Fragment>
+      <Grid container p={4} backgroundColor="#ECEFF1">
+        <Grid container item backgroundColor="#263238" sx={{ minHeight: '80vh', borderRadius: '10px', p: '2rem' }}>
+          {
+            role == 'admin' ? (
+              <Fragment>
+                <CardComponent
+                  title={'Private Foundation'}
+                  content={foundationPrivate}
+                />
 
-                <Grid item xs={4} >
-                  <Card
-                    variant="outlined"
-                    orientation="horizontal"
-                    sx={{
-                      width: 320,
-                      gap: 2,
-                      '&:hover': { boxShadow: 'md', borderColor: 'neutral.outlinedHoverBorder' },
-                      height: "30vh"
-                    }}
-                  >
-                    <Grid item backgroundColor="orange" height={'100%'}>
-                      <Grid item sx={{ dispaly: 'flex', justifyContent: 'center', alignContent: 'center' }}>
-                        Applied Scholarships {applied}
-                      </Grid>
-                    </Grid>
-                  </Card>
+                <CardComponent
+                  title={'Public Foundation'}
+                  content={foundationPublic}
+                />
 
-                </Grid>
-                <Grid item xs={4} >
-                  Pending Scholarships {pending}
-                </Grid>
-                <Grid item xs={4} >
-                  Approved Scholarships {approved}
-                </Grid>
-              </React.Fragment>)}
-          </Grid>
+                <CardComponent
+                  title={'Approved Users'}
+                  content={pending}
+                />
+
+                <CardComponent
+                  title={'Pending Users'}
+                  content={approved}
+                />
+              </Fragment>
+            ) : role == 'foundation' ? (
+              <Fragment>
+                Foundation
+              </Fragment>
+            ) : role == 'user' ?
+              <Fragment>
+                <CardComponent
+                  title={'Pending Applications'}
+                  content={approved}
+                />
+                <CardComponent
+                  title={'Rejected Applications'}
+                  content={approved}
+                />
+
+                <CardComponent
+                  title={'Application Status'}
+                  content={approved}
+                />
+
+                <CardComponent
+                  title={'Applied Scholarships'}
+                  content={approved}
+                />
+              </Fragment> : <Fragment />
+          }
         </Grid>
       </Grid>
     </React.Fragment>

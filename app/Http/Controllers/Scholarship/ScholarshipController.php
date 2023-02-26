@@ -3,9 +3,7 @@
 namespace App\Http\Controllers\Scholarship;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CreateScholarshipFormRequest;
 use App\Http\Requests\ScholarshipRequest;
-use App\Models\Foundation;
 use App\Models\Scholarship;
 use App\Traits\FoundationTraits;
 use Illuminate\Http\Request;
@@ -14,18 +12,15 @@ use App\Traits\HttpResponse;
 class ScholarshipController extends Controller
 {
     use HttpResponse, FoundationTraits;
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        return $this->success(
-            Scholarship::leftjoin('foundations', 'scholarships.foundation_id', '=', 'foundations.id')
-                ->orderBy('foundations.name', 'asc')
-                ->paginate(12)
-        );
+        return (new Scholarship)->index();
     }
 
     /**
@@ -35,15 +30,12 @@ class ScholarshipController extends Controller
      */
     public function search(Request $request)
     {
-        // NOTE: OPTIMIZE THIS QUERY @peanut
-        $keyword = $request->only(['keyword'])['keyword'];
+        return (new Scholarship)->search($request->only(['keyword'])['keyword']);
+    }
 
-        return $this->success(
-            Scholarship::leftjoin('foundations', 'scholarships.foundation_id', '=', 'foundations.id')
-                ->where('foundations.name', 'LIKE', '%' . $keyword . '%')
-                ->orderBy('foundations.name', 'asc')
-                ->paginate(12)
-        );
+    public function all()
+    {
+        return (new Scholarship)->foundations();
     }
 
     /**
@@ -51,9 +43,9 @@ class ScholarshipController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        return (new Scholarship)->create($request->all());
     }
 
     /**
@@ -107,8 +99,8 @@ class ScholarshipController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        dd('destroy shit', $request->all()['id']);
     }
 }

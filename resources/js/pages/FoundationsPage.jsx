@@ -1,23 +1,36 @@
-import React, { useState } from 'react';
-import { Grid, Chip, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Grid, Chip, Dialog, DialogContent, Button, Autocomplete, TextField } from '@mui/material';
 import { DataGrid, GridToolbarContainer, GridToolbarFilterButton, GridToolbarColumnsButton, GridToolbarDensitySelector, GridToolbarExport } from '@mui/x-data-grid';
-import { DeleteIcon } from '@mui/icons-material/Delete';
 import { useSnackbar } from 'notistack';
 import { useFormik } from 'formik';
-import { scholarshipList } from '../utils/apisauce';
+import { allUsers, foundationList } from '../utils/apisauce';
+import { HeaderComponent } from './../components/HeaderComponent';
+import { TextFieldComponent } from '../components/TextFieldComponents/TextFieldComponent';
+import { ButtonComponent } from './../components/ButtonComponent';
+import { foundationType } from '../utils/helper';
+import { AutoCompleteComponent } from './../components/AutoCompleteComponent';
+import { createFoundation, foundationDestroy } from './../utils/apisauce';
+import DeleteIcon from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
 
 
-function CustomButton() {
+const CustomButton = () => {
   const [open, setOpen] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const [users, setUsers] = useState([]);
 
-  const createUserFormik = useFormik({
+  const createFoundationFormik = useFormik({
     initialValues: {
-      email: '',
-      password: '',
+      'name': "",
+      'description': "",
+      'address': "",
+      'contact_no': "",
+      'email': "",
+      'type': "",
+      'user': "",
     }
   })
-
+  console.log('users', users);
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -26,42 +39,156 @@ function CustomButton() {
   };
 
   const handleOnChange = (field, newValue) => {
-    createUserFormik.setFieldValue(field, newValue);
+    console.log('onchange val', field, newValue);
+    createFoundationFormik.setFieldValue(field, newValue);
   }
 
-  const handleCreateUser = async (values) => {
-    const res = await createUser({ email: values.email, password: values.password });
+  const handleCreateFoundation = async (values) => {
 
-    enqueueSnackbar('Success', { variant: 'success' })
-    handleClose();
+    const res = await createFoundation(values);
+
+    // enqueueSnackbar('Success', { variant: 'success' })
+    // handleClose();
   }
+
+  const handleFetchUsers = async () => {
+    const res = await allUsers();
+
+    if (res.data.code == 200) {
+      setUsers(res.data.data.users);
+    }
+
+  }
+
+  useEffect(() => {
+    handleFetchUsers();
+  }, [])
 
   return (
-    <GridToolbarContainer>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Add User
-      </Button>
-      <form >
-        <Dialog
-          fullWidth open={open} onClose={handleClose}>
-          <DialogTitle>Add User</DialogTitle>
-          <DialogContent>
-            {/* <DialogContentText>
-            By 
-          </DialogContentText> */}
+    <React.Fragment>
+      <GridToolbarContainer>
+        <Button variant="outlined" onClick={handleClickOpen}>
+          Add
+        </Button>
+        <form >
+          <Dialog
+            fullWidth open={open} onClose={handleClose}>
+            <DialogContent>
+              <form>
+                <Grid >
+                  <HeaderComponent
+                    title={'Create Foundation'}
+                    variant={{
+                      variant: 'h5',
+                      color: 'black',
+                      fontWeight: 'bold',
+                      mb: '2.5rem'
+                    }}
+                  />
 
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose}>Cancel</Button>
-            <Button onClick={() => handleCreateUser()}>Submit</Button>
-          </DialogActions>
-        </Dialog>
-      </form>
-    </GridToolbarContainer>
+                  <Grid item p={'0.5rem 0'}>
+                    <TextFieldComponent
+                      fieldname={'email'}
+                      fieldlabel={'Email'}
+                      variant={{
+                        fullWidth: true,
+                        variant: "outlined",
+                        size: "small",
+                      }}
+                      handleOnChange={(field, value) => handleOnChange(field, value)}
+                    />
+                  </Grid>
+                  <Grid item p={'0.5rem 0'}>
+                    <TextFieldComponent
+                      fieldname={'name'}
+                      fieldlabel={'Name'}
+                      variant={{
+                        fullWidth: true,
+                        variant: "outlined",
+                        size: "small",
+                      }}
+                      handleOnChange={(field, value) => handleOnChange(field, value)}
+                    />
+                  </Grid>
+                  <Grid item p={'0.5rem 0'}>
+                    <TextFieldComponent
+                      fieldname={'description'}
+                      fieldlabel={'Description'}
+                      variant={{
+                        fullWidth: true,
+                        variant: "outlined",
+                        size: "small",
+                      }}
+                      handleOnChange={(field, value) => handleOnChange(field, value)}
+                    />
+                  </Grid>
+                  <Grid item p={'0.5rem 0'}>
+                    <TextFieldComponent
+                      fieldname={'address'}
+                      fieldlabel={'Address'}
+                      variant={{
+                        fullWidth: true,
+                        variant: "outlined",
+                        size: "small",
+                      }}
+                      handleOnChange={(field, value) => handleOnChange(field, value)}
+                    />
+                  </Grid>
+                  <Grid item p={'0.5rem 0'}>
+                    <TextFieldComponent
+                      fieldname={'contact_no'}
+                      fieldlabel={'Contact No'}
+                      variant={{
+                        fullWidth: true,
+                        variant: "outlined",
+                        size: "small",
+                      }}
+                      handleOnChange={(field, value) => handleOnChange(field, value)}
+                    />
+                  </Grid>
+
+                  <Grid item display={'flex'} p={'0.5rem 0'}>
+                    <AutoCompleteComponent
+                      fieldName={'type'}
+                      fieldLabel={'Type'}
+                      options={foundationType}
+                      handleOnChange={(field, value) => handleOnChange(field, value)}
+                    />
+                  </Grid>
+
+                  <Grid item p={'0.5rem 0'}>
+                    <Autocomplete
+                      disablePortal
+                      getOptionLabel={(options) => `${options.firstname} ${options.lastname}`}
+                      options={users ?? []}
+                      size='small'
+                      renderInput={(params) => <TextField sx={{ width: '100%' }} {...params} label="Assign User" />}
+                      onChange={(e, value) => handleOnChange('users', value)}
+                    />
+                  </Grid>
+
+                  <ButtonComponent
+                    disable={createFoundationFormik.values.password != createFoundationFormik.values.confirm_password ? false : true}
+                    title={'Create Account'}
+                    variant={{
+                      variant: 'contained'
+                    }}
+                    onClick={() => handleCreateFoundation(createFoundationFormik.values)}
+                  />
+                </Grid>
+
+
+              </form>
+            </DialogContent>
+          </Dialog>
+        </form>
+      </GridToolbarContainer>
+    </React.Fragment>
+
   )
 }
 
-function CustomToolbar() {
+const CustomToolbar = () => {
   return (
     <GridToolbarContainer>
       <Grid container justifyContent='space-between' p='0.5rem'>
@@ -85,14 +212,31 @@ function CustomToolbar() {
 
 const FoundationsPage = () => {
   const [rows, setRows] = React.useState([]);
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const handleList = async () => {
-    const res = await scholarshipList();
-
+    const res = await foundationList();
+    console.log('test', res);
     if (res.data.code == 200) {
       setRows(res.data.data);
     }
   }
+
+  const handleDelete = async (row) => {
+    const res = await foundationDestroy({ id: row.id });
+
+    if (res.data.code == '200') {
+      setRows(prev => {
+        return prev.filter(rows => rows.id !== row.id);
+      });
+      enqueueSnackbar(res.data.data.message, { variant: 'success' })
+
+    } else {
+      console.log(res.data.data);
+    }
+
+  }
+
 
   const columns = [
     { field: 'id', headerName: 'ID', width: 90, hide: true },
@@ -134,43 +278,28 @@ const FoundationsPage = () => {
         )
       }
     },
-    // {
-    //   field: 'status',
-    //   headerName: 'Status',
-    //   flex: 1,
-    //   renderCell: ({ row }) => {
-    //     return (
-    //       <React.Fragment>
-    //         {row.status == 1 ? <Chip label='Approved' color="success" /> : <Chip label='Pending' color="primary" />}
-    //       </React.Fragment >
-    //     )
-    //   }
-    // },
-    // {
-    //   field: 'action',
-    //   headerName: 'Action',
-    //   flex: 1,
-    //   renderCell: ({ row }) => {
-    //     return (
-    //       <React.Fragment>
-    //         <IconButton onClick={() => handleDelete(row.id)}>
-    //           <DeleteIcon />
-    //         </IconButton>
-    //         {/* <IconButton onClick={() => handleApprove(row.id)}>
-    //           <CheckCircle />
-    //         </IconButton> */}
-    //         {/* <UserInfo id={row.id} /> */}
-    //       </React.Fragment >
-    //     )
-    //   }
+    {
+      field: 'action',
+      headerName: 'Action',
+      flex: 1,
+      renderCell: ({ row }) => {
+        return (
+          <React.Fragment>
+            <IconButton onClick={() => handleDelete(row)}>
+              <DeleteIcon />
+            </IconButton>
+          </React.Fragment >
+        )
+      }
 
-    // },
+    },
   ];
 
   React.useEffect(() => {
     handleList();
   }, []);
 
+  console.log('rows', rows.data);
   return (
     <React.Fragment>
       <Grid container p={4} backgroundColor="#c8e6c9">
@@ -179,7 +308,7 @@ const FoundationsPage = () => {
             <DataGrid
               autoHeight
               pageSize={10}
-              rowsPerPageOptions={[5, 15, 50, 100]}
+              rowsPerPageOptions={[10, 15, 50, 100]}
               rows={rows}
               columns={columns}
               components={{

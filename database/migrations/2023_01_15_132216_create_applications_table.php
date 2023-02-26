@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('applications', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('scholarship_id')->constrained();
+            $table->string('user_id')->index();
+            $table->string('scholarship_id')->index();
             $table->string('status')->index()->nullable();
-            $table->json('attachments')->nullable();
+            $table->text('attachments')->index()->nullable();
             $table->timestamps();
         });
     }

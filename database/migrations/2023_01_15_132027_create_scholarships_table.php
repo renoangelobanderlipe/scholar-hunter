@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('scholarships', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('foundation_id')->constrained();
+            $table->string('foundation_id')->index();
             $table->string('name')->index();
             $table->string('description')->index();
             $table->timestamps();

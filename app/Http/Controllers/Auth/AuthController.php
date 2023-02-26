@@ -6,7 +6,7 @@ use App\Helpers\AuthHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
-use App\Models\AuthModel;
+use App\Models\Foundation;
 use App\Traits\HttpResponse;
 use Illuminate\Http\Request;
 
@@ -26,6 +26,11 @@ class AuthController extends Controller
         return $this->success((new AuthHelper)->show());
     }
 
+    public function all()
+    {
+        return (new AuthHelper)->all();
+    }
+
     public function register(RegisterRequest $request)
     {
         return $request->register();
@@ -34,12 +39,6 @@ class AuthController extends Controller
     public function login(LoginRequest $request)
     {
         return $request->login();
-    }
-
-    public function logout(Request $request)
-    {
-        return $request->user()->currentAccessToken()->delete();
-        // return (new AuthModel)->logout();
     }
 
     public function updateProfile(Request $request)
@@ -56,5 +55,11 @@ class AuthController extends Controller
         $this->helper->password($data);
 
         return $this->helper->updatePassword();
+    }
+
+    public function logout(Request $request)
+    {
+        return $request->user()->currentAccessToken()->delete();
+        // return (new AuthModel)->logout();
     }
 }

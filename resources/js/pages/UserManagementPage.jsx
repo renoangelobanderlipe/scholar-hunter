@@ -4,7 +4,7 @@ import { Button, DialogTitle, DialogContent, Dialog, Grid, DialogActions, IconBu
 import { useSnackbar } from 'notistack';
 import { useFormik } from 'formik';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { approveUser, destroyUser, getUserList } from '../utils/apisauce';
+import { approveUser, destroyUser, getUserList, roleListener } from '../utils/apisauce';
 import { CheckCircle } from '@mui/icons-material';
 import useAuthStore from '../utils/store';
 import { ButtonComponent } from './../components/ButtonComponent';
@@ -284,7 +284,9 @@ const CustomToolbar = () => {
 
 const UserManagementPage = () => {
   const [rows, setRows] = React.useState([]);
-  const { role } = useAuthStore();
+  // const { role } = useAuthStore();
+  const [role, setRole] = React.useState('');
+  const [status, setStatus] = React.useState('');
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const handleFetchUsers = async () => {
@@ -319,8 +321,17 @@ const UserManagementPage = () => {
     }
   }
 
+  const fetchRole = async () => {
+    const res = await roleListener();
+
+    if (res.data.code == 200) {
+      setRole(res.data.data.role);
+    }
+
+  }
 
   React.useEffect(() => {
+    fetchRole();
     handleFetchUsers();
   }, []);
 
@@ -377,23 +388,21 @@ const UserManagementPage = () => {
       renderCell: ({ row }) => {
         return (
           <React.Fragment>
-            {role == 'admin' ? <>
+            {role == 'admin' ? <React.Fragment>
               <Tooltip title="Delete">
                 <IconButton color="error" onClick={() => handleDelete(row.id)}>
                   <DeleteIcon />
                 </IconButton>
               </Tooltip>
 
-              <Tooltip title="Approve">
-                <IconButton color="primary" variant='success' onClick={() => handleApprove(row.id)}>
-                  <CheckCircle />
-                </IconButton>
-              </Tooltip>
-
-              {/* <Tooltip title="Approve">
-              <UserInfo id={row.id} />
-              </Tooltip> */}
-            </> : <></>}
+              {row.status != 1 ? <React.Fragment>
+                <Tooltip title="Approve">
+                  <IconButton color="primary" variant='success' onClick={() => handleApprove(row.id)}>
+                    <CheckCircle />
+                  </IconButton>
+                </Tooltip>
+              </React.Fragment> : <React.Fragment />}
+            </React.Fragment> : <React.Fragment />}
           </React.Fragment >
         )
       }

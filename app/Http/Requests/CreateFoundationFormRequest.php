@@ -39,7 +39,8 @@ class CreateFoundationFormRequest extends FormRequest
                 'max:255',
                 'unique:foundations,email'
             ],
-            'type' => 'required|string|max:255'
+            'type' => 'required|string|max:255',
+            'users' => 'array'
         ];
     }
 }

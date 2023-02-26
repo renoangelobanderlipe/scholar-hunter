@@ -24,3 +24,14 @@ export const roles = [
   'admin',
   'foundation'
 ]
+
+
+export const foundationType = [
+  'private',
+  'public'
+];
+
+export const accountType = [
+  'Student',
+  'Foundation'
+]

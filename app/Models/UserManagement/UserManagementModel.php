@@ -38,7 +38,7 @@ class UserManagementModel extends Model implements UserManagementContract
                     'lastname' => $datas['lastname'],
                     'contact_no' => $datas['contact_no'],
                     'email' => $datas['email'],
-                    'role' => $datas['roles'][0]['name'],
+                    // 'role' => $datas['roles']['name'],
                     'status' => $datas['status'],
                 ];
             }
@@ -79,6 +79,7 @@ class UserManagementModel extends Model implements UserManagementContract
 
             return $this->success($response);
         } catch (\Throwable $throwable) {
+            \DB::rollback();
             return $this->error($throwable->getMessage());
         }
     }
@@ -96,6 +97,7 @@ class UserManagementModel extends Model implements UserManagementContract
                 'message' => 'Successfully Updated Status'
             ]);
         } catch (\Throwable $throwable) {
+            \DB::rollback();
             return $this->error($throwable->getMessage());
         }
     }
@@ -105,7 +107,7 @@ class UserManagementModel extends Model implements UserManagementContract
         try {
             User::find($id)->delete();
 
-           return  $this->success([
+            return  $this->success([
                 'message' => 'Successfully Deleted'
             ]);
         } catch (\Throwable $throwable) {

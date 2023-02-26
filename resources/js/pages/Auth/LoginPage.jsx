@@ -7,9 +7,10 @@ import { ButtonComponent } from './../../components/ButtonComponent';
 import { HeaderComponent } from './../../components/HeaderComponent';
 import { PasswordFieldComponent } from './../../components/TextFieldComponents/PasswordFieldComponent';
 import { login, sanctum } from './../../utils/apisauce';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Typography } from '@mui/material';
 import useAuthStore from './../../utils/store';
+import { useSnackbar } from 'notistack';
 
 const validationSchema = yup.object({
   email: yup
@@ -24,6 +25,9 @@ const validationSchema = yup.object({
 
 const LoginPage = () => {
   const { setRole, setStatus, setLoggedIn } = useAuthStore();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const navigate = useNavigate();
+
   const loginFormik = useFormik({
     initialValues: {
       email: "",
@@ -46,6 +50,8 @@ const LoginPage = () => {
       // setStatus(res.data.data.status);
       setLoggedIn(true);
       navigate('/home', { replace: true });
+    } else {
+      enqueueSnackbar(res.data?.message?.message, { variant: 'warning' })
     }
   }
 

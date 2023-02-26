@@ -1,21 +1,25 @@
-import React, { useState } from 'react';
-import { Grid, IconButton, Chip, Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
+import React, { useState, Fragment } from 'react';
+import { Grid, IconButton, Dialog, DialogContent, Button } from '@mui/material';
 import { DataGrid, GridToolbarContainer, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, GridToolbarExport } from '@mui/x-data-grid';
 import { DeleteIcon } from '@mui/icons-material/Delete';
 import { useSnackbar } from 'notistack';
 import { useFormik } from 'formik';
-import { scholarshipList } from '../utils/apisauce';
+import { HeaderComponent } from './../components/HeaderComponent';
+import { TextFieldComponent } from './../components/TextFieldComponents/TextFieldComponent';
+import { ButtonComponent } from './../components/ButtonComponent';
+import { createScholarship } from '../utils/apisauce';
 
 
-function CustomButton() {
+const CustomButton = () => {
   const [open, setOpen] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const createUserFormik = useFormik({
     initialValues: {
-      email: '',
-      password: '',
-    }
+      name: '',
+      description: '',
+
+    },
   })
 
   const handleClickOpen = () => {
@@ -29,39 +33,84 @@ function CustomButton() {
     createUserFormik.setFieldValue(field, newValue);
   }
 
-  const handleCreateUser = async (values) => {
-    const res = await createUser({ email: values.email, password: values.password });
+  const handleOnSubmit = async (values) => {
+    console.log('Create Scholarship');
 
-    enqueueSnackbar('Success', { variant: 'success' })
-    handleClose();
+    const res = await createScholarship({ values });
+
+  console.log(res);
+
   }
 
   return (
-    <GridToolbarContainer>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Add User
-      </Button>
-      <form >
-        <Dialog
-          fullWidth open={open} onClose={handleClose}>
-          <DialogTitle>Add User</DialogTitle>
-          <DialogContent>
-            {/* <DialogContentText>
-            By 
-          </DialogContentText> */}
+  <React.Fragment>
+      <GridToolbarContainer>
+        <Button variant="outlined" onClick={handleClickOpen}>
+          Create
+        </Button>
+        <form >
+          <Dialog
+            fullWidth open={open} onClose={handleClose}>
+            <DialogContent>
+              <form>
+                <Grid >
+                  <HeaderComponent
+                    title={'Create an Account'}
+                    variant={{
+                      variant: 'h5',
+                      color: 'black',
+                      fontWeight: 'bold',
+                      mb: '2.5rem'
+                    }}
+                  />
 
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose}>Cancel</Button>
-            <Button onClick={() => handleCreateUser()}>Submit</Button>
-          </DialogActions>
-        </Dialog>
-      </form>
-    </GridToolbarContainer>
+                  <Grid container item mb="1.5rem"  >
+                    <TextFieldComponent
+                      fieldname={'name'}
+                      fieldlabel={'Name'}
+                      variant={{
+                        fullWidth: true,
+                        variant: "outlined",
+                        size: "small",
+                      }}
+                      handleOnChange={(field, value) => handleOnChange(field, value)}
+                    />
+                  </Grid>
+
+                  <Grid container item mb="3rem">
+                    <TextFieldComponent
+                      fieldname={'description'}
+                      fieldlabel={'Description'}
+                      variant={{
+                        fullWidth: true,
+                        variant: "outlined",
+                        size: "small",
+                      }}
+                      handleOnChange={(field, value) => handleOnChange(field, value)}
+                    />
+                  </Grid>
+
+                  <ButtonComponent
+                    // disable={createUserFormik.values.password != createUserFormik.values.confirm_password ? false : true}
+                    title={'Create Scholarship'}
+                    variant={{
+                      variant: 'contained'
+                    }}
+                    onClick={() => handleOnSubmit(createUserFormik.values)}
+                  />
+                </Grid>
+
+
+              </form>
+            </DialogContent>
+          </Dialog>
+        </form>
+      </GridToolbarContainer>
+    </React.Fragment>
   )
 }
 
-function CustomToolbar() {
+const CustomToolbar = () => {
   return (
     <GridToolbarContainer>
       <Grid container justifyContent='space-between' p='0.5rem'>
@@ -85,86 +134,58 @@ function CustomToolbar() {
 const ScholarshipsPage = () => {
   const [rows, setRows] = React.useState([]);
 
-  const handleList = async () => {
-    const res = await scholarshipList();
 
-    if (res.data.code == 200) {
-      setRows(res.data.data);
-    }
-  }
+
 
   const columns = [
     { field: 'id', headerName: 'ID', width: 90, hide: true },
-    { field: 'name', headerName: 'Name', width: 150 },
+    {
+      field: 'name',
+      headerName: 'Name',
+      flex: 1,
+    },
     {
       field: 'description',
       headerName: 'Description',
       flex: 1,
     },
-    {
-      field: 'address',
-      headerName: 'Address',
-      flex: 1,
-    },
-    {
-      field: 'contact_no',
-      headerName: 'Contact No',
-      flex: 1,
-    },
-    {
-      field: 'email',
-      headerName: 'Email',
-      type: 'number',
-      flex: 1,
-    },
-    {
-      field: 'type',
-      headerName: 'Type',
-      flex: 1,
-    },
 
-    {
-      field: 'status',
-      headerName: 'Status',
-      flex: 1,
-      renderCell: ({ row }) => {
-        return (
-          <React.Fragment>
-            {row.type == 'private' ? <Chip label='Private' color="success" /> : <Chip label='Public' color="primary" />}
-          </React.Fragment >
-        )
-      }
-    },
     // {
-    //   field: 'action',
-    //   headerName: 'Action',
+    //   field: 'status',
+    //   headerName: 'Status',
     //   flex: 1,
     //   renderCell: ({ row }) => {
     //     return (
     //       <React.Fragment>
-    //         <IconButton onClick={() => handleDelete(row.id)}>
-    //           <DeleteIcon />
-    //         </IconButton>
-    //         {/* <IconButton onClick={() => handleApprove(row.id)}>
-    //           <CheckCircle />
-    //         </IconButton> */}
-    //         {/* <UserInfo id={row.id} /> */}
+    //         {row.status == 1 ? <Chip label='Approved' color="success" /> : <Chip label='Pending' color="primary" />}
     //       </React.Fragment >
     //     )
     //   }
-
     // },
+    {
+      field: 'action',
+      headerName: 'Action',
+      flex: 0,
+      renderCell: ({ row }) => {
+        return (
+          <React.Fragment>
+            <Tooltip title="Delete">
+              <IconButton color="error" onClick={() => handleDelete(row.id)}>
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
+          </React.Fragment >
+        )
+      }
+
+    },
   ];
 
-  React.useEffect(() => {
-    handleList();
-  }, []);
 
   return (
-    <React.Fragment>
+    <Fragment>
       <Grid container p={4} backgroundColor="#c8e6c9">
         <Grid container item backgroundColor="#fff" sx={{ minHeight: '80vh', borderRadius: '10px' }}>
-
           <Grid container p={'2rem'}>
             <DataGrid
               autoHeight
@@ -183,9 +204,11 @@ const ScholarshipsPage = () => {
             />
           </Grid>
         </Grid>
+
       </Grid>
-    </React.Fragment>
+    </Fragment>
   );
+
 }
 
 export default ScholarshipsPage;

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Foundation\FoundationController;
 use App\Http\Controllers\HomePage\HomePageController;
 use App\Http\Controllers\RoleListener\RoleListenerController;
 use App\Http\Controllers\Scholarship\ScholarshipController;
@@ -25,6 +26,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('update/profile', 'updateProfile');
         Route::post('update/password', 'updatePassword');
         Route::get('show', 'show');
+        Route::get('all', 'all');
     });
 
     Route::controller(UserManagementController::class)->prefix('user')->group(function () {
@@ -36,8 +38,15 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::controller(ScholarshipController::class)->prefix('scholarship')->group(function () {
         Route::get('index', 'index');
+        Route::post('create', 'create');
+        Route::get('list', 'all');
         Route::post('store', 'store');
         Route::get('search', 'search');
+    });
+
+    Route::controller(FoundationController::class)->prefix('foundation')->group(function () {
+        Route::post('store', 'store');
+        Route::delete('destroy', 'destroy');
     });
 
     Route::controller(HomePageController::class)->prefix('home')->group(function () {
@@ -48,6 +57,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Role Listener
     Route::controller(RoleListenerController::class)->prefix('listener')->group(function () {
-        Route::get('listen', 'index');
+        Route::get('/', 'index');
     });
 });

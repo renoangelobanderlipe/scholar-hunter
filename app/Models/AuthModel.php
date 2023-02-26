@@ -6,6 +6,7 @@ use App\Contracts\AuthContract;
 use App\Traits\HttpResponse;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 class AuthModel extends Model implements AuthContract
 {
@@ -106,32 +107,33 @@ class AuthModel extends Model implements AuthContract
     {
         try {
             \DB::beginTransaction();
-            $data = User::create($this->register());
+            $user = User::create($this->register());
 
-            $user = [
+            $data = [
                 'data' => [
-                    'id_no' => $data->id_no,
-                    'firstname' => $data->firstname,
-                    'middlename' => $data->middlename,
-                    'lastname' => $data->lastname,
-                    'status' => $data->status,
+                    'id_no' => $user->id_no,
+                    'firstname' => $user->firstname,
+                    'middlename' => $user->middlename,
+                    'lastname' => $user->lastname,
+                    'status' => $user->status,
                     'role' => 'user',
                 ],
-                'token' => $data->createToken(env("SANCTUM_SECRET"))->plainTextToken,
+                'token' => $user->createToken(env("SANCTUM_SECRET"))->plainTextToken,
             ];
 
-            $data->assignRole('user');
+            $user->assignRole('user');
             \DB::commit();
 
-            return $this->success($user);
+            return $this->success($data);
         } catch (\Throwable $throwable) {
+            \DB::rollback();
             return $this->error($throwable->getMessage());
         }
     }
     public function login($data)
     {
-
         $user = User::where('email', $data['email'])->first();
+
         return [
             'data' => [
                 'firstname' => $user->firstname,
@@ -140,8 +142,8 @@ class AuthModel extends Model implements AuthContract
                 'email' => $user->email,
                 'role' => $user->getRoleNames()->first(),
                 'status' => $user->status == 0 ? 'pending' : 'active',
-            ]
-            // 'token' => $user->createToken(env("SANCTUM_SECRET"))->plainTextToken
+            ],
+            'token' => $user->createToken(env("SANCTUM_SECRET"))->plainTextToken
             // 'user' => $user,
         ];
     }
@@ -153,5 +155,23 @@ class AuthModel extends Model implements AuthContract
         return $this->success([
             'message' => 'Successfully Logged Out!'
         ]);
+    }
+
+    public function userFoundationTransaction()
+    {
+        try {
+            \DB::beginTransaction();
+            $this->createUserFoundation();
+            \DB::commit();
+
+            return $this->success(['message' => 'Success']);
+        } catch (\Throwable $throwable) {
+            \DB::rollback();
+            return $this->error($throwable->getMessage());
+        }
+    }
+
+    public function foundation()
+    {
     }
 }

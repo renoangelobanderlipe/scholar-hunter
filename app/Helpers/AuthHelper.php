@@ -98,6 +98,17 @@ class AuthHelper implements AuthContract
     return $data;
   }
 
+  public function all()
+  {
+    try {
+      $users = User::where('status', 1)->get(['id','firstname', 'middlename', 'lastname', 'id_no']);
+
+      return $this->success(['users' => $users]);
+    } catch (\Throwable $throwable) {
+      return $this->error($throwable->getMessage());
+    }
+  }
+
   public function updateProfile($data)
   {
     try {
@@ -106,6 +117,7 @@ class AuthHelper implements AuthContract
       \DB::commit();
       return $this->success($response == 1 ?  'Success' : 'Something Wen\'t Wrong');
     } catch (\Throwable $throwable) {
+      \DB::rollback();
       return $this->error($throwable->getMessage());
     }
   }
@@ -123,6 +135,7 @@ class AuthHelper implements AuthContract
 
       return $this->success($response);
     } catch (\Throwable $throwable) {
+      \DB::rollback();
       return $this->error($throwable->getMessage());
     }
   }

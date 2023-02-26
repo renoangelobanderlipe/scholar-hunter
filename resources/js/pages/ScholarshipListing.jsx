@@ -10,6 +10,7 @@ import { useFormik } from 'formik';
 import { submitScholarship } from './../utils/apisauce';
 import { useSnackbar } from 'notistack';
 import { SearchOutlined } from '@mui/icons-material';
+import useAuthStore from './../utils/store';
 
 const SerachbarComponent = ({ scholarship, lastPage }) => {
 
@@ -18,6 +19,10 @@ const SerachbarComponent = ({ scholarship, lastPage }) => {
       keyword: ''
     }
   })
+
+  const handleOnChange = (val) => {
+    searchFormik.setFieldValue('keyword', val)
+  }
 
   const handleOnSubmit = async () => {
     const keyword = searchFormik.values.keyword;
@@ -29,9 +34,6 @@ const SerachbarComponent = ({ scholarship, lastPage }) => {
     }
   }
 
-  const handleOnChange = (val) => {
-    searchFormik.setFieldValue('keyword', val)
-  }
   return (
     <React.Fragment>
       <Grid container backgroundColor="#fff" sx={{ borderRadius: '10px', border: 'none' }}>
@@ -43,7 +45,6 @@ const SerachbarComponent = ({ scholarship, lastPage }) => {
             endAdornment: (
               <InputAdornment position="end">
                 <IconButton
-                  aria-label="toggle password visibility"
                   onClick={handleOnSubmit}
                   edge="end"
                 >
@@ -83,9 +84,10 @@ const FileUplaodButton = ({ handleId, foundationId }) => {
     if (res.data.code == 200) {
       enqueueSnackbar(res.data.data.message, { variant: 'success' })
       handleClose();
+    } else {
+      enqueueSnackbar(res.data.errors.file[0], { variant: 'warning' })
     }
   }
-
 
   return (
     <React.Fragment>
@@ -140,6 +142,8 @@ const ScholarshipListing = () => {
     handleOnChange()
   }, []);
 
+  const { role } = useAuthStore();
+
   return (
     <React.Fragment>
       <Grid container px={4} backgroundColor="#c8e6c9">
@@ -148,9 +152,9 @@ const ScholarshipListing = () => {
             <SerachbarComponent scholarship={setScholarship} lastPage={setLastPage} />
           </Grid>
         </Grid>
-        <Grid container item backgroundColor="#fff" sx={{ minHeight: '65vh', borderRadius: '10px' }}>
+        <Grid container item backgroundColor="#fff" sx={{ height: '65vh', borderRadius: '10px' }}>
 
-          <Grid container spacing={4} px={6} py={4}>
+          <Grid container sx={{ maxHeight: "100%", overflow: 'auto' }} spacing={4} px={6} py={4}>
 
             {
               scholarship.length > 0 ? (scholarship.map((element, index) =>
@@ -163,30 +167,25 @@ const ScholarshipListing = () => {
                       fontWeight: 'bold',
                       p: 2,
                       minWidth: 300,
-                      minHeight: 200
+                      minHeight: 200,
+                      alignItems: 'center'
                     }}>
                     <Grid container item >
-                      <Grid container justifyContent={'space-between'} sx={{ mb: '0.5rem' }}>
-                        <Box sx={{ color: 'text.primary', fontSize: 14, fontWeight: 'bold' }}>
+                      <Grid container alignItems={'center'} justifyContent={'space-between'} sx={{ mb: '1.5rem' }}>
+                        <Box sx={{ color: 'text.primary', fontSize: 16, fontWeight: 'bold' }}>
                           {element.name}
                         </Box>
-                        <Chip label={element.type} size={'small'} />
+                        {role != 'admin' && role != 'foundation' ? (
+                          <CardActions sx={{ justifyContent: "end" }}>
+                            <FileUplaodButton handleId={element.id} foundationId={element.foundation_id} />
+                          </CardActions>
+                        ) : (<></>)}
                       </Grid>
-                      <Box sx={{ color: 'text.secondary', fontSize: 12, mb: '1rem' }}>{element.address}</Box>
                     </Grid>
-                    <Box sx={{ color: 'text.secondary', fontSize: 12, mb: '0.5rem' }}>{element.description}</Box>
 
-                    <Grid container mb="0.5rem">
-                      <Grid mr="0.5rem">
-                        <Chip label={element.contact_no} sx={{ fontWeight: 'medium' }} size={'small'} />
-                      </Grid>
-                      <Grid>
-                        <Chip label={element.email} sx={{ fontWeight: 'medium' }} size={'small'} />
-                      </Grid>
-                    </Grid>
-                    <CardActions sx={{ justifyContent: "end" }}>
-                      <FileUplaodButton handleId={element.id} foundationId={element.foundation_id} />
-                    </CardActions>
+                    <Box sx={{ color: 'text.secondary', fontSize: 14, mb: '0.5rem' }}>{element.description}</Box>
+
+
                   </CardContent>
                 </Grid>
               ))
@@ -199,8 +198,6 @@ const ScholarshipListing = () => {
                   </React.Fragment>
                 )
             }
-
-
           </Grid>
 
         </Grid>

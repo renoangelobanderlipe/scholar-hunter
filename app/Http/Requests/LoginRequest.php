@@ -2,10 +2,12 @@
 
 namespace App\Http\Requests;
 
+use App\Mail\AccountStatus;
 use App\Models\AuthModel;
 use App\Traits\HttpResponse;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class LoginRequest extends FormRequest
 {
@@ -39,6 +41,7 @@ class LoginRequest extends FormRequest
         if (!Auth::attempt($this->only(['email', 'password']))) {
             return $this->error(['message' => 'Invalid credentials'], 401);
         }
+
         return (new AuthModel)->login($this->all());
     }
 }

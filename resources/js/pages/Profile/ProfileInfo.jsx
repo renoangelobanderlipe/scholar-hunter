@@ -1,10 +1,11 @@
 import React from 'react';
-import { Grid, Typography, Box } from '@mui/material';
+import { Grid, Typography, Box, Button } from '@mui/material';
 import { HeaderComponent } from './../../components/HeaderComponent';
 import { TextFieldComponent } from './../../components/TextFieldComponents/TextFieldComponent';
 import { ButtonComponent } from './../../components/ButtonComponent';
 import { useFormik } from 'formik';
 import { profileShow, updateProfile } from './../../utils/apisauce';
+import { ReactTimeoutButton } from 'react-timeout-button';
 
 const container = {
   display: 'flex',

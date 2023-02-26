@@ -38,9 +38,7 @@ class FoundationController extends Controller
      */
     public function store(CreateFoundationFormRequest $request)
     {
-        $foundation = Foundation::create($request->validated());
-
-        return $this->success($foundation);
+        return (new Foundation)->assignUserTransaction($request->validated());
     }
 
     /**
@@ -83,8 +81,8 @@ class FoundationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        return (new Foundation)->destroyFoundation($request->all()['id']);
     }
 }
