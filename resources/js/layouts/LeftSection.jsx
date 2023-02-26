@@ -10,7 +10,7 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import StarBorder from '@mui/icons-material/StarBorder';
 import { DashboardRounded, SchoolRounded, ManageAccountsRounded } from '@mui/icons-material';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, redirect, useLocation, useNavigate } from 'react-router-dom';
 import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
 import ListIcon from '@mui/icons-material/List';
 import ViewStreamIcon from '@mui/icons-material/ViewStream';
@@ -22,12 +22,22 @@ import { logout } from '../utils/apisauce';
 
 const LeftSection = () => {
   const [open, setOpen] = React.useState(false);
-  const { role } = useAuthStore();
+  const { role, setLoggedIn } = useAuthStore();
 
   const location = useLocation();
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
     const res = await logout();
+
+
+    if (res.ok) {
+      console.log('test logged out', res.data.data.message);
+      localStorage.clear()
+      navigate('/register', { replace: true });
+      window.location.reload(false);
+
+    }
     console.log('success');
   }
 

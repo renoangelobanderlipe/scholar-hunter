@@ -58,12 +58,8 @@ const SignUpPage = () => {
 
 
   const handleOnCreateFoundation = async (val) => {
-    console.log('values', val);
-    // const res = await ();
     setShow(false);
     setProceed(true);
-
-
   }
 
   const handleOnSubmit = async (values) => {
@@ -73,9 +69,9 @@ const SignUpPage = () => {
     if (res.data.code == 200) {
       enqueueSnackbar('Success', { variant: 'success' });
 
+      setLoggedIn(true);
       setRole(res.data.data.role);
       setStatus(res.data.data.status);
-      setLoggedIn(true); 
       navigate('/home', { replace: true });
     } else {
       enqueueSnackbar('Something Went Wrong', { variant: 'info' });
