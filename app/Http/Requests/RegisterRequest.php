@@ -26,7 +26,7 @@ class RegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'id_no' => ['required', 'string', 'max:255'],
+            'id_no' => ['nullable', 'string', 'max:255'],
             'firstname' => ['required', 'string', 'max:255'],
             'middlename' => ['required', 'string', 'max:255'],
             'lastname' => ['required', 'string', 'max:255'],
@@ -34,8 +34,8 @@ class RegisterRequest extends FormRequest
             'username' => ['required', 'string', 'max:255'],
             'contact_no' => ['required', 'max:255'],
             'email' => ['required', 'email', 'max:255'],
-            'course' => ['required', 'string', 'max:255'],
-            'course_type' => ['required', 'string', 'max:255'],
+            'course' => ['nullable', 'string', 'max:255'],
+            'course_type' => ['nullable', 'string', 'max:255'],
             'password' => ['required', 'string', 'min:6', 'confirmed'],
         ];
     }
@@ -44,8 +44,7 @@ class RegisterRequest extends FormRequest
     {
         $request = (object)$this->all();
         $authModel = new AuthModel;
-
-        $authModel->idNo($request->id_no);
+        $authModel->idNo($request->id_no == null ? null :  $request->id_no);
         $authModel->firstname($request->firstname);
         $authModel->middlename($request->middlename);
         $authModel->lastname($request->lastname);
@@ -59,6 +58,4 @@ class RegisterRequest extends FormRequest
 
         return $authModel->registerTransaction();
     }
-
-
 }

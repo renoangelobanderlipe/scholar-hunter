@@ -23,10 +23,9 @@ return new class extends Migration
             $table->string('username')->index()->nullable();
             $table->string('contact_no')->index();
             $table->string('email')->index()->unique();
-            $table->string('course')->index();
-            $table->string('course_type')->index();
+            $table->string('course')->index()->nullable();
+            $table->string('course_type')->index()->nullable();
             $table->string('password')->index();
-            // $table->string('role')->index()->default('student');
             $table->boolean('status')->index()->default('0');
             $table->rememberToken();
             $table->timestamp('email_verified_at')->nullable();

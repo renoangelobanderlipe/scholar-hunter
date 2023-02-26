@@ -108,7 +108,6 @@ class AuthModel extends Model implements AuthContract
         try {
             \DB::beginTransaction();
             $user = User::create($this->register());
-
             $data = [
                 'data' => [
                     'id_no' => $user->id_no,

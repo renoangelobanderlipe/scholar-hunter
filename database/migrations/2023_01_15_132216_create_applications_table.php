@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('user_id')->index();
             $table->string('scholarship_id')->index();
             $table->string('status')->index()->nullable();
-            $table->text('attachments')->index()->nullable();
+            $table->text('attachments')->nullable();
             $table->timestamps();
         });
     }
