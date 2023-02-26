@@ -27,10 +27,9 @@ const SerachbarComponent = ({ scholarship, lastPage }) => {
   const handleOnSubmit = async () => {
     const keyword = searchFormik.values.keyword;
     const res = await handleSearch({ keyword });
-
+    
     if (res.data.code == 200) {
       scholarship(res.data?.data?.data)
-      // lastPage(res.data.data.last_page)
     }
   }
 
@@ -78,6 +77,7 @@ const FileUplaodButton = ({ handleId, foundationId }) => {
     formData.append('file', file);
     formData.append('id', handleId);
     formData.append('foundation_id', foundationId);
+
 
     const res = await submitScholarship(formData);
 

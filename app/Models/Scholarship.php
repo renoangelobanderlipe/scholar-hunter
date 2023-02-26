@@ -30,7 +30,7 @@ class Scholarship extends Model
     public function index()
     {
         try {
-            $data = Scholarship::select(['id', 'name', 'description'])
+            $data = Scholarship::select(['id', 'foundation_id', 'name', 'description'])
                 ->orderBy('name', 'asc')->paginate(10);
 
             return $this->success($data);
@@ -42,11 +42,11 @@ class Scholarship extends Model
     public function search(string $keyword)
     {
         try {
-            if($keyword != ''){
+            if ($keyword != '') {
                 $data = $this->scholarship()
-                ->where('name', 'LIKE', '%' . $keyword . '%')
-                ->paginate(10);
-            }else{
+                    ->where('name', 'LIKE', '%' . $keyword . '%')
+                    ->paginate(10);
+            } else {
                 $data = $this->scholarship()->paginate(10);
             }
 
@@ -73,9 +73,7 @@ class Scholarship extends Model
                 'name' => $payload['name'],
                 'description' => $payload['description']
             ]);
-
             \DB::commit();
-            dd('data', $data);
             return $this->success($data);
         } catch (\Throwable $throwable) {
             \DB::rollback();
@@ -97,38 +95,37 @@ class Scholarship extends Model
     public function apply($data)
     {
         try {
-            \DB::beginTransaction();
-            Application::create([
+            // dd($data);
+            $fileName = \Auth::id() . date('Ymd-His') . $data->file->getClientOriginalExtension();
+            $scholarshipPath = $data->file->storeAs('forms', $fileName);
+
+            $fileData = [
                 'user_id' => \Auth::user()->id,
-                'user_id' => \Auth::user()->id,
-            ]);
-            \DB::commit();
-            return $this->success();
+                'scholarship_id' => $data->id,
+                'foundation_id' => $data->foundation_id,
+                'file_id' => $data->id,
+                'file_name' => $fileName,
+                'file_location' => $scholarshipPath,
+                'status' => 'pending',
+            ];
+
+            Application::create($fileData);
+            // $fileName = \Auth::id() . date('Ymd-His') . $data->file->getClientOriginalExtension();
+
+            // $scholarshipPath = $data->file->storeAs('forms', $fileName);
+
+            // $files->idNo(\Auth::user()->id_no);
+            // $files->foundationId($data->foundation_id);
+            // $files->fileId($data->id);
+            // $files->fileName($fileName);
+            // $files->fileLocation($scholarshipPath);
+
+            // $files->store();
+
+            return $this->success(['message' => 'Successfully Uploaded']);
         } catch (\Throwable $throwable) {
-            \DB::rollback();
-            $this->error($throwable->getMessage());
+            return $this->error($throwable->getMessage());
         }
-
-        // try {
-        //     $files = new FileModel;
-
-        //     $fileName = \Auth::id() . date('Ymd-His') . $data->file->getClientOriginalExtension();
-
-        //     $scholarshipPath = $data->file->storeAs('forms', $fileName);
-        //     dd($data->foundation_id);
-
-        //     $files->idNo(\Auth::user()->id_no);
-        //     $files->foundationId($data->foundation_id);
-        //     $files->fileId($data->id);
-        //     $files->fileName($fileName);
-        //     $files->fileLocation($scholarshipPath);
-
-        //     $files->store();
-
-        //     return $this->success(['message' => 'Successfully Uploaded']);
-        // } catch (\Throwable $throwable) {
-        //     return $this->error($throwable->getMessage());
-        // }
     }
 
     public function fileStore()

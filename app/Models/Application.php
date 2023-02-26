@@ -12,8 +12,12 @@ class Application extends Model
     protected $fillable = [
         'user_id',
         'scholarship_id',
+        'foundation_id',
+        'file_id',
+        'file_name',
+        'file_location',
         'status',
-        'attachments',
+
     ];
 
     protected $casts = [
