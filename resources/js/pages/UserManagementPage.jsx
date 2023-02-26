@@ -302,8 +302,8 @@ const UserManagementPage = () => {
   const handleApprove = async (id) => {
     const res = await approveUser({ id });
 
-    if (res.data.data == 200) {
-      enqueueSnackbar('Approved', { variant: 'success' })
+    if (res.ok) {
+      enqueueSnackbar(res.data.data.message, { variant: 'success' })
     }
   }
 

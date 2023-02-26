@@ -47,8 +47,12 @@ const CustomButton = () => {
 
     const res = await createFoundation(values);
 
-    // enqueueSnackbar('Success', { variant: 'success' })
-    // handleClose();
+    if(res.ok){
+      enqueueSnackbar('Success', { variant: 'success' })
+      handleClose();
+    }else{
+      enqueueSnackbar('Something Went Wrong, Please Try Again', { variant: 'info' })
+    }
   }
 
   const handleFetchUsers = async () => {

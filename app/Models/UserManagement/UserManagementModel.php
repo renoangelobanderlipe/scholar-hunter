@@ -3,10 +3,12 @@
 namespace App\Models\UserManagement;
 
 use App\Contracts\UserManagementContract;
+use App\Mail\StatusMailer;
 use App\Models\User;
 use App\Traits\HttpResponse;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class UserManagementModel extends Model implements UserManagementContract
 {
@@ -91,7 +93,10 @@ class UserManagementModel extends Model implements UserManagementContract
             \DB::beginTransaction();
             $response = User::find($data['id'])->update(['status' => self::APPROVE]);
 
+            Mail::to(User::find($data['id'])['email'])->send(new StatusMailer());
+            
             throw_if($response != 1, \Exception::class, 'Invalid Request');
+
             \DB::commit();
             return $this->success([
                 'message' => 'Successfully Updated Status'

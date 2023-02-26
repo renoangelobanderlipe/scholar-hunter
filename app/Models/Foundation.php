@@ -35,18 +35,22 @@ class Foundation extends Model
         try {
             \DB::beginTransaction();
 
-            $user_id = $data['users']['id'];
 
             $foundation = Foundation::create($data);
-            $transaction = \DB::table('foundation_user')
-                ->insert([
-                    'foundation_id' => $foundation->id,
-                    'user_id' => $user_id,
-                ]);
+
+            if (!isset($data['users']['id'])) {
+                $user_id = $data['users']['id'];
+
+                $transaction = \DB::table('foundation_user')
+                    ->insert([
+                        'foundation_id' => $foundation->id,
+                        'user_id' => $user_id,
+                    ]);
+            }
 
             \DB::commit();
 
-            return $this->success($foundation);
+            return $this->success(['message'=> 'Successfully Created!']);
         } catch (\Throwable $throwable) {
             \DB::rollback();
             $this->error($throwable->getMessage());
