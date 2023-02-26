@@ -97,7 +97,9 @@ class Scholarship extends Model
             Application::create([
                 'user_id' => \Auth::user()->id,
                 'user_id' => \Auth::user()->id,
-            ]);
+            ])
+
+
             \DB::commit();
             return $this->success();
         } catch (\Throwable $throwable) {
