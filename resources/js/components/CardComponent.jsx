@@ -10,11 +10,11 @@ export const CardComponent = ({ title, content }) => {
             <Box sx={{ width: '100%' }}>
               <CardContent sx={{ height: '100%', justifyContent: 'center' }}>
                 <Box mb="1rem">
-                  <Typography component="div" variant="h5">
+                  <Typography sx={{ fontWeight: 'bold', color: 'text.secondary', fontSize: '20px', mb: '0.5rem' }}>
                     {title}
                   </Typography>
                 </Box>
-                <Typography variant="subtitle1" color="text.secondary" component="div">
+                <Typography sx={{ fontWeight: 'bold', color: '#424242', fontSize: '16px' }}>
                   Total : {content}
                 </Typography>
               </CardContent>

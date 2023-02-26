@@ -75,8 +75,7 @@ const SignUpPage = () => {
 
       setRole(res.data.data.role);
       setStatus(res.data.data.status);
-      setLoggedIn(true);
-
+      setLoggedIn(true); 
       navigate('/home', { replace: true });
     } else {
       enqueueSnackbar('Something Went Wrong', { variant: 'info' });
@@ -363,180 +362,180 @@ const SignUpPage = () => {
                           onClick={() => handleOnSubmit(signUpFormik.values)}
                         />
                       </Fragment>
-          ) : <Fragment />
+                    ) : <Fragment />
 
-          ) : (
-          <>
-            <Grid item display={'flex'} p={'0.5rem 0'} >
-              <Grid item pr={2}  >
-                <TextFieldComponent
-                  fieldname={'email'}
-                  fieldlabel={'Email'}
-                  variant={{
-                    variant: "outlined",
-                    size: "small",
-                  }}
-                  handleOnChange={(field, value) => handleOnChange(field, value)}
-                />
-              </Grid>
+                ) : (
+                  <>
+                    <Grid item display={'flex'} p={'0.5rem 0'} >
+                      <Grid item pr={2}  >
+                        <TextFieldComponent
+                          fieldname={'email'}
+                          fieldlabel={'Email'}
+                          variant={{
+                            variant: "outlined",
+                            size: "small",
+                          }}
+                          handleOnChange={(field, value) => handleOnChange(field, value)}
+                        />
+                      </Grid>
 
-              <Grid item >
-                <TextFieldComponent
-                  fieldname={'id_no'}
-                  fieldlabel={'ID No'}
-                  variant={{
-                    variant: "outlined",
-                    size: "small",
-                  }}
-                  handleOnChange={(field, value) => handleOnChange(field, value)}
-                />
-              </Grid>
-            </Grid>
-            <Grid item display={'flex'} p={'0.5rem 0'}>
-              <Grid item pr={2}  >
-                <TextFieldComponent
-                  fieldname={'firstname'}
-                  fieldlabel={'Firstname'}
-                  variant={{
-                    variant: "outlined",
-                    size: "small",
-                  }}
-                  handleOnChange={(field, value) => handleOnChange(field, value)}
-                />
-              </Grid>
+                      <Grid item >
+                        <TextFieldComponent
+                          fieldname={'id_no'}
+                          fieldlabel={'ID No'}
+                          variant={{
+                            variant: "outlined",
+                            size: "small",
+                          }}
+                          handleOnChange={(field, value) => handleOnChange(field, value)}
+                        />
+                      </Grid>
+                    </Grid>
+                    <Grid item display={'flex'} p={'0.5rem 0'}>
+                      <Grid item pr={2}  >
+                        <TextFieldComponent
+                          fieldname={'firstname'}
+                          fieldlabel={'Firstname'}
+                          variant={{
+                            variant: "outlined",
+                            size: "small",
+                          }}
+                          handleOnChange={(field, value) => handleOnChange(field, value)}
+                        />
+                      </Grid>
 
-              <Grid item >
-                <TextFieldComponent
-                  fieldname={'middlename'}
-                  fieldlabel={'Middlename'}
-                  variant={{
-                    variant: "outlined",
-                    size: "small",
-                  }}
-                  handleOnChange={(field, value) => handleOnChange(field, value)}
-                />
-              </Grid>
-            </Grid>
-            <Grid item display={'flex'} p={'0.5rem 0'}>
-              <Grid item pr={2}  >
-                <TextFieldComponent
-                  fieldname={'lastname'}
-                  fieldlabel={'Lastname'}
-                  variant={{
-                    variant: "outlined",
-                    size: "small",
-                  }}
-                  handleOnChange={(field, value) => handleOnChange(field, value)}
-                />
-              </Grid>
+                      <Grid item >
+                        <TextFieldComponent
+                          fieldname={'middlename'}
+                          fieldlabel={'Middlename'}
+                          variant={{
+                            variant: "outlined",
+                            size: "small",
+                          }}
+                          handleOnChange={(field, value) => handleOnChange(field, value)}
+                        />
+                      </Grid>
+                    </Grid>
+                    <Grid item display={'flex'} p={'0.5rem 0'}>
+                      <Grid item pr={2}  >
+                        <TextFieldComponent
+                          fieldname={'lastname'}
+                          fieldlabel={'Lastname'}
+                          variant={{
+                            variant: "outlined",
+                            size: "small",
+                          }}
+                          handleOnChange={(field, value) => handleOnChange(field, value)}
+                        />
+                      </Grid>
 
-              <Grid item >
-                <TextFieldComponent
-                  fieldname={'username'}
-                  fieldlabel={'Username'}
-                  variant={{
-                    variant: "outlined",
-                    size: "small",
-                  }}
-                  handleOnChange={(field, value) => handleOnChange(field, value)}
-                />
-              </Grid>
-            </Grid>
-            <Grid item display={'flex'} p={'0.5rem 0'}>
-              <Grid item pr={2}  >
-                <TextFieldComponent
-                  fieldname={'address'}
-                  fieldlabel={'Address'}
-                  variant={{
-                    variant: "outlined",
-                    size: "small",
-                  }}
-                  handleOnChange={(field, value) => handleOnChange(field, value)}
-                />
-              </Grid>
+                      <Grid item >
+                        <TextFieldComponent
+                          fieldname={'username'}
+                          fieldlabel={'Username'}
+                          variant={{
+                            variant: "outlined",
+                            size: "small",
+                          }}
+                          handleOnChange={(field, value) => handleOnChange(field, value)}
+                        />
+                      </Grid>
+                    </Grid>
+                    <Grid item display={'flex'} p={'0.5rem 0'}>
+                      <Grid item pr={2}  >
+                        <TextFieldComponent
+                          fieldname={'address'}
+                          fieldlabel={'Address'}
+                          variant={{
+                            variant: "outlined",
+                            size: "small",
+                          }}
+                          handleOnChange={(field, value) => handleOnChange(field, value)}
+                        />
+                      </Grid>
 
-              <Grid item >
-                <TextFieldComponent
-                  fieldname={'contact_no'}
-                  fieldlabel={'Contact No'}
-                  variant={{
-                    variant: "outlined",
-                    size: "small",
-                  }}
-                  handleOnChange={(field, value) => handleOnChange(field, value)}
-                />
-              </Grid>
-            </Grid>
-            <Grid item display={'flex'} p={'0.5rem 0'}>
-              <AutoCompleteComponent
-                fieldName={'course'}
-                fieldLabel={'Course'}
-                options={course}
-                handleOnChange={(field, value) => handleOnChange(field, value)}
-              />
-            </Grid>
+                      <Grid item >
+                        <TextFieldComponent
+                          fieldname={'contact_no'}
+                          fieldlabel={'Contact No'}
+                          variant={{
+                            variant: "outlined",
+                            size: "small",
+                          }}
+                          handleOnChange={(field, value) => handleOnChange(field, value)}
+                        />
+                      </Grid>
+                    </Grid>
+                    <Grid item display={'flex'} p={'0.5rem 0'}>
+                      <AutoCompleteComponent
+                        fieldName={'course'}
+                        fieldLabel={'Course'}
+                        options={course}
+                        handleOnChange={(field, value) => handleOnChange(field, value)}
+                      />
+                    </Grid>
 
-            <Grid item display={'flex'} p={'0.5rem 0'}>
-              <AutoCompleteComponent
-                fieldName={'course_type'}
-                fieldLabel={'Course Type'}
-                options={courseType}
-                handleOnChange={(field, value) => handleOnChange(field, value)}
-              />
-            </Grid>
-            <Grid item py={1} >
-              <PasswordFieldComponent
-                fieldname={'password'}
-                fieldlabel={'Password'}
-                variant={{
-                  fullWidth: true,
-                  variant: "outlined",
-                  size: "small",
-                }}
-                handleOnChange={(field, value) => handleOnChange(field, value)}
-              />
-            </Grid>
-            <Grid item py={1} >
-              <PasswordFieldComponent
-                fieldname={'password_confirmation'}
-                fieldlabel={'Confirm Password'}
-                variant={{
-                  fullWidth: true,
-                  variant: "outlined",
-                  size: "small",
-                }}
-                handleOnChange={(field, value) => handleOnChange(field, value)}
-              />
-            </Grid>
-            <Grid container sx={{
-              mt: '1rem',
-              mb: '1rem',
-              justifyContent: 'end',
-              alignItems: 'end'
-            }}>
-              <Link to='/'>
-                <Typography sx={{
-                  fontWeight: 'bold',
-                  color: 'gray',
-                  fontSize: '12px'
-                }} >
-                  Already have an account?
-                </Typography>
-              </Link>
-            </Grid>
-            <ButtonComponent
-              disable={signUpFormik.values.password != signUpFormik.values.confirm_password ? false : true}
-              title={'Submit'}
-              variant={{
-                variant: 'contained'
-              }}
-              onClick={() => handleOnSubmit(signUpFormik.values)}
-            />
-          </>
-          )
+                    <Grid item display={'flex'} p={'0.5rem 0'}>
+                      <AutoCompleteComponent
+                        fieldName={'course_type'}
+                        fieldLabel={'Course Type'}
+                        options={courseType}
+                        handleOnChange={(field, value) => handleOnChange(field, value)}
+                      />
+                    </Grid>
+                    <Grid item py={1} >
+                      <PasswordFieldComponent
+                        fieldname={'password'}
+                        fieldlabel={'Password'}
+                        variant={{
+                          fullWidth: true,
+                          variant: "outlined",
+                          size: "small",
+                        }}
+                        handleOnChange={(field, value) => handleOnChange(field, value)}
+                      />
+                    </Grid>
+                    <Grid item py={1} >
+                      <PasswordFieldComponent
+                        fieldname={'password_confirmation'}
+                        fieldlabel={'Confirm Password'}
+                        variant={{
+                          fullWidth: true,
+                          variant: "outlined",
+                          size: "small",
+                        }}
+                        handleOnChange={(field, value) => handleOnChange(field, value)}
+                      />
+                    </Grid>
+                    <Grid container sx={{
+                      mt: '1rem',
+                      mb: '1rem',
+                      justifyContent: 'end',
+                      alignItems: 'end'
+                    }}>
+                      <Link to='/'>
+                        <Typography sx={{
+                          fontWeight: 'bold',
+                          color: 'gray',
+                          fontSize: '12px'
+                        }} >
+                          Already have an account?
+                        </Typography>
+                      </Link>
+                    </Grid>
+                    <ButtonComponent
+                      disable={signUpFormik.values.password != signUpFormik.values.confirm_password ? false : true}
+                      title={'Submit'}
+                      variant={{
+                        variant: 'contained'
+                      }}
+                      onClick={() => handleOnSubmit(signUpFormik.values)}
+                    />
+                  </>
+                )
             }
-      </Grid>
-    </form >
+          </Grid>
+        </form >
       </Grid >
     </React.Fragment >
   );
