@@ -15,7 +15,7 @@ export const sanctum = () => apiSauce.get('sanctum/csrf-cookie');
 export const login = (params) => apiSauce.post('api/login', params)
 export const register = (params) => apiSauce.post('api/register', params)
 export const updateProfile = (params) => apiSauce.post('api/auth/update/profile', params)
-export const logout = () => apiSauce.post('api/auth/logout')
+export const logout = () => apiSauce.delete('api/auth/logout')
 export const profileShow = () => apiSauce.get('api/auth/show')
 export const allUsers = () => apiSauce.get('api/auth/all')
 export const updatePassword = (params) => apiSauce.post('api/auth/update/password', params);

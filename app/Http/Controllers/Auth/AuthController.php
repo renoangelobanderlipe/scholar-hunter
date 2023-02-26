@@ -57,9 +57,15 @@ class AuthController extends Controller
         return $this->helper->updatePassword();
     }
 
-    public function logout(Request $request)
+    public function destroyAuth(Request $request)
     {
-        return $request->user()->currentAccessToken()->delete();
+
+        try{
+            \Auth::user()->tokens()->delete();
+            return $this->success(['message' => 'Successfully Logged Out!']);
+        }catch(\Throwable $throwable){
+            return $this->error($throwable->getMessage());
+        }
         // return (new AuthModel)->logout();
     }
 }

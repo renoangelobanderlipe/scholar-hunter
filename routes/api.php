@@ -22,7 +22,7 @@ Route::controller(AuthController::class)->group(function () {
 Route::middleware('auth:sanctum')->group(function () {
     // Authentication
     Route::controller(AuthController::class)->prefix('auth')->group(function () {
-        Route::post('logout', 'logout');
+        Route::delete('logout', 'destroyAuth');
         Route::post('update/profile', 'updateProfile');
         Route::post('update/password', 'updatePassword');
         Route::get('show', 'show');

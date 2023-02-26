@@ -108,6 +108,7 @@ class AuthModel extends Model implements AuthContract
         try {
             \DB::beginTransaction();
             $user = User::create($this->register());
+            
             $data = [
                 'data' => [
                     'id_no' => $user->id_no,
@@ -117,7 +118,7 @@ class AuthModel extends Model implements AuthContract
                     'status' => $user->status,
                     'role' => 'user',
                 ],
-                'token' => $user->createToken(env("SANCTUM_SECRET"))->plainTextToken,
+                'token' => $user->createToken(env("SANCTUM_SECRET"))->plainTextToken
             ];
 
             $user->assignRole('user');
@@ -143,7 +144,6 @@ class AuthModel extends Model implements AuthContract
                 'status' => $user->status == 0 ? 'pending' : 'active',
             ],
             'token' => $user->createToken(env("SANCTUM_SECRET"))->plainTextToken
-            // 'user' => $user,
         ];
     }
 
