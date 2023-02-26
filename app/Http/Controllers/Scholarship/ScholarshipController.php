@@ -30,7 +30,7 @@ class ScholarshipController extends Controller
      */
     public function search(Request $request)
     {
-        return (new Scholarship)->search($request->only(['keyword'])['keyword']);
+        return (new Scholarship)->search($request->only(['keyword'])['keyword'] == null ? '' : $request->only(['keyword'])['keyword']);
     }
 
     public function all()

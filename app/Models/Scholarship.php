@@ -42,9 +42,13 @@ class Scholarship extends Model
     public function search(string $keyword)
     {
         try {
-            $data = $this->scholarship()
+            if($keyword != ''){
+                $data = $this->scholarship()
                 ->where('name', 'LIKE', '%' . $keyword . '%')
                 ->paginate(10);
+            }else{
+                $data = $this->scholarship()->paginate(10);
+            }
 
             return $this->success($data);
         } catch (\Throwable $throwable) {
@@ -97,9 +101,7 @@ class Scholarship extends Model
             Application::create([
                 'user_id' => \Auth::user()->id,
                 'user_id' => \Auth::user()->id,
-            ])
-
-
+            ]);
             \DB::commit();
             return $this->success();
         } catch (\Throwable $throwable) {
