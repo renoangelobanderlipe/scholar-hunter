@@ -59,7 +59,6 @@ class AuthController extends Controller
 
     public function destroyAuth(Request $request)
     {
-
         try{
             \Auth::user()->tokens()->delete();
             return $this->success(['message' => 'Successfully Logged Out!']);

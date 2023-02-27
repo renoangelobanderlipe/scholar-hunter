@@ -56,7 +56,6 @@ const SignUpPage = () => {
     signUpFormik.setFieldValue(fieldname, value);
   }
 
-
   const handleOnCreateFoundation = async (val) => {
     setShow(false);
     setProceed(true);
@@ -68,12 +67,13 @@ const SignUpPage = () => {
 
     if (res.data.code == 200) {
       enqueueSnackbar('Success', { variant: 'success' });
-
+      console.log('test login',res.data.role)
       setLoggedIn(true);
       setRole(res.data.data.role);
-      setStatus(res.data.data.status);
       navigate('/home', { replace: true });
-    } else {
+    } else if(res.data.code == 401){
+      enqueueSnackbar(res.data.message, { variant: 'warning' });
+    }else{
       enqueueSnackbar('Something Went Wrong', { variant: 'info' });
       console.log(res.data)
     }

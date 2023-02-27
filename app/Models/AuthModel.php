@@ -106,22 +106,26 @@ class AuthModel extends Model implements AuthContract
     public function registerTransaction()
     {
         try {
+            throw_if(!User::where('id_no', $this->register()['id_no'])
+                ->orWhere('email', $this->register()['email'])
+                ->get()
+                ->isEmpty(), \Exception::class, "Duplicate Entry for User ID\EMAIL");
+
             \DB::beginTransaction();
+
             $user = User::create($this->register());
-            
+            $user->assignRole('user');
+
             $data = [
-                'data' => [
-                    'id_no' => $user->id_no,
-                    'firstname' => $user->firstname,
-                    'middlename' => $user->middlename,
-                    'lastname' => $user->lastname,
-                    'status' => $user->status,
-                    'role' => 'user',
-                ],
-                'token' => $user->createToken(env("SANCTUM_SECRET"))->plainTextToken
+                'id_no' => $user->id_no,
+                'firstname' => $user->firstname,
+                'middlename' => $user->middlename,
+                'lastname' => $user->lastname,
+                'status' => $user->status,
+                'role' => 'user',
+                'token' => $user->createToken('hatdog_key')->plainTextToken
             ];
 
-            $user->assignRole('user');
             \DB::commit();
 
             return $this->success($data);
