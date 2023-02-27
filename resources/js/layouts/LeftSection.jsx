@@ -22,7 +22,7 @@ import { logout } from '../utils/apisauce';
 
 const LeftSection = () => {
   const [open, setOpen] = React.useState(false);
-  const { role, setLoggedIn } = useAuthStore();
+  const { role,  } = useAuthStore();
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -34,11 +34,10 @@ const LeftSection = () => {
     if (res.ok) {
       console.log('test logged out', res.data.data.message);
       localStorage.clear()
-      navigate('/register', { replace: true });
+      navigate('/', { replace: true });
       window.location.reload(false);
 
     }
-    console.log('success');
   }
 
   return (

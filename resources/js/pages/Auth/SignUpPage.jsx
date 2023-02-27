@@ -7,7 +7,7 @@ import { ButtonComponent } from './../../components/ButtonComponent';
 import { register } from '../../utils/apisauce';
 import { Link, useNavigate } from 'react-router-dom';
 import { Typography } from '@mui/material';
-import { sanctum } from './../../utils/apisauce';
+import { sanctum, roleListener } from './../../utils/apisauce';
 import { PasswordFieldComponent } from './../../components/TextFieldComponents/PasswordFieldComponent';
 import { AutoCompleteComponent } from './../../components/AutoCompleteComponent';
 import { course, courseType, foundationType } from '../../utils/helper';
@@ -21,6 +21,7 @@ const SignUpPage = () => {
   const [selectedType, setSelectedType] = useState('');
   const [proceed, setProceed] = useState(false);
   const [show, setShow] = useState(true);
+  const [status, setStatus] = useState(false);
 
   const navigate = useNavigate();
 
@@ -67,17 +68,23 @@ const SignUpPage = () => {
 
     if (res.data.code == 200) {
       enqueueSnackbar('Success', { variant: 'success' });
-      console.log('test login',res.data.role)
+      console.log('test login', res.data.role)
       setLoggedIn(true);
       setRole(res.data.data.role);
       navigate('/home', { replace: true });
-    } else if(res.data.code == 401){
+    } else if (res.data.code == 401) {
       enqueueSnackbar(res.data.message, { variant: 'warning' });
-    }else{
+    } else {
       enqueueSnackbar('Something Went Wrong', { variant: 'info' });
       console.log(res.data)
     }
   }
+
+  const checkStatus = async() => {
+    const res = await roleListener();
+    console.log(res.data);
+  }
+
 
   const handleAccountType = (e, val) => {
     setSelectedType(val);

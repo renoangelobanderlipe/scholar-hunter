@@ -1,12 +1,12 @@
-import { useFormik } from 'formik';
-import React from 'react';
+import { useFormik, } from 'formik';
+import React, { useState, useEffect, Fragment } from 'react';
 import * as yup from 'yup';
 import { TextFieldComponent } from '../../components/TextFieldComponents/TextFieldComponent';
 import { Grid } from '@mui/material';
 import { ButtonComponent } from './../../components/ButtonComponent';
 import { HeaderComponent } from './../../components/HeaderComponent';
 import { PasswordFieldComponent } from './../../components/TextFieldComponents/PasswordFieldComponent';
-import { login, sanctum } from './../../utils/apisauce';
+import { login, sanctum, roleListener, authListener } from './../../utils/apisauce';
 import { Link, useNavigate } from 'react-router-dom';
 import { Typography } from '@mui/material';
 import useAuthStore from './../../utils/store';
@@ -24,8 +24,9 @@ const validationSchema = yup.object({
 });
 
 const LoginPage = () => {
-  const { setRole, setStatus, setLoggedIn } = useAuthStore();
+  const { setRole, setLoggedIn } = useAuthStore();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const [status, setStatus] = useState();
   const navigate = useNavigate();
 
   const loginFormik = useFormik({
@@ -44,8 +45,9 @@ const LoginPage = () => {
   const handleLogin = async ({ ...values }) => {
     sanctum();
     const res = await login(values);
-
+    checkStatus(values);
     if (res.status == 200) {
+
       setRole(res.data.data.role);
       // setStatus(res.data.data.status);
       setLoggedIn(true);
@@ -54,6 +56,24 @@ const LoginPage = () => {
       enqueueSnackbar(res.data?.message?.message, { variant: 'warning' })
     }
   }
+
+  const checkStatus = async (values) => {
+    const res = await authListener(values.email);
+    if(res.ok){
+      const resStatus = res.data.data.status == 0 ? false : true;
+      setStatus(resStatus);
+      localStorage.setItem('status', resStatus);
+    }
+  }
+
+  const clearStorage = () =>{
+    localStorage.removeItem('status');
+  }
+
+  useEffect(() => {
+    clearStorage();
+  }, []);
+  
 
   return (
     <React.Fragment>

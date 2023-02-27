@@ -58,5 +58,6 @@ Route::middleware('auth:sanctum')->group(function () {
     // Role Listener
     Route::controller(RoleListenerController::class)->prefix('listener')->group(function () {
         Route::get('/', 'index');
+        Route::post('status', 'authStatus');
     });
 });

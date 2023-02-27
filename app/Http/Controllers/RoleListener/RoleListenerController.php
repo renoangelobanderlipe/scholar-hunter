@@ -20,4 +20,8 @@ class RoleListenerController extends Controller
     {
         return $this->listener->listen();
     }
+    public function authStatus(Request $request)
+    {
+        return $this->listener->authListener(...$request->all());
+    }
 }

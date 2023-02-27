@@ -46,6 +46,7 @@ export const destroyUser = (params) => apiSauce.delete('api/user/destroy', param
 
 // Role Listener 
 export const roleListener = () => apiSauce.get('api/listener');
+export const authListener = (params) => apiSauce.post('api/listener/status', params);
 
 
 

@@ -147,7 +147,7 @@ class AuthModel extends Model implements AuthContract
                 'role' => $user->getRoleNames()->first(),
                 'status' => $user->status == 0 ? 'pending' : 'active',
             ],
-            'token' => $user->createToken(env("SANCTUM_SECRET"))->plainTextToken
+            'token' => $user->createToken('hatdog_key')->plainTextToken
         ];
     }
 

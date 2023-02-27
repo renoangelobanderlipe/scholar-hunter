@@ -1,5 +1,5 @@
 import { CircularProgress } from "@mui/material";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import useAuthStore from './../utils/store';
 import { Route, Routes } from 'react-router-dom';
 import { roleListener } from "../utils/apisauce";
@@ -12,19 +12,20 @@ const NotFoundPage = React.lazy(() => import('./../fallback/NotfoundPage'));
 // import { UnauthorizedPage } from './../fallback/UnauthorizedPage';
 
 export const PrimaryLayout = () => {
+  const { loggedIn, role } = useAuthStore();
+  const [status, setStatus] = useState();
 
-  const fetchRole = async () => {
-    const res = await roleListener();
+  const checkStatus = () => {
+    const resStatus = localStorage.getItem('status');
 
-    console.log(res.data);
+    setStatus(resStatus);
   }
 
-  const { loggedIn, role } = useAuthStore();
-  console.log(loggedIn, role)
-  React.useEffect(() => {
-    fetchRole();
-  }, []);
+  useEffect(() => {
+    checkStatus();
+  }, [])
 
+console.log('statusjoa', status);
   return (
     <React.Fragment>
       <React.Suspense fallback={<CircularProgress color="success" />}>
@@ -38,7 +39,7 @@ export const PrimaryLayout = () => {
           </Routes>
           :
           <React.Fragment>
-            {/* {status == 'active' ? <LeftSection /> : <UnauthorizedPage />} */}
+            {!status ? <LeftSection /> : 'UNAUTH'}
             <LeftSection />
           </React.Fragment>
         }
