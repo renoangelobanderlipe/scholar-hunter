@@ -59,21 +59,21 @@ const LoginPage = () => {
 
   const checkStatus = async (values) => {
     const res = await authListener(values.email);
-    if(res.ok){
+    if (res.ok) {
       const resStatus = res.data.data.status == 0 ? false : true;
       setStatus(resStatus);
       localStorage.setItem('status', resStatus);
     }
   }
 
-  const clearStorage = () =>{
+  const clearStorage = () => {
     localStorage.removeItem('status');
   }
 
   useEffect(() => {
     clearStorage();
   }, []);
-  
+
 
   return (
     <React.Fragment>
