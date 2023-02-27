@@ -14,12 +14,15 @@ class RoleListener extends Model
     {
         try {
             // $user = User::with('roles')->get()->first();
+
+            dd(\Auth::user()->with('roles')->get());
             $user = \Auth::user()
                 ->with('roles')
                 ->get()
                 ->first()
                 ->toArray();
-            dd($user);
+
+
             $data = [
                 'status' => $user['status'],
                 'role' => $user['roles'][0]['name'],

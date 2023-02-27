@@ -1,13 +1,13 @@
-import React, { useState, Fragment } from 'react';
-import { Grid, IconButton, Dialog, DialogContent, Button } from '@mui/material';
+import React, { useState, useEffect, Fragment } from 'react';
+import { Grid, IconButton, Dialog, DialogContent, Button, Tooltip } from '@mui/material';
 import { DataGrid, GridToolbarContainer, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, GridToolbarExport } from '@mui/x-data-grid';
-import { DeleteIcon } from '@mui/icons-material/Delete';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { useSnackbar } from 'notistack';
 import { useFormik } from 'formik';
 import { HeaderComponent } from './../components/HeaderComponent';
 import { TextFieldComponent } from './../components/TextFieldComponents/TextFieldComponent';
 import { ButtonComponent } from './../components/ButtonComponent';
-import { createScholarship } from '../utils/apisauce';
+import { createScholarship, destroyScholarship, foundationScholarships } from '../utils/apisauce';
 
 
 const CustomButton = () => {
@@ -34,16 +34,18 @@ const CustomButton = () => {
   }
 
   const handleOnSubmit = async (values) => {
-    console.log('Create Scholarship');
-
     const res = await createScholarship({ values });
 
-  console.log(res);
+    if (res.ok) {
+      enqueueSnackbar('Success', { variant: 'success' })
+      handleClose();
+    }
+    console.log(res);
 
   }
 
   return (
-  <React.Fragment>
+    <React.Fragment>
       <GridToolbarContainer>
         <Button variant="outlined" onClick={handleClickOpen}>
           Create
@@ -55,7 +57,7 @@ const CustomButton = () => {
               <form>
                 <Grid >
                   <HeaderComponent
-                    title={'Create an Account'}
+                    title={'Create Scholarship'}
                     variant={{
                       variant: 'h5',
                       color: 'black',
@@ -134,8 +136,23 @@ const CustomToolbar = () => {
 const ScholarshipsPage = () => {
   const [rows, setRows] = React.useState([]);
 
+  const fetchScholarships = async () => {
+    const res = await foundationScholarships();
 
+    if (res.ok) {
+      setRows(res.data.data);
+    }
+  }
 
+  const handleDelete = async (id) => {
+    const res = await destroyScholarship({ id });
+
+    if (res.ok) {
+      setRows(prev => {
+        return prev.filter(rows => rows.foundation_id !== id);
+      });
+    }
+  }
 
   const columns = [
     { field: 'id', headerName: 'ID', width: 90, hide: true },
@@ -149,19 +166,6 @@ const ScholarshipsPage = () => {
       headerName: 'Description',
       flex: 1,
     },
-
-    // {
-    //   field: 'status',
-    //   headerName: 'Status',
-    //   flex: 1,
-    //   renderCell: ({ row }) => {
-    //     return (
-    //       <React.Fragment>
-    //         {row.status == 1 ? <Chip label='Approved' color="success" /> : <Chip label='Pending' color="primary" />}
-    //       </React.Fragment >
-    //     )
-    //   }
-    // },
     {
       field: 'action',
       headerName: 'Action',
@@ -170,7 +174,7 @@ const ScholarshipsPage = () => {
         return (
           <React.Fragment>
             <Tooltip title="Delete">
-              <IconButton color="error" onClick={() => handleDelete(row.id)}>
+              <IconButton color="error" onClick={() => handleDelete(row.foundation_id)}>
                 <DeleteIcon />
               </IconButton>
             </Tooltip>
@@ -181,6 +185,9 @@ const ScholarshipsPage = () => {
     },
   ];
 
+  useEffect(() => {
+    fetchScholarships();
+  }, [])
 
   return (
     <Fragment>

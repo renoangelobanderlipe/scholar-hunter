@@ -101,6 +101,24 @@ class ScholarshipController extends Controller
      */
     public function destroy(Request $request)
     {
-        dd('destroy shit', $request->all()['id']);
+    }
+
+    public function scholarships()
+    {
+        return (new Scholarship)->listOfScholars();
+    }
+
+    public function scholarshipDestroy(Request $request)
+    {
+        return (new Scholarship)->deleteScholarship($request->all()['id']);
+    }
+
+    public function scholarsList()
+    {
+        return (new Scholarship)->scholarsList();
+    }
+    public function download()
+    {
+        return (new Scholarship)->downloadFile();
     }
 }

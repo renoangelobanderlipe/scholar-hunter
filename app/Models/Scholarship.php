@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\HttpResponse;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Scholarship extends Model
 {
@@ -64,15 +65,19 @@ class Scholarship extends Model
 
             $foundation_id = \DB::table('foundation_user')
                 ->select('foundation_id')
-                ->where('id', $user_id)
+                ->where('user_id', $user_id)
                 ->first();
-
             \DB::beginTransaction();
-            $data = Scholarship::create([
+            \DB::table('scholarships')->insert([
                 'foundation_id' => $foundation_id->foundation_id,
                 'name' => $payload['name'],
                 'description' => $payload['description']
             ]);
+            // $data = Scholarship::create([
+            //     'foundation_id' => $foundation_id->foundation_id,
+            //     'name' => $payload['name'],
+            //     'description' => $payload['description']
+            // ]);
             \DB::commit();
             return $this->success($data);
         } catch (\Throwable $throwable) {
@@ -128,7 +133,76 @@ class Scholarship extends Model
         }
     }
 
-    public function fileStore()
+    public function listOfScholars()
     {
+        try {
+            $user_id = \Auth::user()->id;
+
+            $foundation_id = \DB::table('foundation_user')
+                ->where('user_id', $user_id)
+                ->get()->pluck('foundation_id');
+
+            $data = Scholarship::rightJoin('foundation_user', 'scholarships.foundation_id', '=', 'foundation_user.foundation_id')->where('scholarships.foundation_id', $foundation_id)
+                ->get()
+                ->toArray();
+
+            return $this->success($data);
+        } catch (\Throwable $throwable) {
+            return $this->error($throwable->getMessage());
+        }
+    }
+
+    public function deleteScholarship($id)
+    {
+        try {
+            \DB::beginTransaction();
+            Scholarship::where('foundation_id', $id)->delete();
+            \DB::commit();
+
+            return $this->success(['message' => 'Successfully Deleted']);
+        } catch (\Throwable $throwable) {
+            \DB::rollback();
+            return $this->error($throwable->getMessage());
+        }
+    }
+
+    public function scholarsList()
+    {
+        try {
+
+            $user_id = \Auth::user()->id;
+            $foundation_id = \DB::table('foundation_user')
+                ->where('user_id', $user_id)
+                ->get()->pluck('foundation_id');
+
+            $user_ids = \DB::table('applications')
+                ->where('foundation_id', $foundation_id)
+                ->get()
+                ->pluck('user_id');
+
+            $data = User::whereIn('id', $user_ids)
+                ->get()
+                ->toArray();
+
+            // $data = \DB::table('applications')
+            //     ->select(['id', 'name', 'description'])
+            //     ->where('foundation_id', $foundation_id)
+            //     ->get();
+
+            // dd($data);
+
+            return $this->success($data);
+        } catch (\Throwable $throwable) {
+            return $this->error($throwable->getMessage());
+        }
+    }
+
+    public function downloadFile()
+    {
+        try {
+            return Storage::download('forms/1620230227-185945jpg');
+        } catch (\Throwable $throwable) {
+            return $this->error($throwable->getMessage());
+        };
     }
 }

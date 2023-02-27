@@ -323,7 +323,7 @@ const UserManagementPage = () => {
 
   const fetchRole = async () => {
     const res = await roleListener();
-
+    console.log('role Listner', res.data);
     if (res.data.code == 200) {
       setRole(res.data.data.role);
     }

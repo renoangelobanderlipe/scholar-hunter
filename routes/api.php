@@ -42,6 +42,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('list', 'all');
         Route::post('store', 'store');
         Route::get('search', 'search');
+        Route::get('list/scholarship', 'scholarships');
+        Route::get('list/scholars', 'scholarsList');
+        Route::delete('destroy', 'scholarshipDestroy');
+        Route::get('download', 'download');
     });
 
     Route::controller(FoundationController::class)->prefix('foundation')->group(function () {

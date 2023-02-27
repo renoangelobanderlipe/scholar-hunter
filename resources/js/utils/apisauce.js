@@ -22,9 +22,13 @@ export const updatePassword = (params) => apiSauce.post('api/auth/update/passwor
 
 // Scholarship List
 export const scholarshipList = (params) => apiSauce.get('api/scholarship/index', params);
+export const scholarsList = () => apiSauce.get('api/scholarship/list/scholars');
+export const destroyScholarship = (params) => apiSauce.delete('api/scholarship/destroy', params);
+export const downloadFile = () => apiSauce.get('api/scholarship/download');
 export const submitScholarship = (params) => apiSauce.post('api/scholarship/store', params);
 export const createScholarship = (params) => apiSauce.post('api/scholarship/create', params);
 export const handleSearch = (params) => apiSauce.get('api/scholarship/search', params);
+export const foundationScholarships = () => apiSauce.get('api/scholarship/list/scholarship');
 
 // Foundation
 

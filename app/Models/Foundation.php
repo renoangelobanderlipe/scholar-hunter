@@ -35,10 +35,9 @@ class Foundation extends Model
         try {
             \DB::beginTransaction();
 
-
             $foundation = Foundation::create($data);
 
-            if (!isset($data['users']['id'])) {
+            if (isset($data['users']['id'])) {
                 $user_id = $data['users']['id'];
 
                 $transaction = \DB::table('foundation_user')
