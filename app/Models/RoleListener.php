@@ -14,8 +14,6 @@ class RoleListener extends Model
     {
         try {
             // $user = User::with('roles')->get()->first();
-
-            dd(\Auth::user()->with('roles')->get());
             $user = \Auth::user()
                 ->with('roles')
                 ->get()
