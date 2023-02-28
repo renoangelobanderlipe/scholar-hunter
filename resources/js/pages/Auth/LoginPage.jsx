@@ -46,12 +46,19 @@ const LoginPage = () => {
     sanctum();
     const res = await login(values);
     checkStatus(values);
-    if (res.status == 200) {
-
-      setRole(res.data.data.role);
-      // setStatus(res.data.data.status);
-      setLoggedIn(true);
-      navigate('/home', { replace: true });
+    if (res.ok) {
+      if (res.data.data.status == 'pending') {
+        navigate('/unauthorize', { replace: true });
+      } else if (res.data.data.status == 'active') {
+        setRole(res.data.data.role);
+        // setStatus(res.data.data.status);
+        setLoggedIn(true);
+        navigate('/home', { replace: true });
+      } else {
+        console.log('Something Went wrong', res);
+        enqueueSnackbar('Something Went wrong', { variant: 'warning' })
+      }
+      console.log(res.data);
     } else {
       enqueueSnackbar(res.data?.message?.message, { variant: 'warning' })
     }

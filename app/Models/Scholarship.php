@@ -150,7 +150,6 @@ class Scholarship extends Model
             $data = Scholarship::where('foundation_id', $foundation_id)
                 ->get()
                 ->toArray();
-
             // $data = Scholarship::rightJoin('foundation_user', 'scholarships.foundation_id', '=', 'foundation_user.foundation_id')->where('scholarships.foundation_id', $foundation_id)
             //     ->get()
             //     ->toArray();
@@ -182,34 +181,40 @@ class Scholarship extends Model
             $user_id = \Auth::user()->id;
             $foundation_id = \DB::table('foundation_user')
                 ->where('user_id', $user_id)
-                ->get()->pluck('foundation_id');
-
+                ->first();
+            // ->pluck('foundation_id');
             $user_ids = \DB::table('applications')
-                ->where('foundation_id', $foundation_id)
+                ->where('foundation_id', 19)
                 ->get()
-                ->pluck('user_id');
+                ->pluck('user_id')
+                ->toArray();
 
             $data = User::whereIn('id', $user_ids)
-                ->first();
+                ->get();
 
-            $applicationStatus = \DB::table('applications')->where('user_id', $user_ids)->first();
+            $applicationStatus = \DB::table('applications')->where('user_id', $user_ids)->get();
 
             // $data = \DB::table('applications')
             //     ->select(['id', 'name', 'description'])
             //     ->where('foundation_id', $foundation_id)
             //     ->get();
-            $response = [
-                'id' => $applicationStatus->id,
-                'user_id' => $data->id,
-                'id_no' => $data->id_no,
-                'firstname' => $data->firstname,
-                'middlename' => $data->middlename,
-                'lastname' => $data->lastname,
-                'contact_no' => $data->contact_no,
-                'email' => $data->email,
-                'status' => $applicationStatus->status,
-            ];
-            return $this->success([$response]);
+            $response = [];
+
+            foreach ($data as $key => $datas) {
+                $response[] = [
+                    'id' => $applicationStatus[$key]->id,
+                    'user_id' => $datas->id,
+                    'id_no' => $datas->id_no,
+                    'firstname' => $datas->firstname,
+                    'middlename' => $datas->middlename,
+                    'lastname' => $datas->lastname,
+                    'contact_no' => $datas->contact_no,
+                    'email' => $datas->email,
+                    'status' => $applicationStatus[$key]->status,
+                ];
+            }
+
+            return $this->success($response);
         } catch (\Throwable $throwable) {
             return $this->error($throwable->getMessage());
         }
@@ -227,19 +232,18 @@ class Scholarship extends Model
     public function approveScholarship($id)
     {
         try {
-            $user_id = \Auth::user()->id;
-            $foundation_id = \DB::table('foundation_user')
-                ->where('user_id', $user_id)
-                ->get()->pluck('foundation_id');
-
-            $user_ids = \DB::table('applications')
-                ->where('foundation_id', $foundation_id)
-                ->get()
-                ->pluck('user_id');
-
-            $data = User::whereIn('id', $user_ids)
+            // $user_id = \Auth::user()->id;
+            // $foundation_id = \DB::table('foundation_user')
+            //     ->where('user_id', $user_id)
+            //     ->get();
+            // dd($foundation_id);
+            $user = \DB::table('applications')
+                ->where('user_id', $id)
                 ->first();
-
+            // ->pluck('user_id');
+            // dd($user_ids);
+            $data = User::where('id', $user->user_id)
+                ->first();
 
             $validateStatus = \DB::table('applications')
                 ->select('status')
@@ -249,6 +253,7 @@ class Scholarship extends Model
             throw_if($validateStatus->status == 'approved', \Exception::class, 'User Already Approved!');
 
             \DB::beginTransaction();
+
             $status = \DB::table('applications')
                 ->where('user_id', $id)
                 ->update(['status' => 'approved']);
@@ -266,17 +271,17 @@ class Scholarship extends Model
     public function cancelScholarship($id)
     {
         try {
-            $user_id = \Auth::user()->id;
-            $foundation_id = \DB::table('foundation_user')
-                ->where('user_id', $user_id)
-                ->get()->pluck('foundation_id');
-
-            $user_ids = \DB::table('applications')
-                ->where('foundation_id', $foundation_id)
-                ->get()
-                ->pluck('user_id');
-
-            $data = User::whereIn('id', $user_ids)
+            // $user_id = \Auth::user()->id;
+            // $foundation_id = \DB::table('foundation_user')
+            //     ->where('user_id', $user_id)
+            //     ->get();
+            // dd($foundation_id);
+            $user = \DB::table('applications')
+                ->where('user_id', $id)
+                ->first();
+            // ->pluck('user_id');
+            // dd($user_ids);
+            $data = User::where('id', $user->user_id)
                 ->first();
 
             $validateStatus = \DB::table('applications')
@@ -284,9 +289,10 @@ class Scholarship extends Model
                 ->where('user_id', $id)
                 ->first();
 
-            throw_if($validateStatus->status == 'rejected', \Exception::class, 'User Already Rejected!');
+            throw_if($validateStatus->status == 'rejected', \Exception::class, 'User Already Approved!');
 
             \DB::beginTransaction();
+
             $status = \DB::table('applications')
                 ->where('user_id', $id)
                 ->update(['status' => 'rejected']);
@@ -294,7 +300,7 @@ class Scholarship extends Model
             Mail::to($data->email)->send(new CanceledScholarshipMailer);
 
             \DB::commit();
-            return $this->success('Rejected User');
+            return $this->success('User Scholarship Rejected!');
         } catch (\Throwable $throwable) {
             \DB::rollback();
             return $this->error($throwable->getMessage());

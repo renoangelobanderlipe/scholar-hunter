@@ -12,7 +12,6 @@ use Illuminate\Queue\SerializesModels;
 class ApprovedScholarshipMailer extends Mailable
 {
     use Queueable, SerializesModels;
-
     /**
      * Create a new message instance.
      *
@@ -20,7 +19,6 @@ class ApprovedScholarshipMailer extends Mailable
      */
     public function __construct()
     {
-        //
     }
 
     /**

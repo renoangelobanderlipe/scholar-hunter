@@ -36,6 +36,7 @@ export const PrimaryLayout = () => {
               <Route path="/register" element={<SignUpPage />} />
               <Route path="/" element={<LoginPage />} />
               <Route path="*" element={<NotFoundPage />} />
+              <Route path="/unauthorize" element={<UnauthorizedPage />} />
             </React.Fragment>
           </Routes>
           :

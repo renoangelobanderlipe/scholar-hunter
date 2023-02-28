@@ -10,7 +10,7 @@ export const UnauthorizedPage = () => {
             Unauthorize Access Please Contact Admin/SAS... Thank You!
           </Typography>
           <Grid item display={'flex'} justifyContent={'center'} >
-            <Button variant="outline" onClick={() => window.location.reload(false)}>Refresh</Button>
+            {/* <Button variant="outline" onClick={() => window.location.reload(false)}>Refresh</Button> */}
           </Grid>
         </Grid>
       </Box>

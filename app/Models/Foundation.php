@@ -39,6 +39,9 @@ class Foundation extends Model
 
             if (isset($data['users']['id'])) {
                 $user_id = $data['users']['id'];
+                $user = User::find($user_id);
+
+                $user->syncRoles('foundation');
 
                 $transaction = \DB::table('foundation_user')
                     ->insert([
@@ -49,7 +52,7 @@ class Foundation extends Model
 
             \DB::commit();
 
-            return $this->success(['message'=> 'Successfully Created!']);
+            return $this->success(['message' => 'Successfully Created!']);
         } catch (\Throwable $throwable) {
             \DB::rollback();
             $this->error($throwable->getMessage());
