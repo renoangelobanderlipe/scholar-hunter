@@ -334,7 +334,6 @@ const UserManagementPage = () => {
     fetchRole();
     handleFetchUsers();
   }, []);
-  console.log(';role', role);
   const columns = [
     { field: 'id', headerName: 'ID', width: 90, hide: true },
     { field: 'id_no', headerName: 'ID No', width: 150 },

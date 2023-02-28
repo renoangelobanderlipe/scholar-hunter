@@ -156,6 +156,7 @@ const ScholarshipsPage = () => {
 
   const columns = [
     { field: 'id', headerName: 'ID', width: 90, hide: true },
+    { field: 'foundation_id', headerName: 'Foundation ID', width: 90, hide: true },
     {
       field: 'name',
       headerName: 'Name',

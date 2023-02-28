@@ -2,8 +2,12 @@
 
 namespace App\Models;
 
+use App\Mail\ApprovedScholarshipMailer;
+use App\Mail\CanceledScholarshipMailer;
+use App\Mail\StatusMailer;
 use App\Traits\HttpResponse;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class Scholarship extends Model
@@ -140,11 +144,16 @@ class Scholarship extends Model
 
             $foundation_id = \DB::table('foundation_user')
                 ->where('user_id', $user_id)
-                ->get()->pluck('foundation_id');
+                ->get()
+                ->pluck('foundation_id');
 
-            $data = Scholarship::rightJoin('foundation_user', 'scholarships.foundation_id', '=', 'foundation_user.foundation_id')->where('scholarships.foundation_id', $foundation_id)
+            $data = Scholarship::where('foundation_id', $foundation_id)
                 ->get()
                 ->toArray();
+
+            // $data = Scholarship::rightJoin('foundation_user', 'scholarships.foundation_id', '=', 'foundation_user.foundation_id')->where('scholarships.foundation_id', $foundation_id)
+            //     ->get()
+            //     ->toArray();
 
             return $this->success($data);
         } catch (\Throwable $throwable) {
@@ -181,17 +190,26 @@ class Scholarship extends Model
                 ->pluck('user_id');
 
             $data = User::whereIn('id', $user_ids)
-                ->get()
-                ->toArray();
+                ->first();
+
+            $applicationStatus = \DB::table('applications')->where('user_id', $user_ids)->first();
 
             // $data = \DB::table('applications')
             //     ->select(['id', 'name', 'description'])
             //     ->where('foundation_id', $foundation_id)
             //     ->get();
-
-            // dd($data);
-
-            return $this->success($data);
+            $response = [
+                'id' => $applicationStatus->id,
+                'user_id' => $data->id,
+                'id_no' => $data->id_no,
+                'firstname' => $data->firstname,
+                'middlename' => $data->middlename,
+                'lastname' => $data->lastname,
+                'contact_no' => $data->contact_no,
+                'email' => $data->email,
+                'status' => $applicationStatus->status,
+            ];
+            return $this->success([$response]);
         } catch (\Throwable $throwable) {
             return $this->error($throwable->getMessage());
         }
@@ -204,5 +222,82 @@ class Scholarship extends Model
         } catch (\Throwable $throwable) {
             return $this->error($throwable->getMessage());
         };
+    }
+
+    public function approveScholarship($id)
+    {
+        try {
+            $user_id = \Auth::user()->id;
+            $foundation_id = \DB::table('foundation_user')
+                ->where('user_id', $user_id)
+                ->get()->pluck('foundation_id');
+
+            $user_ids = \DB::table('applications')
+                ->where('foundation_id', $foundation_id)
+                ->get()
+                ->pluck('user_id');
+
+            $data = User::whereIn('id', $user_ids)
+                ->first();
+
+
+            $validateStatus = \DB::table('applications')
+                ->select('status')
+                ->where('user_id', $id)
+                ->first();
+
+            throw_if($validateStatus->status == 'approved', \Exception::class, 'User Already Approved!');
+
+            \DB::beginTransaction();
+            $status = \DB::table('applications')
+                ->where('user_id', $id)
+                ->update(['status' => 'approved']);
+
+            Mail::to($data->email)->send(new ApprovedScholarshipMailer);
+
+            \DB::commit();
+            return $this->success('Successfully Approve User!');
+        } catch (\Throwable $throwable) {
+            \DB::rollback();
+            return $this->error($throwable->getMessage());
+        }
+    }
+
+    public function cancelScholarship($id)
+    {
+        try {
+            $user_id = \Auth::user()->id;
+            $foundation_id = \DB::table('foundation_user')
+                ->where('user_id', $user_id)
+                ->get()->pluck('foundation_id');
+
+            $user_ids = \DB::table('applications')
+                ->where('foundation_id', $foundation_id)
+                ->get()
+                ->pluck('user_id');
+
+            $data = User::whereIn('id', $user_ids)
+                ->first();
+
+            $validateStatus = \DB::table('applications')
+                ->select('status')
+                ->where('user_id', $id)
+                ->first();
+
+            throw_if($validateStatus->status == 'rejected', \Exception::class, 'User Already Rejected!');
+
+            \DB::beginTransaction();
+            $status = \DB::table('applications')
+                ->where('user_id', $id)
+                ->update(['status' => 'rejected']);
+
+            Mail::to($data->email)->send(new CanceledScholarshipMailer);
+
+            \DB::commit();
+            return $this->success('Rejected User');
+        } catch (\Throwable $throwable) {
+            \DB::rollback();
+            return $this->error($throwable->getMessage());
+        }
     }
 }

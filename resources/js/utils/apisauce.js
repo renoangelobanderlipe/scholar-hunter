@@ -29,6 +29,8 @@ export const submitScholarship = (params) => apiSauce.post('api/scholarship/stor
 export const createScholarship = (params) => apiSauce.post('api/scholarship/create', params);
 export const handleSearch = (params) => apiSauce.get('api/scholarship/search', params);
 export const foundationScholarships = () => apiSauce.get('api/scholarship/list/scholarship');
+export const approveScholar = (params) => apiSauce.post('api/scholarship/approve', params);
+export const canceleScholar = (params) => apiSauce.post('api/scholarship/cancel', params);
 
 // Foundation
 

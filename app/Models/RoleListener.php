@@ -13,17 +13,15 @@ class RoleListener extends Model
     public function listen()
     {
         try {
-            // $user = User::with('roles')->get()->first();
-            $user = \Auth::user()
-                ->with('roles')
-                ->get()
-                ->first()
-                ->toArray();
-
+            $user = \Auth::user();
+            $status = User::find($user->id)->status;
+            $role = $user
+                ->getRoleNames()
+                ->first();
 
             $data = [
-                'status' => $user['status'],
-                'role' => $user['roles'][0]['name'],
+                'status' => $status,
+                'role' => $role,
             ];
             return $this->success($data);
         } catch (\Throwable $throwable) {

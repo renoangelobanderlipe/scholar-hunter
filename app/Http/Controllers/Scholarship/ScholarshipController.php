@@ -121,4 +121,14 @@ class ScholarshipController extends Controller
     {
         return (new Scholarship)->downloadFile();
     }
+
+    public function approve(Request $request)
+    {
+        return (new Scholarship)->approveScholarship($request->all()['id']);
+    }
+
+    public function cancel(Request $request)
+    {
+        return (new Scholarship)->cancelScholarship($request->all()['id']);
+    }
 }

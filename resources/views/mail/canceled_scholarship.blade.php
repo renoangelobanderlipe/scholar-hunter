@@ -1,0 +1,1 @@
+Unfortunately Your Scholarship Application was Rejected.

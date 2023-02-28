@@ -1,0 +1,1 @@
+Your Scholarship Application is now been approved!

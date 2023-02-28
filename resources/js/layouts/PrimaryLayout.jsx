@@ -40,8 +40,8 @@ export const PrimaryLayout = () => {
           </Routes>
           :
           <React.Fragment>
-            {status ? <LeftSection /> : <UnauthorizedPage />}
-            {/* <LeftSection /> */}
+            {/* {status ? <LeftSection /> : <UnauthorizedPage />} */}
+            <LeftSection />
           </React.Fragment>
         }
       </React.Suspense>
