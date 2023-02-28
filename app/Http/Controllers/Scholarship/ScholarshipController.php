@@ -117,9 +117,9 @@ class ScholarshipController extends Controller
     {
         return (new Scholarship)->scholarsList();
     }
-    public function download()
+    public function download(Request $request)
     {
-        return (new Scholarship)->downloadFile();
+        return (new Scholarship)->downloadFile($request->all()['id']);
     }
 
     public function approve(Request $request)

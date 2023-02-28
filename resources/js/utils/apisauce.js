@@ -24,7 +24,7 @@ export const updatePassword = (params) => apiSauce.post('api/auth/update/passwor
 export const scholarshipList = (params) => apiSauce.get('api/scholarship/index', params);
 export const scholarsList = () => apiSauce.get('api/scholarship/list/scholars');
 export const destroyScholarship = (params) => apiSauce.delete('api/scholarship/destroy', params);
-export const downloadFile = () => apiSauce.get('api/scholarship/download');
+export const downloadFile = (params) => apiSauce.get('api/scholarship/download', params);
 export const submitScholarship = (params) => apiSauce.post('api/scholarship/store', params);
 export const createScholarship = (params) => apiSauce.post('api/scholarship/create', params);
 export const handleSearch = (params) => apiSauce.get('api/scholarship/search', params);
@@ -49,6 +49,8 @@ export const approveUser = (params) => apiSauce.post('api/user/update', params);
 export const createUser = (params) => apiSauce.post('api/user/create', params);
 export const destroyUser = (params) => apiSauce.delete('api/user/destroy', params);
 
+// Application
+export const appliedScholarship = () => apiSauce.get('api/application');
 
 // Role Listener 
 export const roleListener = () => apiSauce.get('api/listener');

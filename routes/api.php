@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Application\ApplicationController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Foundation\FoundationController;
 use App\Http\Controllers\HomePage\HomePageController;
@@ -48,6 +49,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('download', 'download');
         Route::post('approve', 'approve');
         Route::post('cancel', 'cancel');
+    });
+
+    Route::controller(ApplicationController::class)->prefix('application')->group(function () {
+        Route::get('/', 'index');
     });
 
     Route::controller(FoundationController::class)->prefix('foundation')->group(function () {

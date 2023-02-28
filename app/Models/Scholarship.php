@@ -105,7 +105,7 @@ class Scholarship extends Model
     {
         try {
             // dd($data);
-            $fileName = \Auth::id() . date('Ymd-His') . $data->file->getClientOriginalExtension();
+            $fileName = \Auth::id() . date('Ymd-His') . '.' . $data->file->getClientOriginalExtension();
             $scholarshipPath = $data->file->storeAs('forms', $fileName);
 
             $fileData = [
@@ -220,10 +220,13 @@ class Scholarship extends Model
         }
     }
 
-    public function downloadFile()
+    public function downloadFile($id)
     {
         try {
-            return Storage::download('forms/1620230227-185945jpg');
+            $file = \DB::table('applications')->find($id);
+
+
+            return Storage::download('forms/1620230227-185945.jpg', 'FHE.jpg', ['Content-Type' => 'application/pdf']);
         } catch (\Throwable $throwable) {
             return $this->error($throwable->getMessage());
         };

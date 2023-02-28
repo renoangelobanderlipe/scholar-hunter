@@ -10,6 +10,7 @@ const UserManagementPage = React.lazy(() => import('./../pages/UserManagementPag
 const ScholarsListPage = React.lazy(() => import('./../pages/ScholarsListPage'));
 const ScholarshipsPage = React.lazy(() => import('./../pages/ScholarshipsPage'));
 const FoundationsPage = React.lazy(() => import('./../pages/FoundationsPage'));
+const ApplicationPage = React.lazy(() => import('./../pages/ApplicationPage'));
 
 import HomePage from './../pages/HomePage';
 
@@ -69,6 +70,7 @@ const RightSection = () => {
             <Route path="/scholars" element={<ScholarsListPage />} />
             <Route path="/scholarships" element={<ScholarshipsPage />} />
             <Route path="/foundations" element={<FoundationsPage />} />
+            <Route path="/application" element={<ApplicationPage />} />
           </Routes>
         </Grid >
       </Box >

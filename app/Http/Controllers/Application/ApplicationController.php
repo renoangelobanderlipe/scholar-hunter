@@ -20,7 +20,7 @@ class ApplicationController extends Controller
      */
     public function index()
     {
-        //
+        return (new Application)->appliedScholarship();
     }
 
     /**

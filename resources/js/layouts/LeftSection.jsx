@@ -22,7 +22,7 @@ import { logout } from '../utils/apisauce';
 
 const LeftSection = () => {
   const [open, setOpen] = React.useState(false);
-  const { role,  } = useAuthStore();
+  const { role, } = useAuthStore();
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -77,6 +77,16 @@ const LeftSection = () => {
                 </Link>
               </React.Fragment> : <React.Fragment />}
 
+              {role == 'user' || role == 'admin' ? <React.Fragment>
+                <Link to='/application' style={{ textDecoration: 'none', color: "white", fontWeight: 'bold' }} >
+                  <ListItemButton selected={location.pathname === '/listing' ? true : false}>
+                    <ListItemIcon>
+                      <ViewStreamIcon color='primary' />
+                    </ListItemIcon>
+                    <ListItemText primary="Application" />
+                  </ListItemButton>
+                </Link>
+              </React.Fragment> : <React.Fragment />}
 
 
               {role != 'user' ? <React.Fragment>

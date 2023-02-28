@@ -29,13 +29,17 @@ const ScholarsListPage = () => {
       setRows(res.data.data);
     }
   }
-  const handleDownload = async () => {
-    const res = await downloadFile();
+  const handleDownload = async (id) => {
+    const res = await downloadFile({ id });
     console.log(res);
     if (res.ok) {
+      // window.location.href = window.downloadFile();
+
+      const url = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement("a");
-      link.download = `download.txt`;
-      link.href = "./download.txt";
+      link.href = url;
+      link.setAttribute('download', 'FHE.jpg');
+      document.body.appendChild(link);
       link.click();
     }
   }
@@ -97,7 +101,7 @@ const ScholarsListPage = () => {
         return (
           <React.Fragment>
             {row.status == 'pending' ? <Chip label='Pending' color="success" /> : row.statuss == 'rejected' ? <Chip label='Rejected' color="success" /> : row.status == 'approved' ? <Chip label='Approved' color="success" /> : <></>}
-         
+
           </React.Fragment >
         )
       }
@@ -110,7 +114,7 @@ const ScholarsListPage = () => {
         return (
           <React.Fragment>
             <Tooltip title="File">
-              <IconButton color="success" onClick={() => handleDownload()}>
+              <IconButton color="success" onClick={() => handleDownload(row.id)}>
                 <FileOpenOutlinedIcon />
               </IconButton>
             </Tooltip>
