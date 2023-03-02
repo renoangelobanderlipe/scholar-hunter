@@ -3,7 +3,7 @@ import { Grid, IconButton, Tooltip, Chip } from '@mui/material';
 import { DataGrid, GridToolbarContainer, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, GridToolbarExport } from '@mui/x-data-grid';
 import { downloadFile, scholarshipList, scholarsList, approveScholar, canceleScholar } from './../utils/apisauce';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Cancel, CheckCircle } from '@mui/icons-material';
+import { Cancel, CheckCircle, Download, FileDownload, FileDownloadDone, FileDownloadDoneOutlined, FileDownloadOutlined } from '@mui/icons-material';
 import FileOpenOutlinedIcon from '@mui/icons-material/FileOpenOutlined';
 import { useSnackbar } from 'notistack';
 
@@ -33,8 +33,8 @@ const ScholarsListPage = () => {
     const res = await downloadFile({ id });
     console.log(res);
     if (res.ok) {
-      
-      
+
+
       // const url = window.URL.createObjectURL(new Blob([res.data.data]));
       const link = document.createElement("a");
       link.href = res.data.data;
@@ -115,7 +115,7 @@ const ScholarsListPage = () => {
           <React.Fragment>
             <Tooltip title="File">
               <IconButton color="success" onClick={() => handleDownload(row.id)}>
-                <FileOpenOutlinedIcon />
+                <FileDownloadOutlined />
               </IconButton>
             </Tooltip>
 
