@@ -184,7 +184,7 @@ class Scholarship extends Model
                 ->first();
             // ->pluck('foundation_id');
             $user_ids = \DB::table('applications')
-                ->where('foundation_id', 19)
+                ->where('foundation_id', $foundation_id->foundation_id)
                 ->get()
                 ->pluck('user_id')
                 ->toArray();
