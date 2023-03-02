@@ -101,8 +101,7 @@ class AuthHelper implements AuthContract
   public function all()
   {
     try {
-      $users = User::where('status', 1)
-        ->get(['id', 'firstname', 'middlename', 'lastname', 'id_no']);
+      $users = User::where('status', 1)->get(['id','firstname', 'middlename', 'lastname', 'id_no']);
 
       return $this->success(['users' => $users]);
     } catch (\Throwable $throwable) {

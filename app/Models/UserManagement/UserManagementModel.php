@@ -28,24 +28,54 @@ class UserManagementModel extends Model implements UserManagementContract
     public function show()
     {
         try {
-            $data = User::with('roles')->get()->toArray();
-            $response = [];
-            foreach ($data as  $key => $datas) {
-                $response[] = [
-                    'id' => $datas['id'],
-                    'id_no' => $datas['id_no'],
-                    'firstname' => $datas['firstname'],
-                    'middlename' => $datas['middlename'],
-                    'lastname' => $datas['lastname'],
-                    'lastname' => $datas['lastname'],
-                    'contact_no' => $datas['contact_no'],
-                    'email' => $datas['email'],
-                    // 'role' => $datas['roles']['name'],
-                    'status' => $datas['status'],
+            // $data = User::with('roles')->get()->toArray();
+            // $response = [];
+
+            // foreach ($data as  $key => $datas) {
+            //     $response[] = [
+            //         'id' => $datas['id'],
+            //         'id_no' => $datas['id_no'],
+            //         'firstname' => $datas['firstname'],
+            //         'middlename' => $datas['middlename'],
+            //         'lastname' => $datas['lastname'],
+            //         'lastname' => $datas['lastname'],
+            //         'contact_no' => $datas['contact_no'],
+            //         'email' => $datas['email'],
+            //         // 'role' => $datas['roles']['name'],
+            //         'status' => $datas['status'],
+            //     ];
+            // }
+            $users = User::select('*')->get();
+
+            // $role = $user
+            //   ->getRoleNames()
+            //   ->first();
+
+            $response = \Auth::user();
+
+            $data = [];
+            foreach ($users as $key => $user) {
+                $role = $user->getRoleNames()->first();
+
+                $data[] = [
+                    'id' => $user->id,
+                    'id_no' => $user->id_no,
+                    'firstname' => $user->firstname,
+                    'middlename' => $user->middlename,
+                    'lastname' => $user->lastname,
+                    'contact_no' => $user->contact_no,
+                    'email' => $user->email,
+                    'role' => $role,
+                    'status' => $user->status,
+                    'username' => $user->username,
+                    'address' => $user->address,
+                    'course_type' => $user->course_type,
+                    'course' => $user->course,
                 ];
             }
 
-            return $this->success($response);
+
+            return $this->success($data);
         } catch (\Throwable $throwable) {
             return $this->error($throwable->getMessage());
         }
@@ -94,7 +124,7 @@ class UserManagementModel extends Model implements UserManagementContract
             $response = User::find($data['id'])->update(['status' => self::APPROVE]);
 
             Mail::to(User::find($data['id'])['email'])->send(new StatusMailer());
-            
+
             throw_if($response != 1, \Exception::class, 'Invalid Request');
 
             \DB::commit();
