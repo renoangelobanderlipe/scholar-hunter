@@ -106,7 +106,8 @@ class Scholarship extends Model
         try {
             // dd($data);
             $fileName = \Auth::id() . date('Ymd-His') . '.' . $data->file->getClientOriginalExtension();
-            $scholarshipPath = $data->file->storeAs('forms', $fileName);
+            // $scholarshipPath = $data->file->storeAs('forms', $fileName);
+            $data->file->storeAs('public/forms', $fileName);
 
             $fileData = [
                 'user_id' => \Auth::user()->id,
@@ -114,7 +115,7 @@ class Scholarship extends Model
                 'foundation_id' => $data->foundation_id,
                 'file_id' => $data->id,
                 'file_name' => $fileName,
-                'file_location' => $scholarshipPath,
+                'file_location' => 'forms' . '/' . $fileName,
                 'status' => 'pending',
             ];
 
@@ -224,9 +225,12 @@ class Scholarship extends Model
     {
         try {
             $file = \DB::table('applications')->find($id);
-
-
-            return Storage::download('forms/1620230227-185945.jpg', 'FHE.jpg', ['Content-Type' => 'application/pdf']);
+            $urll =  'public' . '/' . $file->file_location;
+            // $fileUrl = Storage::('forms/1620230227-185945.jpg');
+            // dd($fileUrl);
+            // return Storage::download('forms/1620230227-185945.jpg', 'FHE.jpg', ['Content-Type' => 'application/pdf']);
+            $fileUrl = Storage::url($urll);
+            return $this->success($fileUrl);
         } catch (\Throwable $throwable) {
             return $this->error($throwable->getMessage());
         };

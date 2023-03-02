@@ -33,12 +33,12 @@ const ScholarsListPage = () => {
     const res = await downloadFile({ id });
     console.log(res);
     if (res.ok) {
-      // window.location.href = window.downloadFile();
-
-      const url = window.URL.createObjectURL(new Blob([res.data]));
+      
+      
+      // const url = window.URL.createObjectURL(new Blob([res.data.data]));
       const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute('download', 'FHE.jpg');
+      link.href = res.data.data;
+      link.setAttribute('download', 'FHE.pdf');
       document.body.appendChild(link);
       link.click();
     }
