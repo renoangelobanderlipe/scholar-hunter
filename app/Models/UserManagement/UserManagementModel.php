@@ -25,6 +25,24 @@ class UserManagementModel extends Model implements UserManagementContract
     }
 
 
+    public function unauthorize($id)
+    {
+        try {
+            \DB::beginTransaction();
+
+            $user = User::where('id', $id)->update(['status' => 0]);
+
+            // throw_if($user == 1, \Exception::class, 'Already Unauthorize User');
+            $data = User::where('id', $id)->get()->toArray();
+
+            \DB::commit();
+            return $this->success($data);
+        } catch (\Throwable $throwable) {
+            \DB::rollback();
+            return $this->error($throwable->getMessage());
+        }
+    }
+
     public function show()
     {
         try {

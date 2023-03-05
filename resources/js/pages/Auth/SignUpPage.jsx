@@ -246,7 +246,7 @@ const SignUpPage = () => {
             </Grid>
             <ButtonComponent
               disable={signUpFormik.values.password != signUpFormik.values.confirm_password ? false : true}
-              title={'Submit'}
+              title={'Create Account'}
               variant={{
                 variant: 'contained'
               }}

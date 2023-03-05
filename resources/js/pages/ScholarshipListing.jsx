@@ -187,7 +187,7 @@ const ScholarshipListing = () => {
 
                     <Box sx={{ color: 'text.secondary', fontSize: 14, mb: '0.5rem' }}>{element.description}</Box>
 
-
+                    {element.note != '' ? <Box sx={{ color: 'red', fontSize: 14, mb: '0.5rem' }}>{element?.note ?? ''}</Box> : <></>}
                   </CardContent>
                 </Grid>
               ))

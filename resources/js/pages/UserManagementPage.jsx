@@ -4,8 +4,8 @@ import { Button, DialogTitle, DialogContent, Dialog, Grid, DialogActions, IconBu
 import { useSnackbar } from 'notistack';
 import { useFormik } from 'formik';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { approveUser, destroyUser, getUserList, roleListener } from '../utils/apisauce';
-import { CheckCircle } from '@mui/icons-material';
+import { approveUser, destroyUser, getUserList, roleListener, unauthorizeUser } from '../utils/apisauce';
+import { CancelOutlined, CheckCircle } from '@mui/icons-material';
 import useAuthStore from '../utils/store';
 import { ButtonComponent } from './../components/ButtonComponent';
 import { Link } from 'react-router-dom';
@@ -84,7 +84,7 @@ const CustomButton = () => {
                   />
 
                   <Grid item container display={'flex'} spacing={2} pb={'1rem'}>
-                    <Grid item xs={6}>
+                    <Grid item xs={4}>
                       <TextFieldComponent
                         fieldname={'email'}
                         fieldlabel={'Email'}
@@ -96,7 +96,7 @@ const CustomButton = () => {
                         handleOnChange={(field, value) => handleOnChange(field, value)}
                       />
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={4}>
                       <TextFieldComponent
                         fieldname={'id_no'}
                         fieldlabel={'ID No'}
@@ -335,7 +335,18 @@ const UserManagementPage = () => {
     if (res.data.code == 200) {
       setRole(res.data.data.role);
     }
+  }
 
+  const handleUnauthorize = async (id) => {
+    const res = await unauthorizeUser({ id });
+
+    // console.log(res.data.data);
+    // if (res.ok) {
+    //   setRows(prev => [
+    //     ...prev.slice(0, 1),
+    //     ...res.data.data
+    //   ]);
+    // }
   }
 
   React.useEffect(() => {
@@ -396,6 +407,12 @@ const UserManagementPage = () => {
         return (
           <React.Fragment>
             {role == 'admin' ? <React.Fragment>
+              <Tooltip title="Unauthorize">
+                <IconButton color="error" onClick={() => handleUnauthorize(row.id)}>
+                  <CancelOutlined />
+                </IconButton>
+              </Tooltip>
+
               <Tooltip title="Delete">
                 <IconButton color="error" onClick={() => handleDelete(row.id)}>
                   <DeleteIcon />

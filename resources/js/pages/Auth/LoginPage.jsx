@@ -53,7 +53,7 @@ const LoginPage = () => {
         setRole(res.data.data.role);
         // setStatus(res.data.data.status);
         setLoggedIn(true);
-        navigate('/home', { replace: true });
+        res.data.data.role != 'user' ? navigate('/home', { replace: true }) : navigate('/listing', { replace: true });
       } else {
         console.log('Something Went wrong', res);
         enqueueSnackbar('Something Went wrong', { variant: 'warning' })

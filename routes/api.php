@@ -35,6 +35,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('update', 'update');
         Route::post('create', 'create');
         Route::delete('destroy', 'destroy');
+        Route::put('unauthorize', 'unathorizeUser');
     });
 
     Route::controller(ScholarshipController::class)->prefix('scholarship')->group(function () {
@@ -65,6 +66,8 @@ Route::middleware('auth:sanctum')->group(function () {
         /**Foundation */
         Route::get('show', 'applicantStatus');
         Route::get('show/all', 'scholarshipTotal');
+        Route::get('all', 'all');
+        Route::get('status', 'status');
     });
 
     // Role Listener

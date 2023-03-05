@@ -44,6 +44,7 @@ export const getUserList = (params) => apiSauce.get('api/user/show', params);
 export const approveUser = (params) => apiSauce.post('api/user/update', params);
 export const createUser = (params) => apiSauce.post('api/user/create', params);
 export const destroyUser = (params) => apiSauce.delete('api/user/destroy', params);
+export const unauthorizeUser = (params) => apiSauce.put('api/user/unauthorize', params);
 
 // Application
 export const appliedScholarship = () => apiSauce.get('api/application');
@@ -57,5 +58,8 @@ export const authListener = (params) => apiSauce.post('api/listener/status', par
 /**Foundation */
 export const totalApplicants = (params) => apiSauce.get('api/home/show', params);
 export const totalScholarship = (params) => apiSauce.get('api/home/show/all', params);
+/**Admin */
+export const adminAll = () => apiSauce.get('api/home/all');
+export const adminStatus = () => apiSauce.get('api/home/status');
 
 

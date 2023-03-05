@@ -48,23 +48,25 @@ const LeftSection = () => {
             component="nav"
             subheader={
               <ListSubheader sx={{ height: '4.5rem' }} >
-                <Box  height="100%" display="flex" alignItems="center" justifyContent="center" textAlign="center" alignContent='center'>
+                <Box height="100%" display="flex" alignItems="center" justifyContent="center" textAlign="center" alignContent='center'>
                   <img src="./logo.svg" alt="img" height="70px" srcset="" />
                 </Box>
               </ListSubheader>
             }
           >
             <Grid py="2rem">
-              <React.Suspense fallback={'Loading..'}>
-                <Link to='/home' style={{ textDecoration: 'none', color: "#424242", fontWeight: 'bold' }}  >
-                  <ListItemButton selected={location.pathname === '/home' ? true : false} >
-                    <ListItemIcon>
-                      <DashboardRounded color='primary' />
-                    </ListItemIcon>
-                    Home
-                  </ListItemButton>
-                </Link>
-              </React.Suspense>
+              {
+                role != 'user' ? <React.Suspense fallback={'Loading..'}>
+                  <Link to='/home' style={{ textDecoration: 'none', color: "#424242", fontWeight: 'bold' }}  >
+                    <ListItemButton selected={location.pathname === '/home' ? true : false} >
+                      <ListItemIcon>
+                        <DashboardRounded color='primary' />
+                      </ListItemIcon>
+                      Home
+                    </ListItemButton>
+                  </Link>
+                </React.Suspense> : <></>
+              }
 
               {role == 'user' || role == 'admin' ? <React.Fragment>
                 <Link to='/listing' style={{ textDecoration: 'none', color: "#424242", fontWeight: 'bold' }} >

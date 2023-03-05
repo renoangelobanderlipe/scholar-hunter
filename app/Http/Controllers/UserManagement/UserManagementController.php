@@ -37,4 +37,9 @@ class UserManagementController extends Controller
     {
         return $this->user->deleteUser($request->all()['id']);
     }
+
+    public function unathorizeUser(Request $request)
+    {
+        return $this->user->unauthorize($request->all()['id']);
+    }
 }

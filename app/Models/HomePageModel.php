@@ -67,9 +67,6 @@ class HomePageModel extends Model
         }
     }
 
-
-
-
     public function applicantStatus()
     {
         try {
@@ -99,6 +96,63 @@ class HomePageModel extends Model
         }
     }
 
+    public function totalAll()
+    {
+        try {
+            $totalScholars = User::join('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
+                ->leftJoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
+                ->where('roles.name', '=', 'user')
+                ->get()
+                ->count();
+            $totalScholarships = Scholarship::select('*')->get()->count();
+
+            $totalFoundations = Foundation::select('*')->get()->count();
+
+            $data = [
+                [
+                    'name' => 'scholars',
+                    'value' => $totalScholars
+                ],
+                [
+                    'name' => 'scholarships',
+                    'value' => $totalScholarships
+                ],
+                [
+                    'name' => 'foundations',
+                    'value' => $totalFoundations
+                ],
+            ];
+
+            return $this->success($data);
+        } catch (\Throwable $throwable) {
+            return $this->error($throwable->getMessage());
+        }
+    }
+
+    public function userTypes()
+    {
+        try {
+            $users = User::all();
+
+            $approved = $users->where('status', 1)->count();
+            $pending = $users->where('status', 0)->count();
+
+            $data = [
+                [
+                    'name' => 'approved',
+                    'value' => $approved,
+                ],
+                [
+                    'name' => 'pending',
+                    'value' => $pending,
+                ],
+            ];
+
+            return $this->success($data);
+        } catch (\Throwable $throwable) {
+            return $this->error($throwable->getMessage());
+        }
+    }
 
     // public function foundationCount($keyword)
     // {
