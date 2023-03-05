@@ -83,24 +83,25 @@ const CustomButton = () => {
                     }}
                   />
 
-                  <Grid item display={'flex'} fullWidth p={'0.5rem 0'} >
-                    <Grid item pr={2} >
+                  <Grid item container display={'flex'} spacing={2} pb={'1rem'}>
+                    <Grid item xs={6}>
                       <TextFieldComponent
                         fieldname={'email'}
                         fieldlabel={'Email'}
                         variant={{
+                          fullWidth: true,
                           variant: "outlined",
                           size: "small",
                         }}
                         handleOnChange={(field, value) => handleOnChange(field, value)}
                       />
                     </Grid>
-
-                    <Grid item >
+                    <Grid item xs={6}>
                       <TextFieldComponent
                         fieldname={'id_no'}
                         fieldlabel={'ID No'}
                         variant={{
+                          fullWidth: true,
                           variant: "outlined",
                           size: "small",
                         }}
@@ -109,12 +110,13 @@ const CustomButton = () => {
                     </Grid>
                   </Grid>
 
-                  <Grid item display={'flex'} p={'0.5rem 0'}>
-                    <Grid item pr={2}  >
+                  <Grid item container display={'flex'} spacing={2} pb={'1rem'}>
+                    <Grid item xs={6}>
                       <TextFieldComponent
                         fieldname={'firstname'}
                         fieldlabel={'Firstname'}
                         variant={{
+                          fullWidth: true,
                           variant: "outlined",
                           size: "small",
                         }}
@@ -122,11 +124,12 @@ const CustomButton = () => {
                       />
                     </Grid>
 
-                    <Grid item >
+                    <Grid item xs={6}>
                       <TextFieldComponent
                         fieldname={'middlename'}
                         fieldlabel={'Middlename'}
                         variant={{
+                          fullWidth: true,
                           variant: "outlined",
                           size: "small",
                         }}
@@ -135,12 +138,13 @@ const CustomButton = () => {
                     </Grid>
                   </Grid>
 
-                  <Grid item display={'flex'} p={'0.5rem 0'}>
-                    <Grid item pr={2}  >
+                  <Grid item container display={'flex'} spacing={2} pb={'1rem'}>
+                    <Grid item xs={6}>
                       <TextFieldComponent
                         fieldname={'lastname'}
                         fieldlabel={'Lastname'}
                         variant={{
+                          fullWidth: true,
                           variant: "outlined",
                           size: "small",
                         }}
@@ -148,11 +152,12 @@ const CustomButton = () => {
                       />
                     </Grid>
 
-                    <Grid item >
+                    <Grid item xs={6}>
                       <TextFieldComponent
                         fieldname={'username'}
                         fieldlabel={'Username'}
                         variant={{
+                          fullWidth: true,
                           variant: "outlined",
                           size: "small",
                         }}
@@ -161,12 +166,13 @@ const CustomButton = () => {
                     </Grid>
                   </Grid>
 
-                  <Grid item display={'flex'} p={'0.5rem 0'}>
-                    <Grid item pr={2}  >
+                  <Grid item container display={'flex'} spacing={2} pb={'1rem'}>
+                    <Grid item xs={6}>
                       <TextFieldComponent
                         fieldname={'address'}
                         fieldlabel={'Address'}
                         variant={{
+                          fullWidth: true,
                           variant: "outlined",
                           size: "small",
                         }}
@@ -174,11 +180,12 @@ const CustomButton = () => {
                       />
                     </Grid>
 
-                    <Grid item >
+                    <Grid item xs={6}>
                       <TextFieldComponent
                         fieldname={'contact_no'}
                         fieldlabel={'Contact No'}
                         variant={{
+                          fullWidth: true,
                           variant: "outlined",
                           size: "small",
                         }}
