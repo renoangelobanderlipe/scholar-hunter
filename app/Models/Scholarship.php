@@ -19,6 +19,7 @@ class Scholarship extends Model
         'foundation_id',
         'name',
         'description',
+        'note',
     ];
 
     protected $hidden = ['created_at', 'updated_at'];
@@ -97,11 +98,14 @@ class Scholarship extends Model
                 ->select('foundation_id')
                 ->where('user_id', \Auth::user()->id)
                 ->first();
+
             \DB::beginTransaction();
+
             \DB::table('scholarships')->insert([
                 'foundation_id' => $foundation_id->foundation_id,
                 'name' => $payload['name'],
-                'description' => $payload['description']
+                'description' => $payload['description'],
+                'description' => $payload['note']
             ]);
 
             \DB::commit();
@@ -206,7 +210,7 @@ class Scholarship extends Model
             foreach ($applicants as $key => $applicant) {
                 $userData = collect($data)->where('id', $applicant->user_id)->first();
                 $response[] = [
-                    'id' => $key,
+                    'id' => $applicant->id,
                     'user_id' => $applicant->user_id,
                     'id_no' => $userData->id_no,
                     'firstname' => $userData->firstname,
@@ -229,8 +233,8 @@ class Scholarship extends Model
         try {
             $file = \DB::table('applications')->find($id);
             $urll =  'public' . '/' . $file->file_location;
-
             $fileUrl = Storage::url($urll);
+
             return $this->success($fileUrl);
         } catch (\Throwable $throwable) {
             return $this->error($throwable->getMessage());

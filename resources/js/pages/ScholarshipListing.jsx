@@ -11,6 +11,7 @@ import { submitScholarship } from './../utils/apisauce';
 import { useSnackbar } from 'notistack';
 import { SearchOutlined } from '@mui/icons-material';
 import useAuthStore from './../utils/store';
+import { ContainerWrapper } from '../components/ContainerWrapper';
 
 const SerachbarComponent = ({ scholarship, lastPage }) => {
 
@@ -27,7 +28,7 @@ const SerachbarComponent = ({ scholarship, lastPage }) => {
   const handleOnSubmit = async () => {
     const keyword = searchFormik.values.keyword;
     const res = await handleSearch({ keyword });
-    
+
     if (res.data.code == 200) {
       scholarship(res.data?.data?.data)
     }
@@ -38,7 +39,7 @@ const SerachbarComponent = ({ scholarship, lastPage }) => {
       <Grid container backgroundColor="#fff" sx={{ borderRadius: '10px', border: 'none' }}>
         <TextField
           size='medium'
-          sx={{ width: '100%' }}
+          sx={{ width: '50%' }}
           label={'Foundation Name'}
           InputProps={{
             endAdornment: (
@@ -146,13 +147,14 @@ const ScholarshipListing = () => {
 
   return (
     <React.Fragment>
-      <Grid container px={4} backgroundColor="#c8e6c9">
-        <Grid container item py={4} >
+
+      <ContainerWrapper>
+        <Grid container item >
           <Grid container item sx={{ borderRadius: '10px' }}>
             <SerachbarComponent scholarship={setScholarship} lastPage={setLastPage} />
           </Grid>
         </Grid>
-        <Grid container item backgroundColor="#fff" sx={{ height: '65vh', borderRadius: '10px' }}>
+        <Grid container item backgroundColor="#fff" sx={{ height: '60vh', borderRadius: '10px' }}>
 
           <Grid container sx={{ maxHeight: "100%", overflow: 'auto' }} spacing={4} px={6} py={4}>
 
@@ -214,7 +216,7 @@ const ScholarshipListing = () => {
             )}
           />
         </Grid>
-      </Grid>
+      </ContainerWrapper>
     </React.Fragment>
   );
 }

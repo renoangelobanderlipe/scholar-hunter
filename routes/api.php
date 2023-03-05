@@ -49,6 +49,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('download', 'download');
         Route::post('approve', 'approve');
         Route::post('cancel', 'cancel');
+        Route::put('edit', 'edit');
     });
 
     Route::controller(ApplicationController::class)->prefix('application')->group(function () {
@@ -61,9 +62,9 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::controller(HomePageController::class)->prefix('home')->group(function () {
-        Route::get('foundation', 'foundation');
-        Route::get('scholars', 'scholars');
-        Route::get('status', 'userStatus');
+        /**Foundation */
+        Route::get('show', 'applicantStatus');
+        Route::get('show/all', 'scholarshipTotal');
     });
 
     // Role Listener

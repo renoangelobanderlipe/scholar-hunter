@@ -2,6 +2,7 @@ import React, { useState, useEffect, Fragment } from 'react';
 import { GridToolbarContainer, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, GridToolbarExport, DataGrid } from '@mui/x-data-grid';
 import { Grid, Chip } from '@mui/material';
 import { appliedScholarship } from './../utils/apisauce';
+import { ContainerWrapper } from '../components/ContainerWrapper';
 
 
 const CustomToolbar = () => {
@@ -94,25 +95,20 @@ const ApplicationPage = () => {
 
   return (
     <Fragment>
-      <Grid container p={4} backgroundColor="#c8e6c9">
-        <Grid container item backgroundColor="#fff" sx={{ minHeight: '80vh', borderRadius: '10px' }}>
-          <Grid container p={'2rem'}>
-            <DataGrid
-              autoHeight
-              pageSize={10}
-              rowsPerPageOptions={[5, 15, 50, 100]}
-              rows={rows ?? []}
-              columns={columns}
-              components={{
-                // NoRowsOverlay: CustomNoRowsOverlay,
-                Toolbar: CustomToolbar,
+      <ContainerWrapper>
+        <DataGrid
+          autoHeight
+          pageSize={10}
+          rowsPerPageOptions={[5, 15, 50, 100]}
+          rows={rows ?? []}
+          columns={columns}
+          components={{
+            // NoRowsOverlay: CustomNoRowsOverlay,
+            Toolbar: CustomToolbar,
 
-              }}
-            />
-          </Grid>
-        </Grid>
-
-      </Grid>
+          }}
+        />
+      </ContainerWrapper>
     </Fragment>
   );
 }

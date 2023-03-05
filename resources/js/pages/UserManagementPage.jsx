@@ -16,6 +16,7 @@ import { course } from '../utils/helper';
 import { courseType, roles } from './../utils/helper';
 import { HeaderComponent } from './../components/HeaderComponent';
 import { createUser } from './../utils/apisauce';
+import { ContainerWrapper } from './../components/ContainerWrapper';
 
 
 const CustomButton = () => {
@@ -410,28 +411,23 @@ const UserManagementPage = () => {
   ];
   return (
     <React.Fragment>
-      <Grid container p={4} backgroundColor="#c8e6c9">
-        <Grid container item backgroundColor="#fff" sx={{ minHeight: '80vh', borderRadius: '10px' }}>
-          <Grid container p={'2rem'}>
-            <DataGrid
-              autoHeight
-              pageSize={10}
-              rowsPerPageOptions={[5, 15, 50, 100]}
-              rows={rows}
-              columns={columns}
-              components={{
-                // NoRowsOverlay: CustomNoRowsOverlay,
-                Toolbar: CustomToolbar,
+      <ContainerWrapper>
+        <DataGrid
+          autoHeight
+          pageSize={10}
+          rowsPerPageOptions={[5, 15, 50, 100]}
+          rows={rows}
+          columns={columns}
+          components={{
+            // NoRowsOverlay: CustomNoRowsOverlay,
+            Toolbar: CustomToolbar,
 
-              }}
-              componentsProps={{
-                toolbar: CustomButton
-              }}
-            />
-          </Grid>
-        </Grid>
-
-      </Grid>
+          }}
+          componentsProps={{
+            toolbar: CustomButton
+          }}
+        />
+      </ContainerWrapper>
     </React.Fragment>
   );
 }

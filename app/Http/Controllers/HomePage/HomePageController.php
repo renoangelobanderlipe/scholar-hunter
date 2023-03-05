@@ -16,18 +16,16 @@ class HomePageController extends Controller
         $this->home = $home;
     }
 
-    public function foundation(Request $request)
+    public function applicantStatus(Request $request)
     {
-        return $this->home->foundationCount($request->type);
+        return $this->home->foundationStatus($request->all()['type']);
+    }
+    
+    public function scholarshipTotal(Request $request)
+    {
+        return $this->home->totalScholarship($request->all()['type']);
     }
 
-    public function scholars(Request $request)
-    {
-        return $this->home->scholarsCount($request->type);
-    }
-
-    public function userStatus(Request $request)
-    {
-        return $this->home->status($request->type);
-    }
+    
+    
 }

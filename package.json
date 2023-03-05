@@ -37,6 +37,7 @@
         "react-filepond": "^7.1.2",
         "react-pdf": "^6.2.2",
         "react-timeout-button": "^2.0.8",
+        "recharts": "^2.4.3",
         "zustand": "^4.3.2"
     }
 }

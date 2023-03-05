@@ -31,17 +31,13 @@ export const handleSearch = (params) => apiSauce.get('api/scholarship/search', p
 export const foundationScholarships = () => apiSauce.get('api/scholarship/list/scholarship');
 export const approveScholar = (params) => apiSauce.post('api/scholarship/approve', params);
 export const canceleScholar = (params) => apiSauce.post('api/scholarship/cancel', params);
+export const editScholarship = (params) => apiSauce.put('api/scholarship/edit', params);
 
 // Foundation
 
 export const foundationList = (params) => apiSauce.get('api/scholarship/list', params);
 export const createFoundation = (params) => apiSauce.post('api/foundation/store', params);
 export const foundationDestroy = (params) => apiSauce.delete('api/foundation/destroy', params);
-
-// HomePage
-export const foundationCount = (params) => apiSauce.get('api/home/foundation', params);
-export const scholarsCount = (params) => apiSauce.get('api/home/scholars', params);
-export const userStatus = (params) => apiSauce.get('api/home/status', params);
 
 // User Management
 export const getUserList = (params) => apiSauce.get('api/user/show', params);
@@ -56,5 +52,10 @@ export const appliedScholarship = () => apiSauce.get('api/application');
 export const roleListener = () => apiSauce.get('api/listener');
 export const authListener = (params) => apiSauce.post('api/listener/status', params);
 
+// Home Page
+
+/**Foundation */
+export const totalApplicants = (params) => apiSauce.get('api/home/show', params);
+export const totalScholarship = (params) => apiSauce.get('api/home/show/all', params);
 
 

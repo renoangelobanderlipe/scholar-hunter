@@ -40,6 +40,11 @@ class ScholarshipController extends Controller
         return $this->scholarship->search($request->only(['keyword'])['keyword'] == null ? '' : $request->only(['keyword'])['keyword']);
     }
 
+    public function edit(Request $request)
+    {
+        dd($request->all());
+    }
+
     public function all()
     {
         return $this->scholarship->foundations();

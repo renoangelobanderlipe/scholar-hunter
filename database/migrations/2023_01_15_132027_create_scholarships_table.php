@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('foundation_id')->index();
             $table->string('name')->index();
             $table->string('description')->index();
+            $table->string('note')->index();
             $table->timestamps();
         });
     }

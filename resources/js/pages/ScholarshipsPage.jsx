@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import { Grid, IconButton, Dialog, DialogContent, Button, Tooltip } from '@mui/material';
+import { Grid, IconButton, Dialog, DialogContent, Button, Tooltip, Popover } from '@mui/material';
 import { DataGrid, GridToolbarContainer, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, GridToolbarExport } from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useSnackbar } from 'notistack';
@@ -8,7 +8,8 @@ import { HeaderComponent } from './../components/HeaderComponent';
 import { TextFieldComponent } from './../components/TextFieldComponents/TextFieldComponent';
 import { ButtonComponent } from './../components/ButtonComponent';
 import { createScholarship, destroyScholarship, foundationScholarships } from '../utils/apisauce';
-
+import { ContainerWrapper } from '../components/ContainerWrapper';
+import { editScholarship } from '../utils/apisauce';
 
 const CustomButton = () => {
   const [open, setOpen] = useState(false);
@@ -79,10 +80,23 @@ const CustomButton = () => {
                     />
                   </Grid>
 
-                  <Grid container item mb="3rem">
+                  <Grid container item mb="1.5rem">
                     <TextFieldComponent
                       fieldname={'description'}
                       fieldlabel={'Description'}
+                      variant={{
+                        fullWidth: true,
+                        variant: "outlined",
+                        size: "small",
+                      }}
+                      handleOnChange={(field, value) => handleOnChange(field, value)}
+                    />
+                  </Grid>
+
+                  <Grid container item mb="3rem">
+                    <TextFieldComponent
+                      fieldname={'note'}
+                      fieldlabel={'Note'}
                       variant={{
                         fullWidth: true,
                         variant: "outlined",
@@ -135,6 +149,15 @@ const CustomToolbar = () => {
 }
 const ScholarshipsPage = () => {
   const [rows, setRows] = React.useState([]);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const fetchScholarships = async () => {
     const res = await foundationScholarships();
@@ -145,12 +168,21 @@ const ScholarshipsPage = () => {
   }
 
   const handleDelete = async (id) => {
+    // setAnchorEl(event.currentTarget);
     const res = await destroyScholarship({ id });
 
     if (res.ok) {
       setRows(prev => {
         return prev.filter(rows => rows.foundation_id !== id);
       });
+    }
+  }
+
+  const handleEdit = async (id) => {
+    const res = await editScholarship({ id });
+
+    if (res.oks) {
+
     }
   }
 
@@ -168,6 +200,11 @@ const ScholarshipsPage = () => {
       flex: 1,
     },
     {
+      field: 'note',
+      headerName: 'Note',
+      flex: 1,
+    },
+    {
       field: 'action',
       headerName: 'Action',
       flex: 0,
@@ -179,6 +216,13 @@ const ScholarshipsPage = () => {
                 <DeleteIcon />
               </IconButton>
             </Tooltip>
+
+            {/* <Tooltip title="Edit">
+              <IconButton color="success" onClick={() => handleEdit(row.foundation_id)}>
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip> */}
+
           </React.Fragment >
         )
       }
@@ -192,28 +236,38 @@ const ScholarshipsPage = () => {
 
   return (
     <Fragment>
-      <Grid container p={4} backgroundColor="#c8e6c9">
-        <Grid container item backgroundColor="#fff" sx={{ minHeight: '80vh', borderRadius: '10px' }}>
-          <Grid container p={'2rem'}>
-            <DataGrid
-              autoHeight
-              pageSize={10}
-              rowsPerPageOptions={[5, 15, 50, 100]}
-              rows={rows}
-              columns={columns}
-              components={{
-                // NoRowsOverlay: CustomNoRowsOverlay,
-                Toolbar: CustomToolbar,
+      <ContainerWrapper>
+        <DataGrid
+          // autoHeight
+          pageSize={7}
+          // rowsPerPageOptions={[5, 15, 50, 100]}
+          rows={rows}
+          columns={columns}
+          components={{
+            // NoRowsOverlay: CustomNoRowsOverlay,
+            Toolbar: CustomToolbar,
 
-              }}
-              componentsProps={{
-                toolbar: CustomButton
-              }}
-            />
-          </Grid>
-        </Grid>
+          }}
+          componentsProps={{
+            toolbar: CustomButton
+          }}
+        />
 
-      </Grid>
+        <Popover
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'left',
+          }}
+        >
+          The content of the Popover.
+        </Popover>
+
+      </ContainerWrapper>
+
     </Fragment>
   );
 

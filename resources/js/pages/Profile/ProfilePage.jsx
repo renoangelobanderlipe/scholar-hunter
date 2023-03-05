@@ -3,6 +3,7 @@ import { Box, Tab, Tabs, Typography, Grid } from '@mui/material';
 import { ProfileInfo } from './ProfileInfo';
 import { PasswordInfo } from './PasswordInfo';
 import { updateProfile } from '../../utils/apisauce';
+import { ContainerWrapper } from '../../components/ContainerWrapper';
 
 
 function TabPanel(props) {
@@ -37,30 +38,27 @@ const ProfilePage = () => {
 
   return (
     <React.Fragment>
-      <Grid container p={4} backgroundColor="#c8e6c9">
-        <Grid container item backgroundColor="#fff" sx={{ minHeight: '80vh', borderRadius: '10px' }}>
-          <Grid container p={'2rem'}>
-            <Tabs
-              orientation="vertical"
-              variant="scrollable"
-              value={value}
-              onChange={handleChange}
-              aria-label="Vertical tabs example"
-              sx={{ borderRight: 1, borderColor: 'divider' }}
-            >
-              <Tab label="Profile" />
-              <Tab label="Password" />
-            </Tabs>
-            <TabPanel value={value} index={0}>
-              <ProfileInfo />
-            </TabPanel>
-            <TabPanel value={value} index={1}>
-              <PasswordInfo />
-            </TabPanel>
-          </Grid>
-        </Grid>
 
-      </Grid>
+      <ContainerWrapper>
+        <Tabs
+          orientation="vertical"
+          variant="scrollable"
+          value={value}
+          onChange={handleChange}
+          aria-label="Vertical tabs example"
+          sx={{ borderRight: 1, borderColor: 'divider' }}
+        >
+          <Tab label="Profile" />
+          <Tab label="Password" />
+        </Tabs>
+        <TabPanel value={value} index={0}>
+          <ProfileInfo />
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <PasswordInfo />
+        </TabPanel>
+      </ContainerWrapper>
+
     </React.Fragment>
   );
 }

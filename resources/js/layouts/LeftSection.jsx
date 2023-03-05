@@ -42,21 +42,21 @@ const LeftSection = () => {
 
   return (
     <React.Fragment>
-      <Grid container height={'100vh'} backgroundColor="#263238">
+      <Grid container height={'100vh'} backgroundColor="#f5f5f5">
         <Grid item xs={2}  >
           <List
             component="nav"
             subheader={
               <ListSubheader sx={{ height: '4.5rem' }} >
-                <Box sx={{ height: '100%', display: 'flex', alignItems: 'center', }}>
-                  <Typography sx={{ fontWeight: 'bold', color: "#263238" }}>SCHOLAR HUNTER</Typography>
+                <Box  height="100%" display="flex" alignItems="center" justifyContent="center" textAlign="center" alignContent='center'>
+                  <img src="./logo.svg" alt="img" height="70px" srcset="" />
                 </Box>
               </ListSubheader>
             }
           >
             <Grid py="2rem">
               <React.Suspense fallback={'Loading..'}>
-                <Link to='/home' style={{ textDecoration: 'none', color: "white", fontWeight: 'bold' }}  >
+                <Link to='/home' style={{ textDecoration: 'none', color: "#424242", fontWeight: 'bold' }}  >
                   <ListItemButton selected={location.pathname === '/home' ? true : false} >
                     <ListItemIcon>
                       <DashboardRounded color='primary' />
@@ -67,7 +67,7 @@ const LeftSection = () => {
               </React.Suspense>
 
               {role == 'user' || role == 'admin' ? <React.Fragment>
-                <Link to='/listing' style={{ textDecoration: 'none', color: "white", fontWeight: 'bold' }} >
+                <Link to='/listing' style={{ textDecoration: 'none', color: "#424242", fontWeight: 'bold' }} >
                   <ListItemButton selected={location.pathname === '/listing' ? true : false}>
                     <ListItemIcon>
                       <ViewStreamIcon color='primary' />
@@ -78,7 +78,7 @@ const LeftSection = () => {
               </React.Fragment> : <React.Fragment />}
 
               {role == 'user' ? <React.Fragment>
-                <Link to='/application' style={{ textDecoration: 'none', color: "white", fontWeight: 'bold' }} >
+                <Link to='/application' style={{ textDecoration: 'none', color: "#424242", fontWeight: 'bold' }} >
                   <ListItemButton selected={location.pathname === '/listing' ? true : false}>
                     <ListItemIcon>
                       <ViewStreamIcon color='primary' />
@@ -94,7 +94,7 @@ const LeftSection = () => {
                   <ListItemIcon >
                     <ListIcon color='primary' />
                   </ListItemIcon>
-                  <ListItemText sx={{ textDecoration: 'none', color: "white", fontWeight: 'bold' }} primary="Management" />
+                  <ListItemText sx={{ textDecoration: 'none', color: "#424242", fontWeight: 'bold' }} primary="Management" />
                   {open ? <ExpandLess /> : <ExpandMore />}
                 </ListItemButton>
 
@@ -103,7 +103,7 @@ const LeftSection = () => {
                   {
                     role !== 'user' && role !== 'admin' ? (
                       <React.Fragment>
-                        <Link to='/scholarships' style={{ textDecoration: 'none', color: "white", fontWeight: 'bold' }} >
+                        <Link to='/scholarships' style={{ textDecoration: 'none', color: "#424242", fontWeight: 'bold' }} >
                           <List component="div" disablePadding>
                             <ListItemButton sx={{ pl: 4 }} selected={location.pathname === '/scholarships' ? true : false}>
                               <ListItemIcon>
@@ -122,7 +122,7 @@ const LeftSection = () => {
                   {
                     role != 'foundation' ? (
                       <React.Fragment>
-                        <Link to='/foundations' style={{ textDecoration: 'none', color: "white", fontWeight: 'bold' }} >
+                        <Link to='/foundations' style={{ textDecoration: 'none', color: "#424242", fontWeight: 'bold' }} >
                           <List component="div" disablePadding>
                             <ListItemButton sx={{ pl: 4 }} selected={location.pathname === '/foundations' ? true : false}>
                               <ListItemIcon>
@@ -139,7 +139,7 @@ const LeftSection = () => {
                   {
                     role == 'admin' ? (
                       <React.Fragment>
-                        <Link to='/users' style={{ textDecoration: 'none', color: "white", fontWeight: 'bold' }} >
+                        <Link to='/users' style={{ textDecoration: 'none', color: "#424242", fontWeight: 'bold' }} >
                           <List component="div" disablePadding>
                             <ListItemButton sx={{ pl: 4 }} selected={location.pathname === '/users' ? true : false}>
                               <ListItemIcon>
@@ -151,7 +151,7 @@ const LeftSection = () => {
                         </Link>
                       </React.Fragment>
                     ) : (
-                      <Link to='/scholars' style={{ textDecoration: 'none', color: "white", fontWeight: 'bold' }} >
+                      <Link to='/scholars' style={{ textDecoration: 'none', color: "#424242", fontWeight: 'bold' }} >
                         <List component="div" disablePadding>
                           <ListItemButton sx={{ pl: 4 }} selected={location.pathname === '/scholars' ? true : false}>
                             <ListItemIcon>
@@ -166,7 +166,7 @@ const LeftSection = () => {
                 </Collapse>
               </React.Fragment> : <></>}
 
-              <Link to='/profile' style={{ textDecoration: 'none', color: "white", fontWeight: 'bold' }} >
+              <Link to='/profile' style={{ textDecoration: 'none', color: "#424242", fontWeight: 'bold' }} >
                 <ListItemButton selected={location.pathname === '/profile' ? true : false}>
                   <ListItemIcon>
                     <PersonIcon color='primary' />
@@ -175,7 +175,7 @@ const LeftSection = () => {
                 </ListItemButton>
               </Link>
 
-              <ListItemButton onClick={() => handleLogout()} style={{ textDecoration: 'none', color: "white", fontWeight: 'bold' }}>
+              <ListItemButton onClick={() => handleLogout()} style={{ textDecoration: 'none', color: "#424242", fontWeight: 'bold' }}>
                 <ListItemIcon >
                   <LogoutIcon color='primary' />
                 </ListItemIcon>

@@ -1,5 +1,5 @@
 import React, { useState, Fragment } from 'react';
-import { Grid, IconButton, Tooltip, Chip, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Box } from '@mui/material';
+import { Grid, IconButton, Tooltip, Chip, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Box, Typography } from '@mui/material';
 import { DataGrid, GridToolbarContainer, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, GridToolbarExport } from '@mui/x-data-grid';
 import { downloadFile, scholarsList, approveScholar, canceleScholar } from './../utils/apisauce';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -8,6 +8,9 @@ import FileOpenOutlinedIcon from '@mui/icons-material/FileOpenOutlined';
 import { useSnackbar } from 'notistack';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { jsPDF } from "jspdf";
+import { Document, Page } from 'react-pdf';
+import { useLocation } from 'react-router-dom';
+import { ContainerWrapper } from './../components/ContainerWrapper';
 const CustomToolbar = () => {
   return (
     <GridToolbarContainer>
@@ -27,7 +30,7 @@ const ScholarsListPage = () => {
   const [type, setType] = useState();
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
-
+  const location = useLocation();
   const doc = new jsPDF();
 
   const handleClose = () => {
@@ -50,10 +53,9 @@ const ScholarsListPage = () => {
     const res = await downloadFile({ id });
 
     if (res.ok) {
-      const { type, file } = res.data.data
-
-      setFile(file);
-      setType(type);
+      // const { type, file } = res.data.data
+      setFile(res.data.data);
+      // setType(type);
     }
   }
 
@@ -179,54 +181,46 @@ const ScholarsListPage = () => {
     handleList();
   }, []);
 
+  console.log(file);
   return (
     <React.Fragment>
-      <Grid container p={4} backgroundColor="#c8e6c9">
-        <Grid container item backgroundColor="#fff" sx={{ minHeight: '80vh', borderRadius: '10px' }}>
+      <ContainerWrapper>
+        <DataGrid
+          autoHeight
+          pageSize={7}
+          rows={rows ?? []}
+          columns={columns}
+          components={{
+            Toolbar: CustomToolbar,
+          }}
 
-          <Grid container p={'2rem'}>
-            <DataGrid
-              autoHeight
-              pageSize={7}
-              // rowsPerPageOptions={[5, 15, 50, 100]}
-              rows={rows ?? []}
-              columns={columns}
-              components={{
-                Toolbar: CustomToolbar,
-              }}
+        />
 
-            />
+        <Dialog
+          fullScreen={fullScreen}
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="responsive-dialog-title"
+        >
 
+          <DialogContent>
+            <Box height="550px" width="550px" sx={{ background: `url(${file})`, backgroundRepeat: "no-repeat" }} />
+            {/* <Box height="550px" width="550px" sx={{ backgroundImage: 'ur(http://scholar.hunterv1.local/storage/forms/5620230302-181715.pdf)', backgroundRepeat: "no-repeat" }} /> */}
+            {/* {
+                  type == 'image' ? <Box sx={{ background: { file }, height: '150px', width: '150px' }} ></Box> : <Document file='./5620230302-181715.pdf'>
+                    <Page pageNumber={1} />
+                  </Document>
+                } */}
+            {/* <Document height="550px" width="550px" file='./storage/forms/5620230302-181715.pdf)' onLoadSuccess={onDocumentLoadSuccess}>
+                  <Page size="A4" height="600" pageNumber={1} />
+                </Document> */}
 
-            <Dialog
-              fullScreen={fullScreen}
-              open={open}
-              onClose={handleClose}
-              aria-labelledby="responsive-dialog-title"
-            >
-              <DialogTitle id="responsive-dialog-title">
-                {"Use Google's location service?"}
-              </DialogTitle>
-              <DialogContent>
-                <DialogContentText>
-                  Let Google help apps determine location. This means sending anonymous
-                  location data to Google, even when no apps are running.
-                </DialogContentText>
+          </DialogContent>
 
-                {
-                  type == 'image' ? <Box sx={{ background: { file }, height: '150px', width: '150px' }} ></Box> : "FILE PDF"
-                }
-                {/* <Document file={'./5620230302-181715.pdf'} onLoadSuccess={onDocumentLoadSuccess}>
-                    <Page height="600" pageNumber={1} />
-                  </Document> */}
+        </Dialog>
 
-              </DialogContent>
-
-            </Dialog>
-          </Grid>
-        </Grid>
-      </Grid>
-    </React.Fragment>
+      </ContainerWrapper>
+    </React.Fragment >
   );
 }
 
