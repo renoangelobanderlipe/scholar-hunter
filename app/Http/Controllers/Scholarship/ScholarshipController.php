@@ -13,6 +13,13 @@ class ScholarshipController extends Controller
 {
     use HttpResponse, FoundationTraits;
 
+    protected $scholarship;
+
+    public function __construct()
+    {
+        $this->scholarship = new Scholarship;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -20,7 +27,7 @@ class ScholarshipController extends Controller
      */
     public function index()
     {
-        return (new Scholarship)->index();
+        return $this->scholarship->index();
     }
 
     /**
@@ -30,12 +37,12 @@ class ScholarshipController extends Controller
      */
     public function search(Request $request)
     {
-        return (new Scholarship)->search($request->only(['keyword'])['keyword'] == null ? '' : $request->only(['keyword'])['keyword']);
+        return $this->scholarship->search($request->only(['keyword'])['keyword'] == null ? '' : $request->only(['keyword'])['keyword']);
     }
 
     public function all()
     {
-        return (new Scholarship)->foundations();
+        return $this->scholarship->foundations();
     }
 
     /**
@@ -45,7 +52,7 @@ class ScholarshipController extends Controller
      */
     public function create(Request $request)
     {
-        return (new Scholarship)->create($request->all());
+        return $this->scholarship->create($request->all());
     }
 
     /**
@@ -56,79 +63,40 @@ class ScholarshipController extends Controller
      */
     public function store(ScholarshipRequest $request)
     {
-        return (new Scholarship)->apply((object)$request->all());
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Request $request)
-    {
+        return $this->scholarship->apply((object)$request->all());
     }
 
     public function scholarships()
     {
-        return (new Scholarship)->listOfScholars();
+        return $this->scholarship->listOfScholars();
     }
 
     public function scholarshipDestroy(Request $request)
     {
-        return (new Scholarship)->deleteScholarship($request->all()['id']);
+        return $this->scholarship->deleteScholarship($request->all()['id']);
     }
 
     public function scholarsList()
     {
-        return (new Scholarship)->scholarsList();
+        return $this->scholarship->scholarsList();
     }
     public function download(Request $request)
     {
-        return (new Scholarship)->downloadFile($request->all()['id']);
+        return $this->scholarship->downloadFile($request->all()['id']);
     }
 
     public function approve(Request $request)
     {
-        return (new Scholarship)->approveScholarship($request->all()['id']);
+        return $this->scholarship->approveScholarship($request->all()['id']);
     }
 
     public function cancel(Request $request)
     {
-        return (new Scholarship)->cancelScholarship($request->all()['id']);
+        return $this->scholarship->cancelScholarship($request->all()['id']);
+    }
+
+    public function info(Request $request)
+    {
+        return $this->scholarship->info($request->all()['id']);
     }
 }

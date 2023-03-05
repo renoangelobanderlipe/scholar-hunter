@@ -32,8 +32,10 @@
     "dependencies": {
         "apisauce": "^2.1.6",
         "filepond": "^4.30.4",
+        "jspdf": "^2.5.1",
         "notistack": "^2.0.8",
         "react-filepond": "^7.1.2",
+        "react-pdf": "^6.2.2",
         "react-timeout-button": "^2.0.8",
         "zustand": "^4.3.2"
     }

@@ -77,7 +77,7 @@ const LeftSection = () => {
                 </Link>
               </React.Fragment> : <React.Fragment />}
 
-              {role == 'user' && role == 'admin' ? <React.Fragment>
+              {role == 'user' ? <React.Fragment>
                 <Link to='/application' style={{ textDecoration: 'none', color: "white", fontWeight: 'bold' }} >
                   <ListItemButton selected={location.pathname === '/listing' ? true : false}>
                     <ListItemIcon>

@@ -6,13 +6,14 @@ use App\Mail\ApprovedScholarshipMailer;
 use App\Mail\CanceledScholarshipMailer;
 use App\Mail\StatusMailer;
 use App\Traits\HttpResponse;
+use App\Traits\UserTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class Scholarship extends Model
 {
-    use HttpResponse;
+    use HttpResponse, UserTrait;
 
     protected $fillable = [
         'foundation_id',
@@ -61,15 +62,40 @@ class Scholarship extends Model
         }
     }
 
+    public function info(int $id)
+    {
+        try {
+            $user = User::find($id);
+
+            $data = [
+                'id' => $user->id,
+                'id_no' => $user->id_no,
+                'firstname' => $user->firstname,
+                'middlename' => $user->middlename,
+                'lastname' => $user->lastname,
+                'address' => $user->address,
+                'username' => $user->username,
+                'contact_no' => $user->contact_no,
+                'email' => $user->email,
+                'course' => $user->course,
+                'course_type' => $user->course_type,
+            ];
+
+            return $this->success($data);
+        } catch (\Throwable $throwable) {
+            return $this->error($throwable->getMessage());
+        }
+    }
+
+
     public function create($data)
     {
         try {
             $payload = $data['values'];
-            $user_id = \Auth::user()->id;
 
             $foundation_id = \DB::table('foundation_user')
                 ->select('foundation_id')
-                ->where('user_id', $user_id)
+                ->where('user_id', \Auth::user()->id)
                 ->first();
             \DB::beginTransaction();
             \DB::table('scholarships')->insert([
@@ -77,11 +103,7 @@ class Scholarship extends Model
                 'name' => $payload['name'],
                 'description' => $payload['description']
             ]);
-            // $data = Scholarship::create([
-            //     'foundation_id' => $foundation_id->foundation_id,
-            //     'name' => $payload['name'],
-            //     'description' => $payload['description']
-            // ]);
+
             \DB::commit();
             return $this->success($data);
         } catch (\Throwable $throwable) {
@@ -103,10 +125,10 @@ class Scholarship extends Model
 
     public function apply($data)
     {
+
         try {
             // dd($data);
-            $fileName = \Auth::id() . date('Ymd-His') . '.' . $data->file->getClientOriginalExtension();
-            // $scholarshipPath = $data->file->storeAs('forms', $fileName);
+            $fileName = \Auth::user()->id . date('Ymd-His') . '.' . $data->file->getClientOriginalExtension();
             $data->file->storeAs('public/forms', $fileName);
 
             $fileData = [
@@ -120,17 +142,6 @@ class Scholarship extends Model
             ];
 
             Application::create($fileData);
-            // $fileName = \Auth::id() . date('Ymd-His') . $data->file->getClientOriginalExtension();
-
-            // $scholarshipPath = $data->file->storeAs('forms', $fileName);
-
-            // $files->idNo(\Auth::user()->id_no);
-            // $files->foundationId($data->foundation_id);
-            // $files->fileId($data->id);
-            // $files->fileName($fileName);
-            // $files->fileLocation($scholarshipPath);
-
-            // $files->store();
 
             return $this->success(['message' => 'Successfully Uploaded']);
         } catch (\Throwable $throwable) {
@@ -151,9 +162,6 @@ class Scholarship extends Model
             $data = Scholarship::where('foundation_id', $foundation_id)
                 ->get()
                 ->toArray();
-            // $data = Scholarship::rightJoin('foundation_user', 'scholarships.foundation_id', '=', 'foundation_user.foundation_id')->where('scholarships.foundation_id', $foundation_id)
-            //     ->get()
-            //     ->toArray();
 
             return $this->success($data);
         } catch (\Throwable $throwable) {
@@ -178,7 +186,6 @@ class Scholarship extends Model
     public function scholarsList()
     {
         try {
-
             $user_id = \Auth::user()->id;
             $foundation_id = \DB::table('foundation_user')
                 ->where('user_id', $user_id)
@@ -187,31 +194,27 @@ class Scholarship extends Model
             $user_ids = \DB::table('applications')
                 ->where('foundation_id', $foundation_id->foundation_id)
                 ->get()
-                ->pluck('user_id')
-                ->toArray();
-
+                ->pluck('user_id');
+            // ->toArray();
             $data = User::whereIn('id', $user_ids)
                 ->get();
 
-            $applicationStatus = \DB::table('applications')->where('user_id', $user_ids)->get();
+            $applicants = \DB::table('applications')->whereIn('user_id', $user_ids)->get();
 
-            // $data = \DB::table('applications')
-            //     ->select(['id', 'name', 'description'])
-            //     ->where('foundation_id', $foundation_id)
-            //     ->get();
             $response = [];
 
-            foreach ($data as $key => $datas) {
+            foreach ($applicants as $key => $applicant) {
+                $userData = collect($data)->where('id', $applicant->user_id)->first();
                 $response[] = [
-                    'id' => $applicationStatus[$key]->id,
-                    'user_id' => $datas->id,
-                    'id_no' => $datas->id_no,
-                    'firstname' => $datas->firstname,
-                    'middlename' => $datas->middlename,
-                    'lastname' => $datas->lastname,
-                    'contact_no' => $datas->contact_no,
-                    'email' => $datas->email,
-                    'status' => $applicationStatus[$key]->status,
+                    'id' => $key,
+                    'user_id' => $applicant->user_id,
+                    'id_no' => $userData->id_no,
+                    'firstname' => $userData->firstname,
+                    'middlename' => $userData->middlename,
+                    'lastname' => $userData->lastname,
+                    'contact_no' => $userData->contact_no,
+                    'email' => $userData->email,
+                    'status' => $applicant->status,
                 ];
             }
 
@@ -226,9 +229,7 @@ class Scholarship extends Model
         try {
             $file = \DB::table('applications')->find($id);
             $urll =  'public' . '/' . $file->file_location;
-            // $fileUrl = Storage::('forms/1620230227-185945.jpg');
-            // dd($fileUrl);
-            // return Storage::download('forms/1620230227-185945.jpg', 'FHE.jpg', ['Content-Type' => 'application/pdf']);
+
             $fileUrl = Storage::url($urll);
             return $this->success($fileUrl);
         } catch (\Throwable $throwable) {
@@ -239,16 +240,11 @@ class Scholarship extends Model
     public function approveScholarship($id)
     {
         try {
-            // $user_id = \Auth::user()->id;
-            // $foundation_id = \DB::table('foundation_user')
-            //     ->where('user_id', $user_id)
-            //     ->get();
-            // dd($foundation_id);
+
             $user = \DB::table('applications')
                 ->where('user_id', $id)
                 ->first();
-            // ->pluck('user_id');
-            // dd($user_ids);
+
             $data = User::where('id', $user->user_id)
                 ->first();
 
@@ -261,7 +257,7 @@ class Scholarship extends Model
 
             \DB::beginTransaction();
 
-            $status = \DB::table('applications')
+            \DB::table('applications')
                 ->where('user_id', $id)
                 ->update(['status' => 'approved']);
 
@@ -278,16 +274,10 @@ class Scholarship extends Model
     public function cancelScholarship($id)
     {
         try {
-            // $user_id = \Auth::user()->id;
-            // $foundation_id = \DB::table('foundation_user')
-            //     ->where('user_id', $user_id)
-            //     ->get();
-            // dd($foundation_id);
             $user = \DB::table('applications')
                 ->where('user_id', $id)
                 ->first();
-            // ->pluck('user_id');
-            // dd($user_ids);
+
             $data = User::where('id', $user->user_id)
                 ->first();
 
