@@ -105,7 +105,7 @@ const FileUplaodButton = ({ handleId, foundationId }) => {
 
         <DialogTitle>Upload FHE Form</DialogTitle>
         <DialogContent>
-          <FilePond allowMultiple={true} maxFiles={1} onupdatefiles={(files) => {
+          <FilePond allowMultiple={true} maxFiles={10} onupdatefiles={(files) => {
             files.map((element, index) => setFile(element.file));
           }} />
         </DialogContent>
