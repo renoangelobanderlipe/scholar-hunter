@@ -49,13 +49,14 @@ const ScholarsListPage = () => {
   }
 
   const handleView = async (id) => {
-    setOpen(true);
     const res = await downloadFile({ id });
-
+    console.log(res);
     if (res.ok) {
-      // const { type, file } = res.data.data
-      setFile(res.data.data);
-      // setType(type);
+      const link = document.createElement("a");
+      link.href = res.data.data;
+      link.setAttribute('download', 'FHE.pdf');
+      document.body.appendChild(link);
+      link.click();
     }
   }
 
