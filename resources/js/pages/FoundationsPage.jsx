@@ -82,7 +82,7 @@ const CustomButton = () => {
               <form>
                 <Grid >
                   <HeaderComponent
-                    title={'Create Foundation'}
+                    title={'Create Benefactor'}
                     variant={{
                       variant: 'h5',
                       color: 'black',

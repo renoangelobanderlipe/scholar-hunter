@@ -109,7 +109,7 @@ const ScholarsListPage = () => {
       headerName: 'Last Name',
       flex: 0.5,
     },
-    {
+    { 
       field: 'contact_no',
       headerName: 'Contact No',
       type: 'number',

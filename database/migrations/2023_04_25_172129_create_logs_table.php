@@ -13,12 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('scholarships', function (Blueprint $table) {
+        Schema::create('logs', function (Blueprint $table) {
             $table->id();
-            $table->string('foundation_id')->index();
-            $table->string('name')->index();
-            $table->string('description')->index();
-            $table->string('note')->nullable()->default('');
+            $table->string('account_type');
+            $table->string('section');
+            $table->string('action');
+            $table->text('old_data');
+            $table->text('new_data');
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('scholarships');
+        Schema::dropIfExists('logs');
     }
 };

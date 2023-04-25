@@ -129,7 +129,7 @@ class Scholarship extends Model
 
     public function apply($data)
     {
-
+     
         try {
             // dd($data);
             $fileName = \Auth::user()->id . date('Ymd-His') . '.' . $data->file->getClientOriginalExtension();

@@ -124,13 +124,13 @@ const LeftSection = () => {
                   {
                     role != 'foundation' ? (
                       <React.Fragment>
-                        <Link to='/foundations' style={{ textDecoration: 'none', color: "#424242", fontWeight: 'bold' }} >
+                        <Link to='/benefactor' style={{ textDecoration: 'none', color: "#424242", fontWeight: 'bold' }} >
                           <List component="div" disablePadding>
-                            <ListItemButton sx={{ pl: 4 }} selected={location.pathname === '/foundations' ? true : false}>
+                            <ListItemButton sx={{ pl: 4 }} selected={location.pathname === '/benefactor' ? true : false}>
                               <ListItemIcon>
                                 <WorkspacePremiumIcon color='primary' />
                               </ListItemIcon>
-                              <ListItemText primary="Foundations " />
+                              <ListItemText primary="Benefactors " />
                             </ListItemButton>
                           </List>
                         </Link>
@@ -147,6 +147,7 @@ const LeftSection = () => {
                               <ListItemIcon>
                                 <ManageAccountsRounded color='primary' />
                               </ListItemIcon>
+
                               <ListItemText primary="User Management" />
                             </ListItemButton>
                           </List>

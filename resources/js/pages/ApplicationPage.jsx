@@ -39,7 +39,7 @@ const ApplicationPage = () => {
     { field: 'id', headerName: 'ID', width: 90, hide: true },
     {
       field: 'foundation',
-      headerName: 'Foundation',
+      headerName: 'Benefactor',
       flex: 1,
     },
     {

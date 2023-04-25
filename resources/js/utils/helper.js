@@ -33,5 +33,5 @@ export const foundationType = [
 
 export const accountType = [
   'Student',
-  'Foundation'
+  'Benefactor'
 ]

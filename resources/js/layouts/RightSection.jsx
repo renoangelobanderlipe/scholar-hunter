@@ -69,7 +69,7 @@ const RightSection = () => {
             <Route path="/users" element={<UserManagementPage />} />
             <Route path="/scholars" element={<ScholarsListPage />} />
             <Route path="/scholarships" element={<ScholarshipsPage />} />
-            <Route path="/foundations" element={<FoundationsPage />} />
+            <Route path="/benefactor" element={<FoundationsPage />} />
             <Route path="/application" element={<ApplicationPage />} />
           </Routes>
         </Grid >
