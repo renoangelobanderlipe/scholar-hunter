@@ -15,11 +15,12 @@ return new class extends Migration
     {
         Schema::create('logs', function (Blueprint $table) {
             $table->id();
-            $table->string('account_type');
-            $table->string('section');
-            $table->string('action');
-            $table->text('old_data');
-            $table->text('new_data');
+            $table->string('user_id')->nullable();
+            $table->string('account_type')->nullable();
+            $table->string('section')->nullable();
+            $table->string('action')->nullable();
+            $table->text('old_data')->nullable();
+            $table->text('new_data')->nullable();
             $table->timestamps();
         });
     }
