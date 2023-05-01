@@ -93,7 +93,6 @@ class Scholarship extends Model
     {
         try {
             $payload = $data['values'];
-
             $foundation_id = \DB::table('foundation_user')
                 ->select('foundation_id')
                 ->where('user_id', \Auth::user()->id)
@@ -129,7 +128,7 @@ class Scholarship extends Model
 
     public function apply($data)
     {
-     
+
         try {
             // dd($data);
             $fileName = \Auth::user()->id . date('Ymd-His') . '.' . $data->file->getClientOriginalExtension();
@@ -304,6 +303,35 @@ class Scholarship extends Model
             return $this->success('User Scholarship Rejected!');
         } catch (\Throwable $throwable) {
             \DB::rollback();
+            return $this->error($throwable->getMessage());
+        }
+    }
+
+    public function searchFuncTest(string $name)
+    {
+        try {
+            $foundationId = \DB::table('foundations')->select(['id'])->where('name', $name)->first();
+            $foundation_id = \DB::table('foundation_user')
+                ->where('foundation_id', $foundationId->id)
+                ->first();
+
+            $totalApplicants = \DB::table('applications')
+                ->where('foundation_id', $foundation_id->foundation_id)
+                ->count();
+                
+            return $this->success($totalApplicants);
+        } catch (\Throwable $throwable) {
+            return $this->error($throwable->getMessage());
+        }
+    }
+
+    public function foundationAllList()
+    {
+        try {
+            $foundations = \DB::table('foundations')->get()->toArray();
+
+            return $this->success($foundations);
+        } catch (\Throwable $throwable) {
             return $this->error($throwable->getMessage());
         }
     }

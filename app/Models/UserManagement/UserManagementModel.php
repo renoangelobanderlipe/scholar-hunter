@@ -4,6 +4,7 @@ namespace App\Models\UserManagement;
 
 use App\Contracts\UserManagementContract;
 use App\Mail\StatusMailer;
+use App\Models\ActivityLogsModel;
 use App\Models\User;
 use App\Traits\HttpResponse;
 use Illuminate\Database\Eloquent\Model;
@@ -34,6 +35,15 @@ class UserManagementModel extends Model implements UserManagementContract
 
             // throw_if($user == 1, \Exception::class, 'Already Unauthorize User');
             $data = User::where('id', $id)->get()->toArray();
+
+            (new ActivityLogsModel)
+                ->setUserId(\Auth::user()->id)
+                ->setAccountType(\Auth::user()->roles()->pluck('name')->first())
+                ->setSection('user-unauthorize')
+                ->setAction('unauthorize')
+                ->setOldData($id)
+                ->setNewData($data)
+                ->create();
 
             \DB::commit();
             return $this->success($data);
@@ -104,9 +114,7 @@ class UserManagementModel extends Model implements UserManagementContract
     public function create($data)
     {
         try {
-
             $role = $data->role;
-
             \DB::beginTransaction();
 
             $response = User::create([
@@ -125,7 +133,25 @@ class UserManagementModel extends Model implements UserManagementContract
             ]);
 
             $response->assignRole($role);
+
+            (new ActivityLogsModel)
+                ->setUserId(\Auth::user()->id)
+                ->setAccountType($role)
+                ->setSection('create-user')
+                ->setAction('add')
+                ->setOldData('')
+                ->setNewData($response)
+                ->create();
+
             \DB::commit();
+
+            // \DB::table('logs')->insert([
+            //     'account_type' => 'role',
+            //     'section' => 'add',
+            //     'action' => 'add',
+            //     'old_data' => '',
+            //     'new_data' => '{"values":{"id_no":"22222322222222222123","firstname":"asdjkl","middlename":"jklj","lastname":"jkljkl","address":"jkljlk","username":"jkljkl","contact_no":"09505259191","email":"sd222222222222f222jkl","course_type":"Bachelor","course":"Bachelor of Science in Information Technology","role":"user","password":"admin123","confirm_password":"","password_confirmation":"admin123"}}',
+            // ]);
 
             return $this->success($response);
         } catch (\Throwable $throwable) {
@@ -145,6 +171,15 @@ class UserManagementModel extends Model implements UserManagementContract
 
             throw_if($response != 1, \Exception::class, 'Invalid Request');
 
+            (new ActivityLogsModel)
+                ->setUserId(\Auth::user()->id)
+                ->setAccountType(\Auth::user()->roles()->pluck('name')->first())
+                ->setSection('user-status')
+                ->setAction('update')
+                ->setOldData($response)
+                ->setNewData('Success')
+                ->create();
+
             \DB::commit();
             return $this->success([
                 'message' => 'Successfully Updated Status'
@@ -159,6 +194,15 @@ class UserManagementModel extends Model implements UserManagementContract
     {
         try {
             User::find($id)->delete();
+
+            (new ActivityLogsModel)
+                ->setUserId(\Auth::user()->id)
+                ->setAccountType(\Auth::user()->roles()->pluck('name')->first())
+                ->setSection('delete-user')
+                ->setAction('delete')
+                ->setOldData($id)
+                ->setNewData('Deleted')
+                ->create();
 
             return  $this->success([
                 'message' => 'Successfully Deleted'
