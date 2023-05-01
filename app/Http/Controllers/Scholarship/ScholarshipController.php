@@ -104,4 +104,16 @@ class ScholarshipController extends Controller
     {
         return $this->scholarship->info($request->all()['id']);
     }
+
+    public function foundationList()
+    {
+        return $this->scholarship->foundationAllList();
+    }
+
+    public function foundationSearch(Request $request)
+    {
+        // dd('tes', $request->all());
+        $params = $request->only(['keyword']);
+        return $this->scholarship->searchFuncTest($params['keyword']);
+    }
 }
