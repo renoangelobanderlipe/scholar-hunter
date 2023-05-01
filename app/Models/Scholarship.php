@@ -258,6 +258,15 @@ class Scholarship extends Model
 
             throw_if($validateStatus->status == 'approved', \Exception::class, 'User Already Approved!');
 
+            (new ActivityLogsModel)
+                ->setUserId(\Auth::user()->id)
+                ->setAccountType('foundation')
+                ->setSection('approve-scholarship')
+                ->setAction('approve')
+                ->setOldData('')
+                ->setNewData($data)
+                ->create();
+
             \DB::beginTransaction();
 
             \DB::table('applications')
@@ -291,6 +300,15 @@ class Scholarship extends Model
 
             throw_if($validateStatus->status == 'rejected', \Exception::class, 'User Already Approved!');
 
+            (new ActivityLogsModel)
+                ->setUserId(\Auth::user()->id)
+                ->setAccountType('foundation')
+                ->setSection('reject-scholarship')
+                ->setAction('reject')
+                ->setOldData($data)
+                ->setNewData('')
+                ->create();
+
             \DB::beginTransaction();
 
             $status = \DB::table('applications')
@@ -318,7 +336,7 @@ class Scholarship extends Model
             $totalApplicants = \DB::table('applications')
                 ->where('foundation_id', $foundation_id->foundation_id)
                 ->count();
-                
+
             return $this->success($totalApplicants);
         } catch (\Throwable $throwable) {
             return $this->error($throwable->getMessage());

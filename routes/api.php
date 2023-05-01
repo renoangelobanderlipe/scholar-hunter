@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActivityLogsController;
 use App\Http\Controllers\Application\ApplicationController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Foundation\FoundationController;
@@ -51,6 +52,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('approve', 'approve');
         Route::post('cancel', 'cancel');
         Route::put('edit', 'edit');
+        Route::get('foundation/list', 'foundationList');
+        Route::get('foundation/search', 'foundationSearch');
     });
 
     Route::controller(ApplicationController::class)->prefix('application')->group(function () {
@@ -74,5 +77,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(RoleListenerController::class)->prefix('listener')->group(function () {
         Route::get('/', 'index');
         Route::post('status', 'authStatus');
+    });
+
+    Route::controller(ActivityLogsController::class)->prefix('logs')->group(function () {
+        Route::get('/', 'show');
     });
 });

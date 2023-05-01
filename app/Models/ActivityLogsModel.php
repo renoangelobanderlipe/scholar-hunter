@@ -86,8 +86,24 @@ class ActivityLogsModel extends Model
 
     public function show()
     {
+        if (\Auth::user()->roles()->pluck('name')->first() != 'admin') {
+            return  $this->foundationResponse();
+        }
         return $this->arrayResponse();
     }
+
+    public function foundationResponse()
+    {
+        $user_id = \Auth::user()->id;
+
+        return self::select([
+            'logs.*',
+            \DB::raw("CONCAT(users.firstname,' ',users.lastname) AS full_name")
+        ])->join('users', 'users.id', 'logs.user_id')->where('logs.user_id', $user_id)
+            ->get()
+            ->toArray();
+    }
+
 
     public function arrayResponse()
     {
