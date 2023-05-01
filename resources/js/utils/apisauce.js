@@ -32,6 +32,8 @@ export const foundationScholarships = () => apiSauce.get('api/scholarship/list/s
 export const approveScholar = (params) => apiSauce.post('api/scholarship/approve', params);
 export const canceleScholar = (params) => apiSauce.post('api/scholarship/cancel', params);
 export const editScholarship = (params) => apiSauce.put('api/scholarship/edit', params);
+export const allFoundations= () => apiSauce.get('api/scholarship/foundation/list');
+export const testSearchFoundation= (params) => apiSauce.get('api/scholarship/foundation/search', params);
 
 // Foundation
 
@@ -62,4 +64,5 @@ export const totalScholarship = (params) => apiSauce.get('api/home/show/all', pa
 export const adminAll = () => apiSauce.get('api/home/all');
 export const adminStatus = () => apiSauce.get('api/home/status');
 
-
+// Logs
+export const showLogs = () => apiSauce.get('api/logs');
